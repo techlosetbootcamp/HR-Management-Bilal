@@ -1,22 +1,28 @@
-// InputField.tsx
-import React from 'react';
+"use client";
+import React from "react";
 
 interface InputFieldProps {
-  type: string;
-  placeholder: string;
+  label: string;
+  type?: string;
+  name: string;
+  placeholder?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ type, placeholder, value, onChange }) => {
+const InputField: React.FC<InputFieldProps> = ({ label, type = "text", name, placeholder, value, onChange }) => {
   return (
-    <input
-      type={type}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      className="border border-orange-600 rounded-md p-2 w-full"
-    />
+    <div className="mb-4">
+      <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>
+      <input
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
   );
 };
 
