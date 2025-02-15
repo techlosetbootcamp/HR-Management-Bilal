@@ -12,9 +12,50 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
-model User {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  email    String @unique
-  password String
+model User{
+  id String @db.ObjectId @default(auto()) @map("_id") @id
+  name String
+  email String @unique
+  Password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Employee {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  address           String?
+  appointmentLetter String?
+  city              String?
+  department        String?
+  designation       String?
+  email             String  @unique
+  emailAddress      String?
+  employeeId        String?
+  employmentType    String?
+  experienceLetter  String?
+  firstName         String?
+  gender            String
+  githubId          String?
+  joiningDate       String?
+  lastName          String?
+  maritalStatus     String?
+  mobileNumber      String?
+  nationality       String?
+  officeLocation    String?
+  photoURL          String?
+  relivingLetter    String?
+  salarySlip        String?
+  skypeId           String?
+  slackId           String?
+  state             String?
+  userName          String?
+  workingDays       String?
+  zipCode           String?
+  dateOfBirth       String?
+  attendance        String?
+  type              String?
+  checkIn           String?
+  checkOut          String?
 }
