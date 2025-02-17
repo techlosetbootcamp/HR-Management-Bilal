@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import bcrypt from "bcrypt";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../../lib/auth";
 
 export async function PUT(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
     const { email, newPassword } = await req.json();
+
+    if (!email) {
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    }
 
     const user = await prisma.user.findUnique({
       where: { email },
@@ -19,6 +26,10 @@ export async function PUT(req: NextRequest) {
       where: { email },
       data: { Password: hashedPassword },
     });
+
+    if (session) {
+      session.user = { ...session.user };
+    }
 
     return NextResponse.json({ message: "Password reset successfully" });
   } catch (error) {

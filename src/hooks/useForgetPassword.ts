@@ -1,35 +1,42 @@
-'use client'
-import { signOut } from "next-auth/react";
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
+"use client";
+
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+
 const useForgetPassForm = () => {
-  const [state, setState] = useState({ email: "" });
+  const [email, setEmail] = useState("");
+
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    signOut({
-      redirect: false,
-    });
-  }, []);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setState((s) => ({ ...s, [event.target.name]: event.target.value }));
+    setEmail(event.target.value);
   };
-  const otp = Math.floor(100000 + Math.random() * 900000);
+
+  const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
+
   const sendOTP = async (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    setLoading(true);
+
+    if (!email) {
+      toast.error("Please enter your email!");
+      setLoading(false);
+      return;
+    }
+
+    const otp = generateOTP();
+    const otpExpiry = Date.now() + 2 * 60 * 1000;
 
     const data = {
       service_id: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
       template_id: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
       user_id: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_ID,
       template_params: {
-        to_email: state.email,
-        to_name: state.email,
-        from_name: "HR Management",
-        user_email: state.email,
+        to_email: email,
+        to_name: email.split("@")[0],
         otp_code: otp,
       },
     };
@@ -39,25 +46,41 @@ const useForgetPassForm = () => {
         "https://api.emailjs.com/api/v1.0/email/send",
         data
       );
-      console.log("res from email js", res.data);
-      localStorage.setItem(
-        "otpData",
-        JSON.stringify({ email: state.email, otp })
-      );
-      toast.success("OTP sent Successfully!");
-      router.push("/otp");
+
+      if (res.status === 200) {
+        console.log("EmailJS response:", res.data);
+        localStorage.setItem("otpData", JSON.stringify({ email, otp, otpExpiry }));
+        toast.success(`OTP sent to ${email} successfully!`);
+        router.push("/otp");
+      } else {
+        throw new Error("Failed to send OTP");
+      }
     } catch (error) {
-      toast.error("Something went wrong!");
-      console.log("error", error);
+      console.error("Error sending OTP:", error);
+      toast.error("Something went wrong! Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-  useEffect(() => {
-    setTimeout(function () {
-      localStorage.removeItem("otpData");
-    }, 2 * 60 * 1000);
-  }, [otp]);
 
-  return { loading, state, handleChange, sendOTP };
+  useEffect(() => {
+    // Automatically clear expired OTP data
+    const checkOtpExpiry = () => {
+      const storedOtp = localStorage.getItem("otpData");
+      if (storedOtp) {
+        const { otpExpiry } = JSON.parse(storedOtp);
+        if (Date.now() > otpExpiry) {
+          localStorage.removeItem("otpData");
+          console.log("OTP expired and removed.");
+        }
+      }
+    };
+
+    const interval = setInterval(checkOtpExpiry, 30 * 1000); // Check every 30 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
+  return { email, handleChange, sendOTP, loading };
 };
 
 export default useForgetPassForm;

@@ -4,14 +4,13 @@ import useForgetPassForm from "@/hooks/useForgetPassword";
 import React from "react";
 
 export default function ForgetPassForm() {
-  const { loading, state, sendOTP, handleChange } = useForgetPassForm();
+  const { email, sendOTP, handleChange } = useForgetPassForm();
   return (
     <div className="flex flex-col items-center max-w-[445px] ">
       <input
         name={"email"}
-        value={state?.email}
+        value={email}
         onChange={handleChange}
-        disabled={loading}
       />
       <button
         type="submit"

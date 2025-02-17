@@ -1,119 +1,79 @@
-// import { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { AppDispatch, RootState } from "../redux/store";
-// import { changePassword, clearMessages } from "../redux/slice/authSlice";
-
-// const useChangePassword = () => {
-//   const dispatch = useDispatch<AppDispatch>();
-//   const { loading, error, successMessage } = useSelector((state: RootState) => state.auth);
-//   const [oldPassword, setOldPassword] = useState("");
-//   const [newPassword, setNewPassword] = useState("");
-
-//   const handleChangePassword = async () => {
-//     if (!oldPassword || !newPassword) return;
-
-//     await dispatch(changePassword({ oldPassword, newPassword }));
-
-//     setOldPassword("");
-//     setNewPassword("");
-//   };
-
-//   const resetMessages = () => {
-//     dispatch(clearMessages());
-//   };
-
-//   return {
-//     oldPassword,
-//     setOldPassword,
-//     newPassword,
-//     setNewPassword,
-//     handleChangePassword,
-//     loading,
-//     error,
-//     successMessage,
-//     resetMessages,
-//   };
-// };
-
-// export default useChangePassword;
 "use client";
-import { useEffect, useState } from "react";
+
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import toast from "react-hot-toast";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 
-const useChangePassword = () => {
+export const useChangePassword = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const otpData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("otpData") || "{}") : {};
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    if (!session?.user?.email && !otpData.email) {
-      router.push("/login"); // Redirect to login if no user is authenticated or verified by OTP
+    const otpData = localStorage.getItem("otpData");
+    if (otpData) {
+      try {
+        const { email } = JSON.parse(otpData);
+        setEmail(email);
+      } catch (error) {
+        console.error("Error parsing OTP data:", error);
+      }
+    } else if (session?.user?.email) {
+      setEmail(session.user.email);
+    } else {
+      toast.error("Session expired! Please log in again.");
+      router.push("/login");
     }
-  }, [session, otpData, router]);
+  }, [session, router]);
 
-  const handleChangePassword = async (isAuthenticated: boolean) => {
-    if (!newPassword || !confirmPassword) return;
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "newPassword") setNewPassword(value);
+    if (name === "confirmPassword") setConfirmPassword(value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPassword || !confirmPassword) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
     if (newPassword !== confirmPassword) {
-      return setError("Passwords do not match");
+      toast.error("Passwords do not match!");
+      return;
     }
-  
-    let email;
-    if (!isAuthenticated) {
-      email = localStorage.getItem("resetEmail"); // ✅ Retrieve email for unauthenticated users
-      if (!email) {
-        return setError("Email is required for password reset");
-      }
-    }
-  
+
+    setLoading(true);
     try {
-      const response = await fetch("/api/auth/changePassword", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          isAuthenticated
-            ? { oldPassword, newPassword }
-            : { email, newPassword } // ✅ Pass email for unauthenticated users
-        ),
+      const res = await axios.put("/api/changePassword", {
+        email,
+        newPassword,
       });
-  
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Password change failed");
+
+      if (res.status === 200) {
+        toast.success("Password changed successfully!");
+        localStorage.removeItem("otpData");
+        router.push("/login");
       }
-  
-      localStorage.removeItem("resetEmail"); // ✅ Clear stored email after successful password reset
-      setOldPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
     } catch (error: any) {
-      setError(error.message);
+      console.error("Error changing password:", error);
+      toast.error(error?.response?.data?.message || "Failed to change password");
+    } finally {
+      setLoading(false);
     }
   };
-  
-  
 
   return {
-    session,
-    oldPassword,
-    setOldPassword,
+    handleSubmit,
+    handleChange,
     newPassword,
-    setNewPassword,
     confirmPassword,
-    setConfirmPassword,
-    handleChangePassword,
     loading,
-    error,
   };
 };
-
-export default useChangePassword;
