@@ -16,14 +16,13 @@ export default function LoginPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(null); // Clear error on input change
+    setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Reset error before submitting
+    setError(null);
 
-    // 🔹 Basic Validation
     if (!formData.email || !formData.password) {
       setError("Email and password are required.");
       return;
@@ -50,7 +49,7 @@ export default function LoginPage() {
       <InputField label="Email" type="email" name="email" value={formData.email} onChange={handleChange} />
       <InputField label="Password" type="password" name="password" value={formData.password} onChange={handleChange} />
 
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>} {/* 🔹 Show error message */}
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
       <button
         type="submit"

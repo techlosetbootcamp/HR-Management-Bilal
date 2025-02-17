@@ -18,12 +18,11 @@ const ChangePasswordForm = () => {
 
   const router = useRouter();
 
-  // Redirect to dashboard after successful password change
   useEffect(() => {
     if (successMessage) {
       setTimeout(() => {
         router.push("/dashboard");
-      }, 1500); // Slight delay for UX
+      }, 1500);
     }
   }, [successMessage, router]);
 

@@ -12,7 +12,6 @@ interface AuthState {
   successMessage: string | null;
 }
 
-// Initial state
 const initialState: AuthState = {
   user: null,
   loading: false,
@@ -20,14 +19,12 @@ const initialState: AuthState = {
   successMessage: null,
 };
 
-// Async thunk for changing password
-// import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const changePassword = createAsyncThunk(
   "auth/changePassword",
   async ({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }, { rejectWithValue }) => {
     try {
-      console.log("🔹 Sending Change Password Request", { oldPassword, newPassword });
+      console.log("Sending Change Password Request", { oldPassword, newPassword });
 
       const response = await fetch("/api/auth/changePassword", {
         method: "POST",
@@ -35,9 +32,8 @@ export const changePassword = createAsyncThunk(
         body: JSON.stringify({ oldPassword, newPassword }),
       });
 
-      console.log("🔹 Response Status:", response.status);
+      console.log("Response Status:", response.status);
 
-      // Check if response is JSON
       const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
         throw new Error(`Unexpected response format: ${await response.text()}`);
@@ -62,7 +58,6 @@ export const changePassword = createAsyncThunk(
 
 
 
-// Redux slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -91,11 +86,11 @@ const authSlice = createSlice({
       })
       .addCase(changePassword.fulfilled, (state, action) => {
         state.loading = false;
-        state.successMessage = action.payload; // Success message from API
+        state.successMessage = action.payload;
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string; // Error message from API
+        state.error = action.payload as string;
       });
   },
 });
