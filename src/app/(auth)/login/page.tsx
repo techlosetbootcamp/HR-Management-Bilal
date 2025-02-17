@@ -61,7 +61,7 @@ export default function LoginPage() {
     </form>
     <div>
       <h3>Forget Password</h3>
-      <Link href="../forgetPassword/">Forgot Password?</Link>
+      <Link href="../forgot-password/">Forgot Password?</Link>
     </div>
     </>
   );

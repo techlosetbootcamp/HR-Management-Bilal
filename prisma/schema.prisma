@@ -22,7 +22,15 @@ model User{
   updatedAt DateTime @updatedAt
 }
 
+model Otp {
+  id         String   @db.ObjectId @default(auto()) @map("_id") @id
+  email      String
+  otp        String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
 
+  @@index([email]) // Indexing for fast lookups
+}
 model Employee {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   address           String?
