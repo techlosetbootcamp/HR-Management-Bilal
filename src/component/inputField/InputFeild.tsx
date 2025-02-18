@@ -1,27 +1,37 @@
-"use client";
 import React from "react";
 
-interface InputFieldProps {
+interface InputProps {
+  type: string;
   label: string;
-  type?: string;
+  placeholder: string;
   name: string;
-  placeholder?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ label, type = "text", name, placeholder, value, onChange }) => {
+const InputField: React.FC<InputProps> = ({
+  type,
+  label,
+  placeholder,
+  value,
+  onChange,
+  name,
+}) => {
   return (
-    <div className="mb-4">
-      <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>
+    <div className="relative gap-3 w-full mb-4">
       <input
         type={type}
-        name={name}
-        placeholder={placeholder}
         value={value}
+        name={name}
         onChange={onChange}
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder={placeholder}
+        className="peer w-full p-2 flex text-white bg-[#131313] border-none border-gray-600 rounded focus:outline-none focus:border-orange-600"
       />
+      <label
+        className="capitalize absolute top-2 left-3 bg-customOrange text-gray-400 transition-all duration-200 ease-in-out peer-focus-within:-translate-y-6 peer-focus-within:translate-x-3 peer-focus-within:text-orange-600 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:translate-x-0 peer-placeholder-shown:text-gray-400"
+      >
+        {label}
+      </label>
     </div>
   );
 };
