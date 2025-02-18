@@ -1,25 +1,24 @@
 import React from "react";
 
 interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  type?: "button" | "submit" | "reset";
+  type?: "button" | "submit" | "reset" ;
+  disabled?: boolean;
+  children: React.ReactNode;
+  onClick?: () => void;
   className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  label,
-  onClick,
-  type = "button",
-  className,
-}) => {
+const Button: React.FC<ButtonProps> = ({ type = "button", disabled, children, onClick, className }) => {
   return (
     <button
       type={type}
+      disabled={disabled}
       onClick={onClick}
-      className={`w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg ${className}`}
+      className={`w-full py-3 rounded-[10px] text-white text-[16px] font-[300] transition-all duration-300 ${
+        disabled ? "bg-gray-400 cursor-not-allowed" : "bg-customOrange hover:bg-orange-600"
+      } ${className}`}
     >
-      {label}
+      {children}
     </button>
   );
 };

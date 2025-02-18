@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useLoginForm } from "./useLoginForm";
 import InputField from "../inputField/InputFeild";
+import Button from "../button/Button";
 
 const LoginForm = () => {
   const { formData, handleChange, handleSubmit, error, loading } =
@@ -14,7 +15,7 @@ const LoginForm = () => {
         className={`bg-[#131313] rounded shadow-lg w-full`}
       >
         <InputField
-          label="Email"
+          label="Email Address"
           type="email"
           name="email"
           value={formData.email}
@@ -48,15 +49,9 @@ const LoginForm = () => {
             Don&apos;t have an acount?
           </Link>
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-3 rounded-[10px] text-white text-[16px] font-[300] ${
-            loading ? "bg-gray-400" : "bg-customOrange"
-          }`}
-        >
+        <Button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
-        </button>
+        </Button>
       </form>
       <Link href={"/forgetPassword"} className="text-customOrange mt-1 flex justify-center items-center">
         Forget Password?

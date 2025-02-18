@@ -13,7 +13,7 @@ const page = () => {
         className="h-[166px] w-[409px] mb-5"
       />
       <div className="text-white font-[600] text-[30px] leading-[40px] mb-3">Welcome</div>
-      <div className="text-white font-light mb-5 text-[16px]">Please Register here</div>
+      <div className="text-white font-light mb-5 text-[16px]">Please Login here</div>
       <LoginForm />
     </div>
   </div>
