@@ -1,5 +1,5 @@
 "use client";
-import InputField from "@/component/inputField/InputFeild";
+import InputField from "@/components/inputField/InputFeild";
 import { useRegisterForm } from "./useRegisterForm";
 
 const RegisterForm = () => {
@@ -9,14 +9,12 @@ const RegisterForm = () => {
     <form onSubmit={handleSubmit} className="text-white rounded shadow-lg">
       <InputField
         type="text"
-        placeholder="Enter your name"
         label="Name"
         name="name"
         value={formData.name}
         onChange={handleChange}
       />
       <InputField
-        placeholder="example@gmail.com"
         label="Email"
         type="email"
         name="email"
@@ -24,7 +22,6 @@ const RegisterForm = () => {
         onChange={handleChange}
       />
       <InputField
-        placeholder="*******"
         label="Password"
         type="password"
         name="password"

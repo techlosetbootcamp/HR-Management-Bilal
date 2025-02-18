@@ -1,18 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Lexend } from "next/font/google";
 import "./globals.css";
 import { Providers } from "../../provider/ReduxProovider";
 import  SessionProviderWrapper  from "../../provider/SessionProvider"; 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const Font = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "HR Management",
@@ -26,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={Font.className}>
         <SessionProviderWrapper>
           <Providers>
             {children}

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import {iconLoginLogo} from '@/constants/images'
-import RegisterForm from '@/component/registerForm/RegisterForm'
+import RegisterForm from '@/components/registerForm/RegisterForm'
 export default function page() {
   return (
     <div className="min-h-screen py-5 w-full flex items-center justify-center bg-[#131313]">

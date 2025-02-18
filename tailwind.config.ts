@@ -9,13 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#3490DC',
-        secondary: '#FFC107',
-        tertiary: '#E91E63',
-        quaternary: '#F44336',
-        background: '#F5F5F5',
-        text: '#212121',
-        error: '#F44336',
+        customOrange:'#E25319'
       },
     },
   },
