@@ -2,23 +2,25 @@
 
 import useForgetPassForm from "@/hooks/useForgetPassword";
 import React from "react";
+import InputField from "../inputField/InputFeild";
+import Button from "../button/Button";
 
 export default function ForgetPassForm() {
   const { email, sendOTP, handleChange } = useForgetPassForm();
   return (
     <div className="flex flex-col items-center max-w-[445px] ">
-      <input
+      <InputField
         name={"email"}
         value={email}
         onChange={handleChange}
+        type="email"
+        label="Email"
       />
-      <button
+      <Button
         type="submit"
-        onClick={sendOTP}
-        className="px-10 py-3 bg-customOrange w-full rounded-[10px] mt-5 text-center text-white disabled:opacity-70 cursor-pointer"
-      >
+        onClick={sendOTP}      >
         Send OTP
-      </button>
+      </Button>
     </div>
   );
 }

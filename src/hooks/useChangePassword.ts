@@ -14,6 +14,18 @@ export const useChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Automatically open the modal when the page loads
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
+
+  // Function to close the modal and go back to the previous page
+  const handleClose = () => {
+    setIsOpen(false);
+    router.back(); // Redirects to the previous page
+  };
 
   useEffect(() => {
     const otpData = localStorage.getItem("otpData");
@@ -59,11 +71,13 @@ export const useChangePassword = () => {
       if (res.status === 200) {
         toast.success("Password changed successfully!");
         localStorage.removeItem("otpData");
-        router.push("/login");
+        router.push("/success");
       }
     } catch (error: any) {
       console.error("Error changing password:", error);
-      toast.error(error?.response?.data?.message || "Failed to change password");
+      toast.error(
+        error?.response?.data?.message || "Failed to change password"
+      );
     } finally {
       setLoading(false);
     }
@@ -75,5 +89,7 @@ export const useChangePassword = () => {
     newPassword,
     confirmPassword,
     loading,
+    isOpen,
+    handleClose,
   };
 };

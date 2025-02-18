@@ -1,26 +1,51 @@
 "use client";
+import { useEffect, useState } from "react";
 import useOtp from "@/hooks/useOtp";
+import Button from "@/components/button/Button";
+import { useRouter } from "next/navigation";
+import InputField from "@/components/inputField/InputFeild";
 
 const OtpPage = () => {
   const { otpInput, handleChange, handleSubmit } = useOtp();
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
+  // Open modal on page load
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
+
+  // Close modal & return to previous page
+  const handleClose = () => {
+    setIsOpen(false);
+    router.back();
+  };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-center mb-4">Verify OTP</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="otp"
-          value={otpInput}
-          onChange={handleChange}
-          placeholder="Enter OTP"
-          className="w-full p-2 border border-gray-300 rounded"
-          required
-        />
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
-          Verify OTP
-        </button>
-      </form>
-    </div>
+    isOpen && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-[#131313] p-6 rounded-lg shadow-lg max-w-md w-full text-white">
+          <h2 className="text-xl font-semibold text-center mb-4">Verify OTP</h2>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <InputField
+              name="otp"
+              label="Enter OTP"
+              type="text"
+              value={otpInput}
+              onChange={handleChange}
+            />
+
+            <Button type="submit">Verify OTP</Button>
+          </form>
+
+          {/* Close Modal & Go Back */}
+          <Button type="button" onClick={handleClose} className="bg-gray-500 hover:bg-gray-600 mt-4">
+            Close
+          </Button>
+        </div>
+      </div>
+    )
   );
 };
 

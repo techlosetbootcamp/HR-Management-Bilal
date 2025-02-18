@@ -1,64 +1,52 @@
 "use client";
-import useChangePassword from "@/hooks/useChangePassword";
+import  {useChangePassword } from "@/hooks/useChangePassword";
+import Button from "@/components/button/Button";
+import InputField from "@/components/inputField/InputFeild";
 
 const ChangePasswordForm = () => {
   const {
-    oldPassword,
-    setOldPassword,
-    newPassword,
-    setNewPassword,
-    handleChangePassword,
+    handleSubmit,
+    handleChange,
     loading,
-    error,
-    successMessage,
-    resetMessages,
+    newPassword,
+    confirmPassword,
+    isOpen,
+    handleClose,
   } = useChangePassword();
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-center mb-4">Change Password</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleChangePassword();
-        }}
-        className="space-y-4"
-      >
-        <input
-          type="password"
-          placeholder="Old Password"
-          className="w-full p-2 border border-gray-300 rounded"
-          value={oldPassword}
-          onChange={(e) => setOldPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="New Password"
-          className="w-full p-2 border border-gray-300 rounded"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
-          disabled={loading}
-        >
-          {loading ? "Changing..." : "Change Password"}
-        </button>
-      </form>
-      {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
-      {successMessage && <p className="text-green-500 mt-2 text-center">{successMessage}</p>}
-      {(error || successMessage) && (
-        <button
-          className="mt-2 text-sm text-gray-500 underline"
-          onClick={resetMessages}
-        >
-          Dismiss
-        </button>
-      )}
-    </div>
+    isOpen && (
+      <>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <InputField
+              type="password"
+              label="New Password"
+              name="newPassword"
+              value={newPassword}
+              onChange={handleChange}
+            />
+            <InputField
+              type="password"
+              label="Confirm Password"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={handleChange}
+            />
+
+            <Button type="submit" disabled={loading}>
+              {loading ? "Changing..." : "Reset Password"}
+            </Button>
+          </form>
+
+          <Button
+            type="button"
+            onClick={handleClose}
+            className="bg-gray-500 hover:bg-gray-600 mt-4"
+          >
+            Close
+           </Button>
+           </>
+    )
   );
 };
 

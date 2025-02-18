@@ -4,7 +4,7 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset" ;
   disabled?: boolean;
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (event: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
 }
 

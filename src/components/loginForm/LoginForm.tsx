@@ -53,7 +53,7 @@ const LoginForm = () => {
           {loading ? "Logging in..." : "Login"}
         </Button>
       </form>
-      <Link href={"/forgetPassword"} className="text-customOrange mt-1 flex justify-center items-center">
+      <Link href={"/forgotPassword"} className="text-customOrange mt-1 flex justify-center items-center">
         Forget Password?
       </Link>
     </div>
