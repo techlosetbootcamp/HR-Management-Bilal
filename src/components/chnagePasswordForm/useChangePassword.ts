@@ -16,15 +16,13 @@ export const useChangePassword = () => {
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  // Automatically open the modal when the page loads
   useEffect(() => {
     setIsOpen(true);
   }, []);
 
-  // Function to close the modal and go back to the previous page
   const handleClose = () => {
     setIsOpen(false);
-    router.back(); // Redirects to the previous page
+    router.back();
   };
 
   useEffect(() => {
@@ -57,7 +55,7 @@ export const useChangePassword = () => {
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match!");
+      toast.error("Passwords does not match!");
       return;
     }
 

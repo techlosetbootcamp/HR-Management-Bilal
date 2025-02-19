@@ -5,10 +5,11 @@ import toast from "react-hot-toast";
 
 const useOtp = () => {
   const router = useRouter();
-  const [state, setState] = useState({ otp: "" });
+  const [otpInput, setOtpInput] = useState(""); // State for OTP input
   const [otp, setOtp] = useState({ email: "", otp: "" });
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
-    setState((s) => ({ ...s, [e.target.name]: e.target.value }));
+    setOtpInput(e.target.value); // Update OTP input state
 
   useEffect(() => {
     const otpValue = localStorage.getItem("otpData");
@@ -20,6 +21,7 @@ const useOtp = () => {
       }
     }
   }, []);
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -28,7 +30,7 @@ const useOtp = () => {
         return;
       }
 
-      const matchOtp = otp.otp == state.otp;
+      const matchOtp = otp.otp == otpInput; // Compare with OTP input state
 
       if (!matchOtp) {
         toast.error("OTP not matched");
@@ -45,7 +47,8 @@ const useOtp = () => {
       localStorage.removeItem("otpData");
     }, 60 * 1000);
   }, []);
-  return { handleChange, handleSubmit };
+
+  return { otpInput, handleChange, handleSubmit }; // Return OTP input state
 };
 
 export default useOtp;

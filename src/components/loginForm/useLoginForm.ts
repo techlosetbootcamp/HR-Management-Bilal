@@ -1,8 +1,8 @@
-// useLoginForm.ts
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "react-hot-toast";
 
 export const useLoginForm = () => {
   useAuth(true);
@@ -34,10 +34,12 @@ export const useLoginForm = () => {
 
     if (response?.error) {
       setError("Invalid credentials. Please try again.");
+      toast.error("Invalid credentials. Please try again.");
       setLoading(false);
       return;
     }
 
+    toast.success("Successfully logged in!");
     router.push("/dashboard");
   };
 

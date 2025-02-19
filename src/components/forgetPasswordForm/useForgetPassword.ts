@@ -64,7 +64,6 @@ const useForgetPassForm = () => {
   };
 
   useEffect(() => {
-    // Automatically clear expired OTP data
     const checkOtpExpiry = () => {
       const storedOtp = localStorage.getItem("otpData");
       if (storedOtp) {
@@ -76,8 +75,8 @@ const useForgetPassForm = () => {
       }
     };
 
-    const interval = setInterval(checkOtpExpiry, 30 * 1000); // Check every 30 seconds
-    return () => clearInterval(interval); // Cleanup on unmount
+    const interval = setInterval(checkOtpExpiry, 30 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   return { email, handleChange, sendOTP, loading };

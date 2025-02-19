@@ -3,6 +3,7 @@ import { Lexend } from "next/font/google";
 import "./globals.css";
 import { Providers } from "../../provider/ReduxProovider";
 import  SessionProviderWrapper  from "../../provider/SessionProvider"; 
+import { Toaster } from "react-hot-toast";
 
 const Font = Lexend({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={Font.className}>
         <SessionProviderWrapper>
+          <Toaster/>
           <Providers>
             {children}
           </Providers>

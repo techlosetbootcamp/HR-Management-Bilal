@@ -1,6 +1,6 @@
 "use client";
 
-import useForgetPassForm from "@/hooks/useForgetPassword";
+import useForgetPassForm from "@/components/forgetPasswordForm/useForgetPassword";
 import React from "react";
 import InputField from "../inputField/InputFeild";
 import Button from "../button/Button";

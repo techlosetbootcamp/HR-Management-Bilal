@@ -10,12 +10,10 @@ const OtpPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
-  // Open modal on page load
   useEffect(() => {
     setIsOpen(true);
   }, []);
 
-  // Close modal & return to previous page
   const handleClose = () => {
     setIsOpen(false);
     router.back();
@@ -39,7 +37,6 @@ const OtpPage = () => {
             <Button type="submit">Verify OTP</Button>
           </form>
 
-          {/* Close Modal & Go Back */}
           <Button type="button" onClick={handleClose} className="bg-gray-500 hover:bg-gray-600 mt-4">
             Close
           </Button>

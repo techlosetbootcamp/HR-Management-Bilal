@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useLoginForm } from "./useLoginForm";
-import InputField from "../inputField/InputFeild";
 import Button from "../button/Button";
+import InputField from "../inputField/InputFeild";
 
 const LoginForm = () => {
   const { formData, handleChange, handleSubmit, error, loading } =
@@ -31,14 +31,13 @@ const LoginForm = () => {
 
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         <div className="flex w-full text-center justify-between text-neutral-500 mt-3 mb-[25px]">
-          <div className="flex ">
+          <div className="flex">
             <input
               id="orange-checkbox"
               type="checkbox"
               className="w-5 h-5 accent-customOrange"
             />
             <span className="text-[16px] font-[300] ml-2 text-white">
-              {" "}
               Remember me
             </span>
           </div>
@@ -46,14 +45,17 @@ const LoginForm = () => {
             href={"/register"}
             className="font-light text-customOrange me-4"
           >
-            Don&apos;t have an acount?
+            Don&apos;t have an account?
           </Link>
         </div>
         <Button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </Button>
       </form>
-      <Link href={"/forgotPassword"} className="text-customOrange mt-1 flex justify-center items-center">
+      <Link
+        href={"/forgotPassword"}
+        className="text-customOrange mt-1 flex justify-center items-center"
+      >
         Forget Password?
       </Link>
     </div>

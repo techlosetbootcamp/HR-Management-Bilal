@@ -1,5 +1,5 @@
 "use client";
-import  {useChangePassword } from "@/hooks/useChangePassword";
+import  {useChangePassword } from "@/components/chnagePasswordForm/useChangePassword";
 import Button from "@/components/button/Button";
 import InputField from "@/components/inputField/InputFeild";
 
