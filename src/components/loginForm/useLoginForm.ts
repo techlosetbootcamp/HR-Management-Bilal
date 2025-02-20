@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-hot-toast";
 
@@ -10,7 +10,7 @@ export const useLoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,7 +40,7 @@ export const useLoginForm = () => {
     }
 
     toast.success("Successfully logged in!");
-    router.push("/dashboard");
+    // router.push("/dashboard");
   };
 
   return { formData, handleChange, handleSubmit, error, loading };

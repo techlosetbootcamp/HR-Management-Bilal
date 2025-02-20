@@ -1,13 +1,14 @@
-// import Link from 'next/link'
 import React from 'react'
-// import Login from './auth/login/page'
-// import Register from './register'
+import DashboardLayout from './(root)/layout'
+import Dashboard from '@/components/dashboard/Dashboard'
+import DefaultLayout from '@/components/defaultLayout/DefaultLayout'
 function page() {
   return (
-    <div className=''>
-      {/* <Login/> */}
-      {/* <Register/> */}
-    </div>
+    <DefaultLayout>
+      <DashboardLayout>
+        <Dashboard/>
+      </DashboardLayout>
+      </DefaultLayout>
   )
 }
 
