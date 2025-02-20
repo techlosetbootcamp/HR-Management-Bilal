@@ -2,6 +2,7 @@ import React from "react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "../../../lib/auth";
+import DefaultLayout from "@/components/defaultLayout/DefaultLayout";
 
 interface ProtectedRootLayoutProps {
   children: React.ReactNode;
@@ -15,5 +16,5 @@ export default async function ProtectedRootLayout({
     redirect("/login");
   }
 
-  return <main>{children}</main>;
+  return <DefaultLayout>{children}</DefaultLayout>;
 }
