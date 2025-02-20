@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios"; 
 
 interface User {
+  id: string;
   name: string;
   email: string;
 }
@@ -19,44 +21,29 @@ const initialState: AuthState = {
   successMessage: null,
 };
 
-
 export const changePassword = createAsyncThunk(
   "auth/changePassword",
-  async ({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }, { rejectWithValue }) => {
+  async (
+    { oldPassword, newPassword }: { oldPassword: string; newPassword: string },
+    { rejectWithValue }
+  ) => {
     try {
       console.log("Sending Change Password Request", { oldPassword, newPassword });
 
-      const response = await fetch("/api/auth/changePassword", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ oldPassword, newPassword }),
-      });
+      const response = await axios.post(
+        "/api/auth/changePassword",
+        { oldPassword, newPassword },
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-      console.log("Response Status:", response.status);
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error(`Unexpected response format: ${await response.text()}`);
-      }
-
-      const data = await response.json();
-      console.log("🔹 Response Data:", data);
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to change password");
-      }
-
-      return data.message;
-    } catch (error: any) {
+      console.log("🔹 Response Data:", response.data);
+      return response.data.message;
+    } catch (error) {
       console.error("❌ Change Password Error:", error);
-      return rejectWithValue(error.message);
+      return rejectWithValue((error as Error).message || "Failed to change password");
     }
   }
 );
-
-
-
-
 
 const authSlice = createSlice({
   name: "auth",
