@@ -5,13 +5,13 @@ export async function middleware(req: NextRequest) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     const authRoutes = ["/login", "/register"];
-    const protectedRoutes = ["/","/dashboard", "/profile", "/settings"]; 
+    const protectedRoutes = ["/", "/profile", "/settings"]; 
 
     const url = req.nextUrl.clone();
     const { pathname } = req.nextUrl;
 
     if (token && authRoutes.includes(pathname)) {
-        url.pathname = "/dashboard";
+        url.pathname = "/";
         return NextResponse.redirect(url);
     }
 
@@ -23,4 +23,4 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
 }
 
-export const config = { matcher: ["/", "/login", "/register", "/dashboard", "/profile", "/settings"] };
+export const config = { matcher: ["/", "/login", "/register", "/profile", "/settings"] };

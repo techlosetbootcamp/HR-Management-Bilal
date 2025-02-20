@@ -1,2 +1,3 @@
 import iconLoginLogo from "../../public/images/LoginLogo.png";
-export { iconLoginLogo };
+import navebarLogo from '../../public/images/navbarLogo.png'
+export { iconLoginLogo ,navebarLogo};

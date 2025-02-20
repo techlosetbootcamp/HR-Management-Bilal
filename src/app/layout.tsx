@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "../../provider/ReduxProovider";
 import  SessionProviderWrapper  from "../../provider/SessionProvider"; 
 import { Toaster } from "react-hot-toast";
+import {DarkProvider} from "../../provider/DarkProvider";
 
 const Font = Lexend({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
         <SessionProviderWrapper>
           <Toaster/>
           <Providers>
+            <DarkProvider>
             {children}
+            </DarkProvider>
           </Providers>
         </SessionProviderWrapper>
       </body>

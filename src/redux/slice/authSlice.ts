@@ -28,7 +28,7 @@ export const changePassword = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      console.log("Sending Change Password Request", { oldPassword, newPassword });
+      // console.log("Sending Change Password Request", { oldPassword, newPassword });
 
       const response = await axios.post(
         "/api/auth/changePassword",
@@ -36,10 +36,10 @@ export const changePassword = createAsyncThunk(
         { headers: { "Content-Type": "application/json" } }
       );
 
-      console.log("🔹 Response Data:", response.data);
+      // console.log("Response Data:", response.data);
       return response.data.message;
     } catch (error) {
-      console.error("❌ Change Password Error:", error);
+      // console.error("Change Password Error:", error);
       return rejectWithValue((error as Error).message || "Failed to change password");
     }
   }
