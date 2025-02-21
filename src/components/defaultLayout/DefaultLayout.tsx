@@ -6,24 +6,18 @@ import Header from "../header/Header";
 
 export default function DefaultLayout({
   children,
-  heading,
-  description,
 }: {
   children: React.ReactNode;
-  heading: string;
-  description: string;
 }) {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen bg-[#131313] p-4">
+    <div className="flex h-screen dark:bg-[#131313]">
       <Sidebar activePath={pathname} />
 
-      <div className="flex flex-col flex-1 bg-[#131313]">
-        <Header 
-        heading={heading}
-        description={description}/>
-        
+      <div className="flex flex-col flex-1 dark:bg-[#131313] h-screen">
+        <Header/>
+
         <main className="p-6">{children}</main>
       </div>
     </div>

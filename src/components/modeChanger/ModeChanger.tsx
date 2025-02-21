@@ -14,7 +14,6 @@ export default function ModeChanger() {
       onClick={() => dispatch(toggleTheme())}
       className="flex items-center w-40 p-1 rounded-xl bg-gray-800 transition-all duration-300"
     >
-      {/* Light Mode Section */}
       <div
         className={`flex items-center justify-center w-1/2 p-2 rounded-xl transition-all duration-300 ${
           theme === 'light' ? 'bg-orange-500 text-white' : 'text-white'
@@ -24,7 +23,6 @@ export default function ModeChanger() {
         <span className="ml-1 text-sm font-medium">Light</span>
       </div>
 
-      {/* Dark Mode Section */}
       <div
         className={`flex items-center justify-center w-1/2 p-2 rounded-[10px] transition-all duration-300 ${
           theme === 'dark' ? 'bg-orange-500 text-white' : 'text-white'

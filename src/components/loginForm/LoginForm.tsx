@@ -49,7 +49,11 @@ const LoginForm = () => {
           </Link>
         </div>
         <Button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
+          {loading ? (
+            <span className="text-customOrange">Logging in...</span>
+          ) : (
+            "Login"
+          )}
         </Button>
       </form>
       <Link

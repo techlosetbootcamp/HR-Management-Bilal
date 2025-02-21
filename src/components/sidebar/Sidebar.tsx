@@ -8,7 +8,7 @@ import { SIDE_BAR_LINKS } from "@/constants/sidebarLinks";
 
 export default function Sidebar({ activePath }: { activePath: string }) {
   return (
-    <div className="flex flex-col w-[280px] h-screen bg-[#A2A1A80D] rounded-2xl text-black p-6 dark:bg-[#A2A1A80D] dark:text-white bg-gray-300">
+    <div className="flex flex-col w-[280px] min-h-screen rounded-2xl text-black p-6 dark:bg-[#A2A1A80D] dark:text-white bg-gray-300">
       <div className="flex">
         <Image
           src={navebarLogo}
@@ -44,7 +44,7 @@ export default function Sidebar({ activePath }: { activePath: string }) {
         ))}
       </nav>
 
-      <div className="mt-auto flex justify-center">
+      <div className="mt-auto flex justify-center ">
         <ModeChanger />
       </div>
     </div>

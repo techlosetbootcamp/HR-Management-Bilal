@@ -11,6 +11,7 @@ export const useRegisterForm = () => {
     role: "EMPLOYEE", // Default role
   });
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -33,11 +34,12 @@ export const useRegisterForm = () => {
       });
 
       toast.success("Successfully registered!");
+      setLoading(true);
       router.push("/login");
     } catch {
       toast.error("Registration failed. Please try again.");
     }
   };
 
-  return { formData, handleChange, handleSubmit, error };
+  return { formData, handleChange, handleSubmit, error,loading };
 };
