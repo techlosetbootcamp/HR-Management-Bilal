@@ -4,7 +4,7 @@ import "./globals.css";
 import { Providers } from "../../provider/ReduxProovider";
 import  SessionProviderWrapper  from "../../provider/SessionProvider"; 
 import { Toaster } from "react-hot-toast";
-import {DarkProvider} from "../../provider/DarkProvider";
+import {DarkProvider} from "../../provider/DarkModeProvider";
 
 const Font = Lexend({ subsets: ["latin"] });
 

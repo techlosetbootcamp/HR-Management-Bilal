@@ -31,7 +31,7 @@ export function DarkProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme: () => dispatch(toggleTheme()) }}>
-      <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">{children}</div>
+      <div className="min-h-screen bg-white dark:bg-[#131313] text-black dark:text-white">{children}</div>
     </ThemeContext.Provider>
   );
 }

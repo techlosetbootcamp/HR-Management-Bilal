@@ -10,7 +10,16 @@ declare module "next-auth" {
       name?: string | null;
       email?: string | null;
       image?: string | null;
+      role: "ADMIN" | "EMPLOYEE"; // Add role here
     };
+  }
+
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    password?: string | null;
+    role: "ADMIN" | "EMPLOYEE"; // Ensure User includes role
   }
 }
 
@@ -47,7 +56,7 @@ export const authOptions: AuthOptions = {
         }
 
         // console.log("Authorized User:", user);
-        return { id: user.id, name: user.name, email: user.email }; // Include user ID
+        return { id: user.id, name: user.name, email: user.email, role: user.role }; // Include user ID
       },
     }),
   ],
@@ -64,6 +73,7 @@ export const authOptions: AuthOptions = {
       // console.log("Session Token:", token);
       if (token && session.user) {
         session.user.id = token.id as string; // Add user ID to session
+        session.user.role = token.role as "ADMIN" | "EMPLOYEE";
       }
       // console.log("Session User:", session.user);
       return session;
@@ -71,6 +81,7 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       // console.log("JWT Token:", token);
       return token;

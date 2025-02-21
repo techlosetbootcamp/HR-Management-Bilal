@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-// import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react"; // Import useSession
 
 export const useLoginForm = () => {
   useAuth(true);
@@ -10,7 +11,8 @@ export const useLoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
+  const { data: session } = useSession(); // Get user session
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,13 +22,15 @@ export const useLoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
 
     if (!formData.email || !formData.password) {
       setError("Email and password are required.");
+      toast.error("Email and password are required.");
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
     const response = await signIn("credentials", {
       ...formData,
       redirect: false,
@@ -40,7 +44,18 @@ export const useLoginForm = () => {
     }
 
     toast.success("Successfully logged in!");
-    // router.push("/dashboard");
+
+    // Wait for session update
+    setTimeout(() => {
+      const userRole = session?.user?.role || "EMPLOYEE"; // Default to EMPLOYEE
+
+      // Redirect based on role
+      if (userRole === "ADMIN") {
+        router.push("/admin-dashboard");
+      } else {
+        router.push("/");
+      }
+    }, 500);
   };
 
   return { formData, handleChange, handleSubmit, error, loading };

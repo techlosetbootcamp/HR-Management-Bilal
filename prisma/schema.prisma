@@ -12,14 +12,20 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
-model User{
-  id String @db.ObjectId @default(auto()) @map("_id") @id
-  name String
-  email String @unique
-  Password String
 
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  Password  String
+  role      Role     @default(EMPLOYEE)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
 }
 
 model Employee {

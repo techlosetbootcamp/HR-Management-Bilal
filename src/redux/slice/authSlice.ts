@@ -5,6 +5,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  role: "ADMIN" | "EMPLOYEE"; // ✅ Role is required
 }
 
 interface AuthState {
@@ -28,18 +29,14 @@ export const changePassword = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      // console.log("Sending Change Password Request", { oldPassword, newPassword });
-
       const response = await axios.post(
         "/api/auth/changePassword",
         { oldPassword, newPassword },
         { headers: { "Content-Type": "application/json" } }
       );
 
-      // console.log("Response Data:", response.data);
       return response.data.message;
     } catch (error) {
-      // console.error("Change Password Error:", error);
       return rejectWithValue((error as Error).message || "Failed to change password");
     }
   }
@@ -50,14 +47,22 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User | null>) => {
-      state.user = action.payload;
-      state.error = null;
-      state.successMessage = null;
+      if (action.payload) {
+        state.user = {
+          id: action.payload.id,
+          name: action.payload.name,
+          email: action.payload.email,
+          role: action.payload.role, // ✅ Ensure role is explicitly assigned
+        };
+      } else {
+        state.user = null;
+      }
     },
     logout: (state) => {
       state.user = null;
       state.error = null;
       state.successMessage = null;
+      state.loading = false; // ✅ Ensure loading is reset on logout
     },
     clearMessages: (state) => {
       state.error = null;

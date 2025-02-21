@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,12 +12,9 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { data: session, status } = useSession();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    console.log("Session from NextAuth:", session);
-    console.log("Redux State User:", user);
-
     if (status === "loading") return;
 
     if (session?.user) {
@@ -26,6 +23,7 @@ const Dashboard = () => {
           id: session.user.id ?? "",
           name: session.user.name ?? "",
           email: session.user.email ?? "",
+          role: session.user.role ?? "EMPLOYEE", // Default to employee if role is missing
         })
       );
     } else {
@@ -44,15 +42,30 @@ const Dashboard = () => {
     <div>
       {status === "loading" ? (
         <p>Loading session...</p>
-      ) : user?.id ? (
+      ) : user ? (
         <>
-          <h1>Welcome, {user.name}</h1>
-          <p>User ID: {user.id}</p>
+          <h1>Welcome, {user.user?.name}</h1>
+          <p>User ID: {user.user?.id}</p>
+          <p>Role: {user.user?.role}</p>
+
+          {user.user?.role === "ADMIN" ? (
+            <div>
+              <h2>Admin Panel</h2>
+              <p>You have admin privileges.</p>
+            </div>
+          ) : (
+            <div>
+              <h2>Employee Dashboard</h2>
+              <p>You are an employee.</p>
+            </div>
+          )}
+
           <button onClick={handleLogout}>Logout</button>
         </>
       ) : (
         <p>Redirecting to login...</p>
       )}
+      
       <div>
         <h1 className="text-white">Change Password</h1>
         <Link href="../changePassword" className="white">
