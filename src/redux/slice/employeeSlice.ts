@@ -142,8 +142,8 @@ export const deleteEmployee = createAsyncThunk<
     }
 
     return id;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+  } catch (error:any) {
+    return rejectWithValue(error);
   }
 });
 
