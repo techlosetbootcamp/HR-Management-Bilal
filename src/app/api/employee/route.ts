@@ -11,7 +11,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    const data = await req.json();
+    // 🔍 Read and log raw request body before parsing
+    const rawBody = await req.text();
+    console.log("Raw Request Body:", rawBody);
+
+    let data;
+    try {
+      data = JSON.parse(rawBody);
+    } catch (jsonError) {
+      console.error("Invalid JSON in request:", jsonError);
+      return NextResponse.json({ error: "Invalid JSON format" }, { status: 400 });
+    }
+
+    // ✅ Validate required fields
+    if (!data.firstName || !data.email) {
+      return NextResponse.json(
+        { error: "Missing required fields: firstName and email" },
+        { status: 400 }
+      );
+    }
 
     const employee = await prisma.employee.create({
       data: {
@@ -61,7 +79,6 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     const employees = await prisma.employee.findMany();
-
     return NextResponse.json(employees);
   } catch (error) {
     console.error("Error fetching employees:", error);
@@ -77,7 +94,19 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    const { id, ...updatedData } = await req.json();
+    let data;
+    try {
+      data = await req.json();
+    } catch (jsonError) {
+      console.error("Invalid JSON in request:", jsonError);
+      return NextResponse.json({ error: "Invalid JSON format" }, { status: 400 });
+    }
+
+    const { id, ...updatedData } = data;
+
+    if (!id) {
+      return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
+    }
 
     const updatedEmployee = await prisma.employee.update({
       where: { id },
@@ -99,7 +128,19 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    const { id } = await req.json();
+    let data;
+    try {
+      data = await req.json();
+    } catch (jsonError) {
+      console.error("Invalid JSON in request:", jsonError);
+      return NextResponse.json({ error: "Invalid JSON format" }, { status: 400 });
+    }
+
+    const { id } = data;
+
+    if (!id) {
+      return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
+    }
 
     await prisma.employee.delete({
       where: { id },
