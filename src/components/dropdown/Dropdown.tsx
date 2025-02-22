@@ -50,7 +50,7 @@ const DropDown = () => {
             <li className="px-4 py-2 hover:bg-customOrange cursor-pointer">Profile Info</li>
             <div className="border-t border-borderGrey"></div>
             <li className="px-4 py-3 hover:bg-customOrange cursor-pointer">
-              <button onClick={() => signOut()}>Sign out</button>
+              <button onClick={() => signOut()}>Logout</button>
             </li>
           </ul>
         </div>

@@ -6,6 +6,7 @@ import { RootState } from "@/redux/store";
 import Link from "next/link";
 import SearchBar from "@/components/searchbar/Searchbar";
 import { toast } from "react-hot-toast";
+import EmployeePage from "@/components/allEmployee/AllEmployee";
 
 const Page = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -42,7 +43,7 @@ const Page = () => {
           </button>
         </div>
       </div>
-      <div>ALL EMPLOYEES LIST</div>
+      <div><EmployeePage/></div>
     </div>
   );
 };
