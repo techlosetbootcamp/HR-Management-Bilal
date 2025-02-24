@@ -20,7 +20,7 @@ interface PersonalInfoProps {
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  handleFileUpload: (fieldName: string, file: File) => void; // ✅ Updated type
+  handleFileUpload: (fieldName: string, file: File) => void;
 }
 
 const PersonalInfo: React.FC<PersonalInfoProps> = ({
@@ -30,7 +30,6 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      {/* Profile Picture Upload */}
       <div className="flex justify-center">
         <label className="cursor-pointer border p-4 rounded-lg flex flex-col items-center">
           <UploadCloud size={30} className="text-gray-400" />
@@ -47,7 +46,6 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         </label>
       </div>
 
-      {/* Form Fields */}
       <div className="grid grid-cols-2 gap-4">
         <InputField label="First Name" type="text" name="firstName" value={form.firstName} onChange={handleChange} />
         <InputField label="Last Name" type="text" name="lastName" value={form.lastName} onChange={handleChange} />
@@ -59,10 +57,8 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <InputField label="Nationality" type="text" name="nationality" value={form.nationality} onChange={handleChange} />
       </div>
 
-      {/* Address Field */}
       <InputField label="Address" type="text" name="address" value={form.address} onChange={handleChange} />
 
-      {/* City, State, ZIP Code */}
       <div className="grid grid-cols-3 gap-4">
         <InputField label="City" type="text" name="city" value={form.city} onChange={handleChange} />
         <InputField label="State" type="text" name="state" value={form.state} onChange={handleChange} />
