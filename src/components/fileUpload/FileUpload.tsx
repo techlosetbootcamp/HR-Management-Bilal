@@ -7,12 +7,12 @@ interface FileUploadProps {
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ label, onFileSelect }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      setSelectedFile(file);
+      setPreview(URL.createObjectURL(file));
       onFileSelect(file);
     }
   };
@@ -23,17 +23,16 @@ const FileUpload: React.FC<FileUploadProps> = ({ label, onFileSelect }) => {
         <div className="bg-orange-500 p-3 rounded-full">
           <UploadCloud size={20} className="text-white" />
         </div>
-        {selectedFile ? (
-          <p className="text-gray-300 text-sm mt-2">{selectedFile.name}</p>
+        {preview ? (
+          <img src={preview} alt="Preview" className="mt-2 w-24 h-24 rounded-full object-cover" />
         ) : (
           <p className="text-gray-400 text-sm mt-2">
-            Drag & Drop or{" "}
-            <span className="text-orange-500 font-semibold">choose file</span> to upload
+            Drag & Drop or <span className="text-orange-500 font-semibold">choose file</span> to upload
           </p>
         )}
-        <input type="file" className="hidden" onChange={handleFileChange} />
+        <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
       </label>
-      <p className="text-gray-500 text-xs">Supported formats: .jpeg, .pdf</p>
+      <p className="text-gray-500 text-xs">Supported formats: .jpeg, .png</p>
     </div>
   );
 };

@@ -56,7 +56,6 @@ export const fetchEmployees = createAsyncThunk<Employee[], void, { rejectValue: 
   }
 );
 
-// ✅ Add Employee (Supports File Uploads)
 export const addEmployee = createAsyncThunk<
   Employee,
   Partial<Employee & { files?: { [key: string]: File } }>,

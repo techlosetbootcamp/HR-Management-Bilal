@@ -16,8 +16,9 @@ export default function AddEmployeeForm() {
     loading,
     error,
     handleFileUpload,
-    // handleImageUpload,
+    handleImageUpload, // ✅ Added Image Upload Function
   } = useAddEmployee();
+
   const [activeTab, setActiveTab] = useState(0);
 
   const tabs = [
@@ -28,7 +29,7 @@ export default function AddEmployeeForm() {
         <PersonalInfo
           form={form}
           handleChange={handleChange}
-          handleFileUpload={handleFileUpload}
+          handleImageUpload={handleImageUpload} // ✅ Pass Image Upload
         />
       ),
     },
@@ -75,27 +76,16 @@ export default function AddEmployeeForm() {
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
         {activeTab > 0 && (
-          <button
-            onClick={() => setActiveTab(activeTab - 1)}
-            className="bg-gray-700 px-4 py-2 rounded text-white"
-          >
+          <button onClick={() => setActiveTab(activeTab - 1)} className="bg-gray-700 px-4 py-2 rounded text-white">
             Previous
           </button>
         )}
         {activeTab < tabs.length - 1 ? (
-          <button
-            onClick={() => setActiveTab(activeTab + 1)}
-            className="bg-blue-600 px-4 py-2 rounded text-white"
-          >
+          <button onClick={() => setActiveTab(activeTab + 1)} className="bg-blue-600 px-4 py-2 rounded text-white">
             Next
           </button>
         ) : (
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="bg-green-600 px-4 py-2 rounded text-white"
-            disabled={loading}
-          >
+          <button type="submit" onClick={handleSubmit} className="bg-green-600 px-4 py-2 rounded text-white" disabled={loading}>
             {loading ? "Adding..." : "Submit"}
           </button>
         )}
