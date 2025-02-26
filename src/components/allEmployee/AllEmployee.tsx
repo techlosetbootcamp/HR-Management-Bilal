@@ -54,12 +54,23 @@ export default function EmployeesPage() {
                 </span>
               </td>
               <td className="border p-3 flex gap-2">
-                <button onClick={() => router.push(`/employees/${emp.id}`)} className="text-white bg-gray-700 p-2 rounded">
+                {/* View Button */}
+                <button
+                  onClick={() => router.push(`/employees/${emp.id}`)}
+                  className="text-white bg-gray-700 p-2 rounded"
+                >
                   <Eye size={16} />
                 </button>
-                <button className="text-white bg-blue-500 p-2 rounded">
+
+                {/* Edit Button */}
+                <button
+                  onClick={() => router.push(`/employees/${emp.id}?edit=true`)}
+                  className="text-white bg-blue-500 p-2 rounded"
+                >
                   <Edit size={16} />
                 </button>
+
+                {/* Delete Button */}
                 <button onClick={() => handleDelete(emp.id)} className="text-white bg-red-500 p-2 rounded">
                   <Trash size={16} />
                 </button>

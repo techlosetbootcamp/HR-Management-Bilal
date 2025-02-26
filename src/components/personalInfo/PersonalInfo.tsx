@@ -36,6 +36,8 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <label className="cursor-pointer border p-4 rounded-lg flex flex-col items-center">
           {form.photoURL ? (
             <Image
+            width={20}
+            height={20}
               src={form.photoURL}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover mb-2"
