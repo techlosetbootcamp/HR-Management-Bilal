@@ -2,26 +2,110 @@ import React from "react";
 import InputField from "../infoInput/InfoInput";
 
 interface ProfessionalInfoProps {
-  form: any;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  form: {
+    employeeId: string;
+    userName: string;
+    employmentType: string;
+    email: string;
+    department: string;
+    designation: string;
+    workingDays: string;
+    joiningDate: string;
+    officeLocation: string;
+  };
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
 }
 
-export default function ProfessionalInfo({ form, handleChange }: ProfessionalInfoProps) {
+export default function ProfessionalInfo({
+  form,
+  handleChange,
+}: ProfessionalInfoProps) {
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-2">Professional Information</h3>
-      <InputField name="designation" placeholder="Designation" value={form.designation} onChange={handleChange} />
-      <InputField name="department" placeholder="Department" value={form.department} onChange={handleChange} />
-      <InputField type="date" name="joiningDate" value={form.joiningDate} onChange={handleChange} />
-      <select name="employmentType" value={form.employmentType} onChange={handleChange} className="border p-2 rounded w-full">
-        <option value="">Select Employment Type</option>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 sm:p-6">
+      <InputField
+        name="employeeId"
+        placeholder="Employee ID"
+        value={form.employeeId}
+        onChange={handleChange}
+      />
+      
+      <InputField
+        name="userName"
+        placeholder="User Name"
+        value={form.userName}
+        onChange={handleChange}
+      />
+
+      <select
+        name="employmentType"
+        value={form.employmentType}
+        onChange={handleChange}
+        className="bg-[#131313] border border-gray-700 rounded-md p-2 text-gray-300"
+      >
+        <option value="">Select Employee Type</option>
         <option value="Full-Time">Full-Time</option>
         <option value="Part-Time">Part-Time</option>
-        <option value="Intern">Intern</option>
         <option value="Contract">Contract</option>
+        <option value="Intern">Intern</option>
       </select>
-      <InputField name="workingDays" placeholder="Working Days" value={form.workingDays} onChange={handleChange} />
-      <InputField name="officeLocation" placeholder="Office Location" value={form.officeLocation} onChange={handleChange} />
+
+      <InputField
+        type="email"
+        name="email"
+        placeholder="Email Address"
+        value={form.email}
+        onChange={handleChange}
+      />
+
+      <select
+        name="department"
+        value={form.department}
+        onChange={handleChange}
+        className="bg-[#131313] border border-gray-700 rounded-md p-2 text-gray-300"
+      >
+        <option value="">Select Department</option>
+        <option value="Engineering">Engineering</option>
+        <option value="Design">Design</option>
+        <option value="HR">Human Resources</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Sales">Sales</option>
+      </select>
+
+      <InputField
+        name="designation"
+        placeholder="Enter Designation"
+        value={form.designation}
+        onChange={handleChange}
+      />
+
+      <select
+        name="workingDays"
+        value={form.workingDays}
+        onChange={handleChange}
+        className="bg-[#131313] border border-gray-700 rounded-md p-2 text-gray-300"
+      >
+        <option value="">Select Working Days</option>
+        <option value="Monday-Friday">Monday-Friday</option>
+        <option value="Sunday-Thursday">Sunday-Thursday</option>
+        <option value="Flexible">Flexible</option>
+      </select>
+
+      <InputField
+        type="date"
+        name="joiningDate"
+        value={form.joiningDate}
+        onChange={handleChange}
+      />
+
+      <InputField
+        name="officeLocation"
+        placeholder="Office Location"
+        value={form.officeLocation}
+        onChange={handleChange}
+        className="col-span-2"
+      />
     </div>
   );
 }

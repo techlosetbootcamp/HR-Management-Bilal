@@ -1,6 +1,7 @@
 import React from "react";
-import { UploadCloud } from "lucide-react";
+import { Camera } from "lucide-react";
 import InputField from "../infoInput/InfoInput";
+import Image from "next/image";
 
 interface PersonalInfoProps {
   form: {
@@ -18,22 +19,33 @@ interface PersonalInfoProps {
     zipCode: string;
     photoURL?: string;
   };
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
   handleImageUpload: (fieldName: string, file: File) => void;
 }
 
-const PersonalInfo: React.FC<PersonalInfoProps> = ({ form, handleChange, handleImageUpload }) => {
+const PersonalInfo: React.FC<PersonalInfoProps> = ({
+  form,
+  handleChange,
+  handleImageUpload,
+}) => {
   return (
-    <div className="space-y-4">
-      {/* Profile Picture Upload */}
-      <div className="flex justify-center">
+    <div className="bg-[#131313] p-4 md:p-6">
+      <div className="flex justify-center mb-4">
         <label className="cursor-pointer border p-4 rounded-lg flex flex-col items-center">
           {form.photoURL ? (
-            <img src={form.photoURL} alt="Profile" className="w-24 h-24 rounded-full object-cover mb-2" />
+            <Image
+              src={form.photoURL}
+              alt="Profile"
+              className="w-24 h-24 rounded-full object-cover mb-2"
+            />
           ) : (
             <>
-              <UploadCloud size={30} className="text-gray-400" />
-              <span className="text-sm text-gray-400">Upload Profile Picture</span>
+              <Camera size={30} className="text-gray-400" />
+              <span className="text-sm text-gray-400">
+                Upload
+              </span>
             </>
           )}
           <input
@@ -41,29 +53,106 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ form, handleChange, handleI
             name="photoURL"
             className="hidden"
             accept="image/*"
-            onChange={(e) => e.target.files && handleImageUpload("photoURL", e.target.files[0])}
+            onChange={(e) =>
+              e.target.files && handleImageUpload("photoURL", e.target.files[0])
+            }
           />
         </label>
       </div>
 
       {/* Personal Details */}
-      <div className="grid grid-cols-2 gap-4">
-        <InputField label="First Name" type="text" name="firstName" value={form.firstName} onChange={handleChange} />
-        <InputField label="Last Name" type="text" name="lastName" value={form.lastName} onChange={handleChange} />
-        <InputField label="Mobile Number" type="text" name="mobileNumber" value={form.mobileNumber} onChange={handleChange} />
-        <InputField label="Email Address" type="email" name="email" value={form.email} onChange={handleChange} />
-        <InputField label="Date of Birth" type="date" name="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} />
-        <InputField label="Marital Status" type="select" name="maritalStatus" value={form.maritalStatus} onChange={handleChange} options={["Single", "Married", "Divorced"]} />
-        <InputField label="Gender" type="select" name="gender" value={form.gender} onChange={handleChange} options={["Male", "Female", "Other"]} />
-        <InputField label="Nationality" type="text" name="nationality" value={form.nationality} onChange={handleChange} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <InputField
+          label="First Name"
+          type="text"
+          name="firstName"
+          value={form.firstName}
+          onChange={handleChange}
+        />
+        <InputField
+          label="Last Name"
+          type="text"
+          name="lastName"
+          value={form.lastName}
+          onChange={handleChange}
+        />
+        <InputField
+          label="Mobile Number"
+          type="text"
+          name="mobileNumber"
+          value={form.mobileNumber}
+          onChange={handleChange}
+        />
+        <InputField
+          label="Email Address"
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+        />
+        <InputField
+          label="Date of Birth"
+          type="date"
+          name="dateOfBirth"
+          value={form.dateOfBirth}
+          onChange={handleChange}
+        />
+        <InputField
+          label="Marital Status"
+          type="select"
+          name="maritalStatus"
+          value={form.maritalStatus}
+          onChange={handleChange}
+          options={["Single", "Married", "Divorced"]}
+        />
+        <InputField
+          label="Gender"
+          type="select"
+          name="gender"
+          value={form.gender}
+          onChange={handleChange}
+          options={["Male", "Female", "Other"]}
+        />
+        <InputField
+          label="Nationality"
+          type="text"
+          name="nationality"
+          value={form.nationality}
+          onChange={handleChange}
+        />
       </div>
 
       {/* Address Details */}
-      <InputField label="Address" type="text" name="address" value={form.address} onChange={handleChange} />
-      <div className="grid grid-cols-3 gap-4">
-        <InputField label="City" type="text" name="city" value={form.city} onChange={handleChange} />
-        <InputField label="State" type="text" name="state" value={form.state} onChange={handleChange} />
-        <InputField label="ZIP Code" type="text" name="zipCode" value={form.zipCode} onChange={handleChange} />
+      <InputField
+        label="Address"
+        type="text"
+        name="address"
+        value={form.address}
+        onChange={handleChange}
+        className="mt-4"
+      />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <InputField
+          label="City"
+          type="text"
+          name="city"
+          value={form.city}
+          onChange={handleChange}
+        />
+        <InputField
+          label="State"
+          type="text"
+          name="state"
+          value={form.state}
+          onChange={handleChange}
+        />
+        <InputField
+          label="ZIP Code"
+          type="text"
+          name="zipCode"
+          value={form.zipCode}
+          onChange={handleChange}
+        />
       </div>
     </div>
   );

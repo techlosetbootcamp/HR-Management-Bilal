@@ -24,7 +24,7 @@ export default function InfoInput({
   icon,
 }: InputFieldProps) {
   return (
-    <div className="w-full">
+    <div className="">
       {/* Label for input */}
       {label && <label className="block text-sm font-medium text-gray-400 mb-1">{label}</label>}
       
@@ -34,7 +34,7 @@ export default function InfoInput({
           value={value}
           onChange={onChange}
           required={required}
-          className="border p-2 rounded w-full bg-black text-white"
+          className="border p-2 rounded w-full bg-[#131313] text-white border-gray-700 h-[45px]"
         >
           <option value="" disabled>{placeholder || "Select an option"}</option>
           {options?.map((option, index) => (
@@ -42,7 +42,7 @@ export default function InfoInput({
           ))}
         </select>
       ) : (
-        <div className="flex items-center border p-2 rounded w-full bg-black text-white">
+        <div className="flex items-center border pl-2 rounded-lg border-gray-700 w-full text-white">
           {icon && <span className="mr-2 text-gray-400">{icon}</span>}
           <input
             type={type}
@@ -51,7 +51,7 @@ export default function InfoInput({
             value={value}
             onChange={onChange}
             required={required}
-            className="bg-transparent outline-none flex-1"
+            className="bg-transparent outline-none w-[510px] h-[46px]"
           />
         </div>
       )}

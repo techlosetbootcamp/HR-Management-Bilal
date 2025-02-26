@@ -16,7 +16,7 @@ export default function AddEmployeeForm() {
     loading,
     error,
     handleFileUpload,
-    handleImageUpload, // ✅ Added Image Upload Function
+    handleImageUpload,
   } = useAddEmployee();
 
   const [activeTab, setActiveTab] = useState(0);
@@ -29,7 +29,7 @@ export default function AddEmployeeForm() {
         <PersonalInfo
           form={form}
           handleChange={handleChange}
-          handleImageUpload={handleImageUpload} // ✅ Pass Image Upload
+          handleImageUpload={handleImageUpload}
         />
       ),
     },
@@ -51,9 +51,9 @@ export default function AddEmployeeForm() {
   ];
 
   return (
-    <div className="w-full text-white shadow-md rounded-lg">
+    <div className="w-full min-h-screen bg-[#131313] text-white shadow-md rounded-lg">
       {/* Tabs Navigation */}
-      <div className="flex border-b border-gray-700">
+      <div className="flex flex-wrap border-b border-gray-700">
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -71,21 +71,32 @@ export default function AddEmployeeForm() {
       </div>
 
       {/* Tab Content */}
-      <div className="mt-4">{tabs[activeTab].component}</div>
+      <div className="mt-4 p-4">{tabs[activeTab].component}</div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between mt-6">
+      <div className="flex justify-between bg-[#131313] mt-7 p-4">
         {activeTab > 0 && (
-          <button onClick={() => setActiveTab(activeTab - 1)} className="bg-gray-700 px-4 py-2 rounded text-white">
+          <button
+            onClick={() => setActiveTab(activeTab - 1)}
+            className="bg-gray-700 px-4 py-2 rounded text-white"
+          >
             Previous
           </button>
         )}
         {activeTab < tabs.length - 1 ? (
-          <button onClick={() => setActiveTab(activeTab + 1)} className="bg-blue-600 px-4 py-2 rounded text-white">
+          <button
+            onClick={() => setActiveTab(activeTab + 1)}
+            className="bg-customOrange px-5 py-3 rounded-xl text-white"
+          >
             Next
           </button>
         ) : (
-          <button type="submit" onClick={handleSubmit} className="bg-green-600 px-4 py-2 rounded text-white" disabled={loading}>
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            className="bg-green-600 px-4 py-2 rounded text-white"
+            disabled={loading}
+          >
             {loading ? "Adding..." : "Submit"}
           </button>
         )}

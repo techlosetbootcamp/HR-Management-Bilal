@@ -126,5 +126,5 @@ export default function useAddEmployee() {
     dispatch(addEmployee(form));
   };
 
-  return { form, handleChange, handleSubmit, loading, error, handleImageUpload, handleFileUpload };
+  return { form,setForm, handleChange, handleSubmit, loading, error, handleImageUpload, handleFileUpload };
 }
