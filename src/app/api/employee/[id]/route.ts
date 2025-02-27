@@ -26,6 +26,8 @@
 // }
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../.././../../../lib/prisma"; // Ensure the correct import
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../../../lib/auth";
 
 export async function GET(req: NextRequest, context: { params: { id: string } }) {
   try {
@@ -44,14 +46,34 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
       return NextResponse.json({ error: "Employee not found" }, { status: 404 });
     }
 
-    console.log("✅ Employee fetched successfully:", employee);
+    // console.log("✅ Employee fetched successfully:", employee);
     return NextResponse.json(employee);
   } catch (error: any) {
     console.error("❌ Server error:", error);
     return NextResponse.json({ error: error.message || "Server error" }, { status: 500 });
   }
 }
+// export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+//   const session = await getServerSession(authOptions);
+//   if (!session) {
+//     return new NextResponse("Unauthorized", { status: 401 });
+//   }
 
+//   console.log("🔍 Fetching employee with ID:", params.id);
+
+//   if (session.user.role !== "ADMIN" && session.user.id !== params.id) {
+//     console.log("🚫 Forbidden: User tried to access another profile.");
+//     return new NextResponse("Forbidden", { status: 403 });
+//   }
+
+//   const employee = await prisma.employee.findUnique({ where: { id: params.id } });
+//   if (!employee) {
+//     console.log("❌ Employee not found:", params.id);
+//     return new NextResponse("Employee not found", { status: 404 });
+//   }
+
+//   return NextResponse.json(employee);
+// }
 export async function PATCH(req: NextRequest, context: any) {
     const params = await context.params; // ✅ Await `params`
     const id = params?.id; // ✅ Extract `id` after awaiting

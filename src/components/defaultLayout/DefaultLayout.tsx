@@ -33,7 +33,7 @@ export default function DefaultLayout({
       {/* Main content */}
       <div className="flex flex-col flex-1 dark:bg-[#131313] min-h-screen w-full">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        <main className="p-4 lg:p-6 bg-[#131313]">{children}</main>
+        <main className="p-4 lg:p-6 dark:bg-[#131313]">{children}</main>
       </div>
     </div>
   );

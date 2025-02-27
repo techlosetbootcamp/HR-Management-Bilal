@@ -92,6 +92,7 @@
 //   return { employee, loading, error, handleUpdate, saveChanges };
 // }
 
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export function useEmployeeDetails(id: string) {
@@ -99,7 +100,7 @@ export function useEmployeeDetails(id: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatedFields, setUpdatedFields] = useState<Partial<any>>({}); // Track edited fields
-
+  const router = useRouter();
   useEffect(() => {
     async function fetchEmployee() {
       try {
@@ -140,6 +141,7 @@ export function useEmployeeDetails(id: string) {
       setEmployee(updatedEmployee);
       setUpdatedFields({}); // Reset after successful update
       alert("Employee details updated successfully!");
+      router.push(`/employees/${id}`);
     } catch (err: any) {
       setError(err.message);
       alert("Error updating employee details");

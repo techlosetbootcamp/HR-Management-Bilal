@@ -45,10 +45,8 @@ export default function ProfessionalInfo({
         className="bg-[#131313] border border-gray-700 rounded-md p-2 text-gray-300"
       >
         <option value="">Select Employee Type</option>
-        <option value="Full-Time">Full-Time</option>
-        <option value="Part-Time">Part-Time</option>
-        <option value="Contract">Contract</option>
-        <option value="Intern">Intern</option>
+        <option value="Office">Office</option>
+        <option value="Remote">Remote</option>
       </select>
 
       <InputField
@@ -66,11 +64,13 @@ export default function ProfessionalInfo({
         className="bg-[#131313] border border-gray-700 rounded-md p-2 text-gray-300"
       >
         <option value="">Select Department</option>
-        <option value="Engineering">Engineering</option>
-        <option value="Design">Design</option>
-        <option value="HR">Human Resources</option>
-        <option value="Marketing">Marketing</option>
-        <option value="Sales">Sales</option>
+        <option value="Full Stack Developer">Full Stack Developer</option>
+        <option value="UI/X Design">UI/X Design</option>
+        <option value="HR Manager">HR Manager</option>
+        <option value="Project Manager">Project Manager</option>
+        <option value="Python Developer">Python Developer</option>
+        <option value="Node Developer">Node Developer</option>
+
       </select>
 
       <InputField

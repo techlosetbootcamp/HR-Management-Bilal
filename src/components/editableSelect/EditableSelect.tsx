@@ -14,7 +14,7 @@ interface EditableSelectProps {
           <select
             value={value}
             onChange={(e) => onChange && onChange(e.target.value)}
-            className="bg-gray-800 text-white border border-gray-600 p-2 rounded-md"
+            className="dark:bg-gray-800 dark:text-white border border-gray-600 p-2 rounded-md"
           >
             {options.map((option) => (
               <option key={option} value={option}>
@@ -23,7 +23,7 @@ interface EditableSelectProps {
             ))}
           </select>
         ) : (
-          <p className="bg-gray-900 text-gray-300 p-2 rounded-md">{value || "N/A"}</p>
+          <p className="dark:bg-gray-900 dark:text-gray-300 p-2 rounded-md">{value || "N/A"}</p>
         )}
       </div>
     );

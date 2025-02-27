@@ -5,7 +5,7 @@ export async function middleware(req: NextRequest) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     const protectedRoutes = ["/", "/profile", "/settings"];
-    const adminRoutes = ["/employees/addEmployee", "/api/employee"]; // 🔒 Restrict access
+    const adminRoutes = ["/employees/addEmployee", ""]; // 🔒 Restrict access
 
     const url = req.nextUrl.clone();
     const { pathname } = req.nextUrl;
@@ -33,4 +33,4 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
 }
 
-export const config = { matcher: ["/", "/login", "/register", "/profile", "/settings", "/employees/addEmployee", "/api/employee"] };
+export const config = { matcher: ["/", "/login", "/register", "/profile", "/settings", "/employees/addEmployee"] };
