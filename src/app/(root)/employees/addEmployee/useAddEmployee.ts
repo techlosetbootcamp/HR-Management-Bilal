@@ -38,12 +38,14 @@ export default function useAddEmployee() {
     photoURL: "", // ✅ Added Profile Picture
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target; // Extract name and value from event
     setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
+  
 
   // ✅ Cloudinary Image Upload
   const handleImageUpload = async (fieldName: string, file: File) => {

@@ -30,7 +30,7 @@ export default function ProfessionalInfo({
         value={form.employeeId}
         onChange={handleChange}
       />
-      
+
       <InputField
         name="userName"
         placeholder="User Name"
@@ -38,7 +38,7 @@ export default function ProfessionalInfo({
         onChange={handleChange}
       />
 
-      <select
+      {/* <select
         name="employmentType"
         value={form.employmentType}
         onChange={handleChange}
@@ -47,17 +47,24 @@ export default function ProfessionalInfo({
         <option value="">Select Employee Type</option>
         <option value="Office">Office</option>
         <option value="Remote">Remote</option>
-      </select>
-
+      </select> */}
       <InputField
-        type="email"
-        name="email"
-        placeholder="Email Address"
-        value={form.email}
-        onChange={handleChange}
+        label="Employee Type"
+        name="employmentType"
+        type="select"
+        value={form.employmentType || ""}
+        options={["Office", "Remote"]}
+        onChange={handleChange} // Fix applied
       />
 
-      <select
+      <InputField
+        name="employeeId"
+        placeholder="Employee ID"
+        value={form.employeeId}
+        onChange={handleChange} // No need to manually create an event
+      />
+
+      {/* <select
         name="department"
         value={form.department}
         onChange={handleChange}
@@ -70,16 +77,29 @@ export default function ProfessionalInfo({
         <option value="Project Manager">Project Manager</option>
         <option value="Python Developer">Python Developer</option>
         <option value="Node Developer">Node Developer</option>
-
-      </select>
-
+      </select> */}
+      <InputField
+        label="Department"
+        name="department"
+        type="select"
+        value={form.department || ""}
+        options={[
+          "Full Stack Developer",
+          "UI/X Design",
+          "HR Manager",
+          "Project Manager",
+          "Python Developer",
+          "Node Developer",
+        ]}
+        onChange={handleChange} // Fix applied
+      />
       <InputField
         name="designation"
         placeholder="Enter Designation"
         value={form.designation}
         onChange={handleChange}
       />
-
+{/* 
       <select
         name="workingDays"
         value={form.workingDays}
@@ -90,8 +110,19 @@ export default function ProfessionalInfo({
         <option value="Monday-Friday">Monday-Friday</option>
         <option value="Sunday-Thursday">Sunday-Thursday</option>
         <option value="Flexible">Flexible</option>
-      </select>
-
+      </select> */}
+      <InputField
+        label="Working Days"
+        name="workingDays"
+        type="select"
+        value={form.workingDays || ""}
+        options={[
+          "Monday-Friday",
+          "Sunday-Thursday",
+          "Flexible",
+        ]}
+        onChange={handleChange} // Fix applied
+      />
       <InputField
         type="date"
         name="joiningDate"

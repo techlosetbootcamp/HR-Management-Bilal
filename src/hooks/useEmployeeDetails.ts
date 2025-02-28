@@ -102,8 +102,11 @@ export function useEmployeeDetails(id: string) {
   const [updatedFields, setUpdatedFields] = useState<Partial<any>>({}); // Track edited fields
   const router = useRouter();
   useEffect(() => {
+    if (!id) return;
+
     async function fetchEmployee() {
       try {
+        console.log("Fetching employee with ID:", id);
         const response = await fetch(`/api/employee/${encodeURIComponent(id)}`);
         if (!response.ok) throw new Error("Failed to fetch employee details");
         const data = await response.json();
@@ -114,9 +117,9 @@ export function useEmployeeDetails(id: string) {
         setLoading(false);
       }
     }
-    if (id) fetchEmployee();
-  }, [id]);
 
+    fetchEmployee();
+  }, [id]);
   const handleUpdate = (field: string, value: string) => {
     setEmployee((prev) => ({ ...prev, [field]: value })); // Update UI optimistically
     setUpdatedFields((prev) => ({ ...prev, [field]: value })); // Track changes
