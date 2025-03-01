@@ -1,7 +1,13 @@
 "use client";
-import { Search  } from "lucide-react";
+import { Search } from "lucide-react";
 import React from "react";
-const SearchBar = () => {
+
+interface SearchBarProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
   return (
     <div
       className={`lg:flex hidden dark:border-gray-700 border-gray-300 border-[1px] rounded-[10px] px-[16px] py-[13px]`}
@@ -11,6 +17,8 @@ const SearchBar = () => {
         type="text"
         name="searchText"
         placeholder="Search"
+        value={value} // Controlled input
+        onChange={onChange}
         className="bg-transparent ml-[10px] focus:outline-none w-[229px]"
       />
     </div>

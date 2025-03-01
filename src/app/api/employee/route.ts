@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
         relivingLetter: data.relivingLetter ?? "",
         photoURL: data.photoURL ?? "",
         attendance: data.attendance ?? "",
-        checkIn: data.checkIn ?? "",
+        status: data.status ?? "",
         checkOut: data.checkOut ?? "",
       },
     });

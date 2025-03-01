@@ -12,6 +12,7 @@ interface ProfessionalInfoProps {
     workingDays: string;
     joiningDate: string;
     officeLocation: string;
+    status: string;
   };
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -25,6 +26,7 @@ export default function ProfessionalInfo({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 sm:p-6">
       <InputField
+        label="Employee ID"
         name="employeeId"
         placeholder="Employee ID"
         value={form.employeeId}
@@ -32,6 +34,7 @@ export default function ProfessionalInfo({
       />
 
       <InputField
+        label="User Name"
         name="userName"
         placeholder="User Name"
         value={form.userName}
@@ -54,15 +57,36 @@ export default function ProfessionalInfo({
         type="select"
         value={form.employmentType || ""}
         options={["Office", "Remote"]}
+        onChange={handleChange}
+      />
+      <InputField
+        label="Email Address"
+        name="email"
+        placeholder="Email Address"
+        value={form.email}
+        onChange={handleChange}
+      />
+      <InputField
+        label="Department"
+        name="department"
+        type="select"
+        value={form.department || ""}
+        options={[
+          "Design",
+          "Development",
+          "HR",
+          "Design",
+          "PM",
+          "Sales",
+        ]}
         onChange={handleChange} // Fix applied
       />
-
-      <InputField
+      {/* <InputField
         name="employeeId"
         placeholder="Employee ID"
         value={form.employeeId}
         onChange={handleChange} // No need to manually create an event
-      />
+      /> */}
 
       {/* <select
         name="department"
@@ -78,28 +102,26 @@ export default function ProfessionalInfo({
         <option value="Python Developer">Python Developer</option>
         <option value="Node Developer">Node Developer</option>
       </select> */}
-      <InputField
-        label="Department"
-        name="department"
+
+<InputField
+        label="Designation"
+        name="designation"
         type="select"
-        value={form.department || ""}
+        value={form.designation || ""}
         options={[
-          "Full Stack Developer",
-          "UI/X Design",
-          "HR Manager",
-          "Project Manager",
-          "Python Developer",
-          "Node Developer",
+          "UI/X Designer",
+          "PHP Developer",
+          "HR Executive",
+          "Pht Developer",
+          "Project Mansger",
+          "Sales Manager",
+          "Next JS Developer",
+          "Node JS Developer",
+          "Design Lead"
         ]}
         onChange={handleChange} // Fix applied
       />
-      <InputField
-        name="designation"
-        placeholder="Enter Designation"
-        value={form.designation}
-        onChange={handleChange}
-      />
-{/* 
+      {/* 
       <select
         name="workingDays"
         value={form.workingDays}
@@ -116,26 +138,39 @@ export default function ProfessionalInfo({
         name="workingDays"
         type="select"
         value={form.workingDays || ""}
-        options={[
-          "Monday-Friday",
-          "Sunday-Thursday",
-          "Flexible",
-        ]}
+        options={["Monday-Friday", "Sunday-Thursday", "Flexible"]}
         onChange={handleChange} // Fix applied
       />
       <InputField
+        label="Employee Status"
+        name="status"
+        type="select"
+        value={form.status || ""}
+        options={["Permanent", "Contract"]}
+        onChange={handleChange} // Fix applied
+      />
+      <InputField
+        label="Date of Joining"
         type="date"
         name="joiningDate"
         value={form.joiningDate}
         onChange={handleChange}
       />
 
-      <InputField
+<InputField
+        label="Office Location"
         name="officeLocation"
-        placeholder="Office Location"
-        value={form.officeLocation}
-        onChange={handleChange}
-        className="col-span-2"
+        type="select"
+        value={form.officeLocation || ""}
+        options={[
+          "Faisalabad",
+          "Lahore",
+          "Islamabad",
+          "Karachi",
+          "Rawalpindi",
+          "Multan",
+        ]}
+        onChange={handleChange} // Fix applied
       />
     </div>
   );

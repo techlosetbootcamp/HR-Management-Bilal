@@ -32,7 +32,7 @@ interface Employee {
   relievingLetter?: string;
   photoURL?: string;
   attendance?: string;
-  checkIn?: string;
+  status?: string;
   checkOut?: string;
 }
 

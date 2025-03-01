@@ -32,7 +32,7 @@ export interface Employee {
   relievingLetter?: string;
   photoURL?: string;
   attendance?: string;
-  checkIn?: string;
+  status?: string;
   checkOut?: string;
 }
 
@@ -43,18 +43,19 @@ interface ApiResponse<T> {
 }
 
 // ✅ Fetch Employees
-export const fetchEmployees = createAsyncThunk<Employee[], void, { rejectValue: string }>(
-  "employee/fetch",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await fetch("/api/employee");
-      if (!response.ok) throw new Error("Failed to fetch employees");
-      return response.json();
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
+export const fetchEmployees = createAsyncThunk<
+  Employee[],
+  void,
+  { rejectValue: string }
+>("employee/fetch", async (_, { rejectWithValue }) => {
+  try {
+    const response = await fetch("/api/employee");
+    if (!response.ok) throw new Error("Failed to fetch employees");
+    return response.json();
+  } catch (error: any) {
+    return rejectWithValue(error.message);
   }
-);
+});
 
 export const addEmployee = createAsyncThunk<
   Employee,
@@ -141,7 +142,7 @@ export const deleteEmployee = createAsyncThunk<
     }
 
     return id;
-  } catch (error:any) {
+  } catch (error: any) {
     return rejectWithValue(error);
   }
 });
@@ -149,8 +150,17 @@ export const deleteEmployee = createAsyncThunk<
 // Slice
 const employeeSlice = createSlice({
   name: "employees",
-  initialState: { employees: [] as Employee[], loading: false, error: null as string | null },
-  reducers: {},
+  initialState: {
+    employees: [] as Employee[],
+    loading: false,
+    error: null as string | null,
+    filters: { department: "", designation: "" , city: "" },
+  },
+  reducers: {
+    setFilters: (state, action) => {
+      state.filters = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // ✅ Fetch Employees
@@ -188,7 +198,9 @@ const employeeSlice = createSlice({
       })
       .addCase(updateEmployee.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.employees.findIndex((emp) => emp.id === action.payload.id);
+        const index = state.employees.findIndex(
+          (emp) => emp.id === action.payload.id
+        );
         if (index !== -1) state.employees[index] = action.payload;
       })
       .addCase(updateEmployee.rejected, (state, action) => {
@@ -203,7 +215,9 @@ const employeeSlice = createSlice({
       })
       .addCase(deleteEmployee.fulfilled, (state, action) => {
         state.loading = false;
-        state.employees = state.employees.filter((emp) => emp.id !== action.payload);
+        state.employees = state.employees.filter(
+          (emp) => emp.id !== action.payload
+        );
       })
       .addCase(deleteEmployee.rejected, (state, action) => {
         state.loading = false;
@@ -211,5 +225,5 @@ const employeeSlice = createSlice({
       });
   },
 });
-
+export const { setFilters } = employeeSlice.actions;
 export default employeeSlice.reducer;

@@ -36,8 +36,8 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <label className="cursor-pointer border p-4 rounded-lg flex flex-col items-center">
           {form.photoURL ? (
             <Image
-            width={20}
-            height={20}
+              width={20}
+              height={20}
               src={form.photoURL}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover mb-2"
@@ -45,9 +45,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           ) : (
             <>
               <Camera size={30} className="text-gray-400" />
-              <span className="text-sm text-gray-400">
-                Upload
-              </span>
+              <span className="text-sm text-gray-400">Upload</span>
             </>
           )}
           <input
@@ -117,10 +115,11 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         />
         <InputField
           label="Nationality"
-          type="text"
+          type="select"
           name="nationality"
           value={form.nationality}
           onChange={handleChange}
+          options={["Pakistan", "Foreign"]}
         />
       </div>
 
@@ -136,17 +135,26 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
         <InputField
           label="City"
-          type="text"
+          type="select"
           name="city"
           value={form.city}
           onChange={handleChange}
+          options={[
+            "Faisalabad",
+            "Lashore",
+            "Rawalpindi",
+            "Islamabad",
+            "Karachi",
+            "Multan",
+          ]}
         />
         <InputField
           label="State"
-          type="text"
+          type="select"
           name="state"
           value={form.state}
           onChange={handleChange}
+          options={["Punjab", "Sindh", "Balochistan", "KPK"]}
         />
         <InputField
           label="ZIP Code"

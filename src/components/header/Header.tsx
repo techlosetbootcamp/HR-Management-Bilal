@@ -14,7 +14,7 @@ const Header =({ onMenuClick }: HeaderProps) => {
   const { data: session } = useSession();
   const pathname = usePathname();
   const [firstVisit, setFirstVisit] = useState(true);
-
+const [searchTerm,setSearchTerm]=useState("")
   useEffect(() => {
     if (pathname !== "/") {
       setFirstVisit(false);
@@ -62,7 +62,8 @@ const Header =({ onMenuClick }: HeaderProps) => {
 
       <div className="flex items-center gap-2 lg:gap-5">
         <div className="hidden md:block">
-          <SearchBar />
+        <SearchBar value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+
         </div>
 
         <Link

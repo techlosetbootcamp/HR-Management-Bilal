@@ -1,59 +1,177 @@
+// "use client";
+// import { useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { useRouter } from "next/navigation";
+// import { AppDispatch, RootState } from "@/redux/store";
+// import { fetchEmployees, deleteEmployee } from "@/redux/slice/employeeSlice";
+// import { Edit, Trash, Eye } from "lucide-react";
+// import { useSession } from "next-auth/react";
+// import Image from "next/image";
+
+// export default function EmployeesPage() {
+//   const dispatch = useDispatch<AppDispatch>();
+//   const router = useRouter();
+//   const { employees, loading, error } = useSelector(
+//     (state: RootState) => state.employees
+//   );
+//   const { data: session } = useSession();
+//   const isAdmin = session?.user?.role === "ADMIN";
+
+//   useEffect(() => {
+//     dispatch(fetchEmployees());
+//   }, [dispatch]);
+
+//   const handleDelete = (id: string) => {
+//     if (confirm("Are you sure you want to delete this employee?")) {
+//       dispatch(deleteEmployee(id));
+//     }
+//   };
+
+//   return (
+//     <div className="p-6 bg-gray-50 dark:bg-[#131313] min-h-screen">
+//       <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+//         Employee List
+//       </h2>
+
+//       {loading && (
+//         <p className="text-gray-700 dark:text-gray-300">Loading employees...</p>
+//       )}
+//       {error && <p className="text-red-500">{error}</p>}
+
+//       {/* Employee Table */}
+//       <div className="w-full overflow-x-auto bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+//         {/* Table Header */}
+//         <div className="grid grid-cols-7 sm:grid-cols-8 font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 p-4 rounded-t-lg text-center">
+//           <div className="p-2">Employee</div>
+//           <div className="p-2 hidden sm:block">ID</div>
+//           <div className="p-2">Department</div>
+//           <div className="p-2">Designation</div>
+//           <div className="p-2 hidden sm:block">Type</div>
+//           <div className="p-2">Status</div>
+//           {isAdmin && <div className="p-2 text-center col-span-2">Actions</div>}
+//         </div>
+
+//         {/* Employee Rows */}
+//         {employees.map((emp, index) => (
+//           <div
+//             key={emp.id}
+//             className={`grid grid-cols-7 sm:grid-cols-8 items-center text-gray-900 dark:text-white border-b text-center ${
+//               index % 2 === 0
+//                 ? "bg-gray-50 dark:bg-gray-700"
+//                 : "bg-gray-100 dark:bg-gray-800"
+//             } p-4`}
+//           >
+//             {/* Employee Image & Name */}
+//             <div className="flex items-center gap-3">
+//               <Image
+//                 width={35}
+//                 height={35}
+//                 src={emp.photoURL || "/default-avatar.png"}
+//                 alt={emp.firstName}
+//                 className="w-9 h-9 rounded-full object-cover"
+//               />
+//               <span className="font-medium">
+//                 {/* {emp.firstName}  */}
+//                 {emp.lastName}
+//               </span>
+//             </div>
+
+//             {/* Employee Details */}
+//             <div className="hidden sm:block">{emp.employeeId}</div>
+//             <div>{emp.department}</div>
+//             <div>{emp.designation}</div>
+//             <div className="hidden sm:block">{emp.employmentType}</div>
+
+//             {/* Status Badge */}
+//             <div className="p-2">
+//               <span
+//                 className={`px-3 py-1 rounded-md text-xs font-medium text-white ${
+//                   emp.status === "Permanent" ? "bg-orange-600" : "bg-blue-600"
+//                 }`}
+//               >
+//                 {emp.status}
+//               </span>
+//             </div>
+
+//             {/* Action Buttons (Only Admins) */}
+//             {isAdmin && (
+//               <div className="flex justify-center gap-2">
+//                 {/* View Button */}
+//                 <button
+//                   onClick={() => router.push(`/employees/${emp.id}`)}
+//                   className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-lg transition duration-200"
+//                 >
+//                   <Eye size={18} />
+//                 </button>
+
+//                 {/* Edit Button */}
+//                 <button
+//                   onClick={() => router.push(`/employees/${emp.id}?edit=true`)}
+//                   className="bg-blue-500 hover:bg-blue-400 text-white p-2 rounded-lg transition duration-200"
+//                 >
+//                   <Edit size={18} />
+//                 </button>
+
+//                 {/* Delete Button */}
+//                 <button
+//                   onClick={() => handleDelete(emp.id)}
+//                   className="bg-red-500 hover:bg-red-400 text-white p-2 rounded-lg transition duration-200"
+//                 >
+//                   <Trash size={18} />
+//                 </button>
+//               </div>
+//             )}
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
 "use client";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { AppDispatch, RootState } from "@/redux/store";
-import { fetchEmployees, deleteEmployee } from "@/redux/slice/employeeSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { deleteEmployee } from "@/redux/slice/employeeSlice";
 import { Edit, Trash, Eye } from "lucide-react";
-import { useSession } from "next-auth/react";
+import Image from "next/image";
 
-export default function EmployeesPage() {
-  const dispatch = useDispatch<AppDispatch>();
+interface Employee {
+  id: string;
+  firstName: string;
+  lastName: string;
+  employeeId: string;
+  department: string;
+  designation: string;
+  employmentType: string;
+  status?: string; // ✅ Allow undefined
+  city?: string;
+  photoURL?: string;
+}
+
+interface Props {
+  employees: Employee[];
+  isAdmin: boolean;
+}
+
+export default function AllEmployee({ employees, isAdmin }: Props) {
   const router = useRouter();
-  const { employees, loading, error } = useSelector(
-    (state: RootState) => state.employees
-  );
-  const { data: session } = useSession();
-  const isAdmin = session?.user?.role === "ADMIN"; // ✅ Only admin can edit/delete
-
-  useEffect(() => {
-    dispatch(fetchEmployees());
-  }, [dispatch]);
-
-  const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this employee?")) {
-      dispatch(deleteEmployee(id));
-    }
-  };
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <div className="p-6 dark:bg-[#131313]">
-      <h2 className="text-2xl font-bold mb-4 text-white ">Employee List</h2>
-      {loading && <p className="text-white">Loading employees...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-
-      {/* Table-like Grid Container */}
-      <div className="grid grid-cols-6 dark:bg-gray-900 dark:text-white font-semibold p-3 rounded-t-lg">
-        <div className="p-2">Employee Name</div>
-        <div className="p-2">Employee ID</div>
-        <div className="p-2">Department</div>
-        <div className="p-2">Designation</div>
-        <div className="p-2">Type</div>
-        {isAdmin && <div className="p-2 text-center">Action</div>}
-      </div>
-
-      {/* Employee Rows */}
-      <div className="dark:bg-gray-800 dark:text-white rounded-b-lg">
-        {employees.map((emp, index) => (
+    <div className="dark:bg-gray-800 dark:text-white rounded-b-lg">
+      {employees.length > 0 ? (
+        employees.map((emp, index) => (
           <div
             key={emp.id}
-            className={`grid grid-cols-6 p-3 border-b border-gray-700 ${
+            className={`grid grid-cols-7 gap-4 border-b border-gray-700 p-3 ${
               index % 2 === 0 ? "dark:bg-gray-700" : "dark:bg-gray-800"
             }`}
           >
             {/* Employee Name & Image */}
-            <div className="p-2 flex items-center gap-2">
-              <img
+            <div className="flex items-center gap-2">
+              <Image
+                width={30}
+                height={30}
                 src={emp.photoURL || "/default-avatar.png"}
                 alt={emp.firstName}
                 className="w-8 h-8 rounded-full"
@@ -64,33 +182,31 @@ export default function EmployeesPage() {
             </div>
 
             {/* Employee Details */}
-            <div className="p-2">{emp.employeeId}</div>
-            <div className="p-2">{emp.department}</div>
-            <div className="p-2">{emp.designation}</div>
-            <div className="p-2">
+            <div>{emp.employeeId}</div>
+            <div>{emp.department}</div>
+            <div>{emp.designation}</div>
+            <div>{emp.employmentType}</div>
+
+            {/* Employee Status */}
+            <div>
               <span
                 className={`px-3 py-1 rounded-md text-xs ${
-                  emp.employmentType === "Permanent"
-                    ? "bg-orange-600"
-                    : "bg-blue-600"
+                  emp.status === "Permanent" ? "bg-orange-600" : "bg-blue-600"
                 }`}
               >
-                {emp.employmentType}
+                {emp.status}
               </span>
             </div>
 
-            {/* Action Buttons (Only Admins) */}
-            {isAdmin && (
-              <div className="p-2 flex justify-center gap-2">
-                {/* View Button (Everyone can see) */}
+            {/* Action Buttons (Admins Only) OR City */}
+            {isAdmin ? (
+              <div className="flex justify-center gap-2">
                 <button
                   onClick={() => router.push(`/employees/${emp.id}`)}
                   className="text-white bg-gray-700 p-2 rounded"
                 >
                   <Eye size={16} />
                 </button>
-
-                {/* Edit & Delete (Admins only) */}
                 <button
                   onClick={() => router.push(`/employees/${emp.id}?edit=true`)}
                   className="text-white bg-blue-500 p-2 rounded"
@@ -98,16 +214,20 @@ export default function EmployeesPage() {
                   <Edit size={16} />
                 </button>
                 <button
-                  onClick={() => handleDelete(emp.id)}
+                  onClick={() => dispatch(deleteEmployee(emp.id))}
                   className="text-white bg-red-500 p-2 rounded"
                 >
                   <Trash size={16} />
                 </button>
               </div>
+            ) : (
+              <div>{emp.city || "N/A"}</div>
             )}
           </div>
-        ))}
-      </div>
+        ))
+      ) : (
+        <p className="text-white text-center p-4">No employees found.</p>
+      )}
     </div>
   );
 }

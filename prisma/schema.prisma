@@ -61,6 +61,6 @@ model Employee {
   dateOfBirth       String?
   attendance        String?
   type              String?
-  checkIn           String?
+  status           String?
   checkOut          String?
 }

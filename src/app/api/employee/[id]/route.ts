@@ -108,32 +108,29 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../lib/auth";
 
 /** 🚀 GET: Fetch Employee Details */
-export async function GET(req: Request, context: { params: { id: string } }) {
-  try {
-    const { id } = context.params; // ✅ Correct way to extract params
-
-    if (!id) {
-      console.error("❌ Missing employee ID in request!");
-      return new NextResponse(JSON.stringify({ error: "Missing employee ID" }), { status: 400 });
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
+    try {
+      const { id } = await context.params; // Ensure params are awaited
+  
+      if (!id) {
+        return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
+      }
+  
+      // Query employee details from the database
+      const employee = await prisma.employee.findUnique({
+        where: { id }, // Prisma stores ID as a string
+      });
+  
+      if (!employee) {
+        return NextResponse.json({ error: "Employee not found" }, { status: 404 });
+      }
+  
+      return NextResponse.json(employee, { status: 200 });
+    } catch (error) {
+      console.error("Error fetching employee:", error);
+      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
-
-    console.log("🔍 Fetching employee with ID:", id);
-
-    const employee = await prisma.employee.findUnique({
-      where: { id },
-    });
-
-    if (!employee) {
-      console.error("❌ Employee not found:", id);
-      return new NextResponse(JSON.stringify({ error: "Employee not found" }), { status: 404 });
-    }
-
-    return new NextResponse(JSON.stringify(employee), { status: 200 });
-  } catch (error) {
-    console.error("❌ Error fetching employee:", error);
-    return new NextResponse(JSON.stringify({ error: "Internal server error" }), { status: 500 });
   }
-}
 
 /** 🚀 PATCH: Update Employee Details */
 // export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
@@ -169,9 +166,9 @@ export async function GET(req: Request, context: { params: { id: string } }) {
 //     return NextResponse.json({ error: "Failed to update employee" }, { status: 500 });
 //   }
 // }
-export async function PATCH(req: Request, context: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
   try {
-    const { id } = context.params; // ✅ Ensure params are extracted correctly
+    const { id } = await context.params; // ✅ Ensure params are extracted correctly
     if (!id) {
       return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
     }

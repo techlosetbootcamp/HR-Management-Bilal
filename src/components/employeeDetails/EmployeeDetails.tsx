@@ -289,7 +289,7 @@
 // };
 
 // export default EmployeeDetails;
-import { useState } from "react";
+import {  useState } from "react";
 import { useEmployeeDetails } from "@/hooks/useEmployeeDetails";
 import { Briefcase, Edit, FileText, Lock, User } from "lucide-react";
 // import EditableInput from "../editableInput/EditableInput";
@@ -300,6 +300,7 @@ import InputField from "../infoInput/InfoInput";
 interface EmployeeDetailsProps {
   id: string;
   isEditMode: boolean;
+  employeeEmail: string;
 }
 const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   id,
@@ -393,28 +394,28 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   <InputField
-                  name="firstName"
+                    name="firstName"
                     label="First Name"
                     value={employee.firstName}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("firstName", e.target.value)}
                   />
                   <InputField
-                  name="lastName"
+                    name="lastName"
                     label="Last Name"
                     value={employee.lastName}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("lastName", e.target.value)}
                   />
                   <InputField
-                  name="mobileNumber"
+                    name="mobileNumber"
                     label="Mobile Number"
                     value={employee.mobileNumber}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("email", e.target.value)}
+                    onChange={(e) => handleUpdate("mobileNumber", e.target.value)}
                   />
                   <InputField
-                  name="emailAddress"
+                    name="emailAddress"
                     label="Email Address"
                     value={employee.email}
                     isEditMode={isEditMode}
@@ -422,11 +423,13 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   />
 
                   <InputField
-                  name="dateOfBirth"
+                    name="dateOfBirth"
                     label="Date of Birth"
                     value={employee.dateOfBirth}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("dateOfBirth", e.target.value)}
+                    onChange={(e) =>
+                      handleUpdate("dateOfBirth", e.target.value)
+                    }
                   />
                   <InputField
                     label="Marital Status"
@@ -441,7 +444,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   />
 
                   <InputField
-                  name="gender"
+                    name="gender"
                     label="Gender"
                     value={employee.maritalStatus || ""}
                     options={["Male", "Female"]}
@@ -453,32 +456,46 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     name="lastName"
                     value={employee.nationality}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("nationality", e.target.value)}
+                    options={["Pakistan","Forign"]}
+                    onChange={(e) =>
+                      handleUpdate("nationality", e.target.value)
+                    }
                   />
 
                   <InputField
-                  name="address"
+                    name="address"
                     label="Address"
                     value={employee.address}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("address", e.target.value)}
                   />
                   <InputField
-                  name="city"
+                    name="city"
                     label="City"
+                    type="select"
                     value={employee.city}
                     isEditMode={isEditMode}
+                    options={[
+                      "Faisalabad",
+                      "Lashore",
+                      "Rawalpindi",
+                      "Islamabad",
+                      "Karachi",
+                      "Multan",
+                    ]}
                     onChange={(e) => handleUpdate("city", e.target.value)}
                   />
                   <InputField
-                  name="state"
+                    name="state"
                     label="State"
+                    type="select"
                     value={employee.state}
                     isEditMode={isEditMode}
+                    options={["Punjab", "Sindh", "Balochistan", "KPK"]}
                     onChange={(e) => handleUpdate("state", e.target.value)}
                   />
                   <InputField
-                  name="zipCode"
+                    name="zipCode"
                     label="Zip Code"
                     value={employee.zipCode}
                     isEditMode={isEditMode}
@@ -496,77 +513,120 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   <InputField
-                  name="employeeID"
+                    name="employeeID"
                     label="Employee ID"
                     value={employee.employeeId}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("employeeId", e.target.value)}
                   />
                   <InputField
-                  name="userName"
+                    name="userName"
                     label="User Name"
                     value={employee.userName}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("userName", e.target.value)}
                   />
                   <InputField
-                  name="employeeType"
+                    name="employeeType"
                     label="Employee Type"
+                    type="select"
                     value={employee.employmentType || ""}
                     options={["Office", "Remote"]}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("employmentType", e.target.value)}
+                    onChange={(e) =>
+                      handleUpdate("employmentType", e.target.value)
+                    }
                   />
                   <InputField
-                  name="emailAddress"
+                    name="emailAddress"
                     label="Email Address"
                     value={employee.email}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("email", e.target.value)}
                   />
                   <InputField
-                  name="department"
+                    name="employeeStatus"
+                    type="select"
+                    label="Employee Status"
+                    value={employee.status}
+                    options={["Permanent", "Contract"]}
+                    isEditMode={isEditMode}
+                    onChange={(e) => handleUpdate("status", e.target.value)}
+                  />
+                  <InputField
+                    name="department"
+                    type="select"
                     label="Department"
                     value={employee.department || ""}
                     options={[
-                      "Full Stack Developer",
-                      "UI/X Design",
-                      "HR Manager",
-                      "Project Manager",
-                      "Python Developer",
-                      "Node Developer",
+                      "Design",
+                      "Development",
+                      "HR",
+                      "Design",
+                      "PM",
+                      "Sales",
                     ]}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("department", e.target.value)}
                   />
                   <InputField
+                    type="select"
                     label="Designation"
                     name="designation"
                     value={employee.designation}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("designation", e.target.value)}
+                    options={[
+                      "UI/X Designer",
+                      "PHP Developer",
+                      "HR Executive",
+                      "Pht Developer",
+                      "Project Mansger",
+                      "Sales Manager",
+                      "Next JS Developer",
+                      "Node JS Developer",
+                      "Design Lead",
+                    ]}
+                    onChange={(e) =>
+                      handleUpdate("designation", e.target.value)
+                    }
                   />
                   <InputField
-                  name="workingDays"
+                    name="workingDays"
+                    type="select"
                     label="Working Days"
                     value={employee.workingDays || ""}
                     options={["Monday-Friday", "Sunday-Thursday", "Flexible"]}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("workingDays", e.target.value)}
+                    onChange={(e) =>
+                      handleUpdate("workingDays", e.target.value)
+                    }
                   />
                   <InputField
-                  name="joiningDate"
+                    name="joiningDate"
                     label="Joining Date"
                     value={employee.joiningDate}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("joiningDate", e.target.value)}
+                    onChange={(e) =>
+                      handleUpdate("joiningDate", e.target.value)
+                    }
                   />
                   <InputField
-                  name="officeLocation"
+                    type="select"
+                    name="officeLocation"
                     label="Office Location"
                     value={employee.officeLocation}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("officeLocation", e.target.value)}
+                    options={[
+                      "Faisalabad",
+                      "Lahore",
+                      "Islamabad",
+                      "Karachi",
+                      "Rawalpindi",
+                      "Multan",
+                    ]}
+                    onChange={(e) =>
+                      handleUpdate("officeLocation", e.target.value)
+                    }
                   />
                 </div>
               </div>
@@ -582,28 +642,28 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <h3 className="text-lg font-semibold mb-2">Account Access</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <InputField
-                  name="emailAddress"
+                    name="emailAddress"
                     label="Email Address"
                     value={employee.email}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("email", e.target.value)}
                   />
                   <InputField
-                  name="slackID"
+                    name="slackID"
                     label="Slack ID"
                     value={employee.slackId}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("slackId", e.target.value)}
                   />
                   <InputField
-                  name="skypeID"
+                    name="skypeID"
                     label="Skype ID"
                     value={employee.skypeId}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("skypeId", e.target.value)}
                   />
                   <InputField
-                  name="githubID"
+                    name="githubID"
                     label="Github ID"
                     value={employee.githubId}
                     isEditMode={isEditMode}
