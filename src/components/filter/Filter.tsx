@@ -13,7 +13,6 @@ const FilterComponent = () => {
     city: "",
   });
 
-  // Predefined City List
   const predefinedCities = [
     "Faisalabad",
     "Lahore",
@@ -23,7 +22,6 @@ const FilterComponent = () => {
     "Multan",
   ];
 
-  // Corrected Designation List
   const designations = [
     "UI/U Designer",
     "PHP Developer",
@@ -35,16 +33,13 @@ const FilterComponent = () => {
     "Design Lead",
   ];
 
-  // Corrected Department List (Removed Duplicate)
   const departments = ["Design", "Development", "HR", "PM", "Sales"];
 
-  // Handle Filter Change
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setLocalFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Apply Filters
   const applyFilters = () => {
     dispatch(setFilters(filters));
     setShowFilters(false); // Hide dropdown after applying filters
@@ -68,7 +63,6 @@ const FilterComponent = () => {
             Filter Employees
           </h3>
 
-          {/* Department Filter */}
           <select
             name="department"
             value={filters.department}
@@ -83,7 +77,6 @@ const FilterComponent = () => {
             ))}
           </select>
 
-          {/* Designation Filter */}
           <select
             name="designation"
             value={filters.designation}
@@ -98,7 +91,6 @@ const FilterComponent = () => {
             ))}
           </select>
 
-          {/* City Filter */}
           <select
             name="city"
             value={filters.city}
@@ -113,7 +105,6 @@ const FilterComponent = () => {
             ))}
           </select>
 
-          {/* Apply Button */}
           <button
             onClick={applyFilters}
             className="w-full bg-customOrange text-white py-2 rounded mt-2"

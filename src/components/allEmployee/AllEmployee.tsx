@@ -165,7 +165,6 @@ export default function AllEmployee({ employees, isAdmin }: Props) {
             key={emp.id}
             className="grid grid-cols-7 gap-4 border-b border-gray-700 p-3"
           >
-            {/* Employee Name & Image */}
             <div className="flex items-center gap-2">
               <Image
                 width={30}
@@ -179,13 +178,11 @@ export default function AllEmployee({ employees, isAdmin }: Props) {
               </span>
             </div>
 
-            {/* Employee Details */}
             <div>{emp.employeeId}</div>
             <div>{emp.department}</div>
             <div>{emp.designation}</div>
             <div>{emp.employmentType}</div>
 
-            {/* Employee Status */}
             <div>
               <span
                 className={`px-3 py-1 rounded-md text-xs ${
