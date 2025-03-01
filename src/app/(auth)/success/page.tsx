@@ -5,13 +5,13 @@ import Button from "@/components/button/Button";
 
 const SuccessPage = () => {
   const router = useRouter();
-  const { data: session } = useSession(); // Get authentication status
+  const { data: session } = useSession(); 
 
   const handleNavigation = () => {
     if (session) {
-      router.push("/dashboard"); // Redirect to Dashboard if authenticated
+      router.push("/");
     } else {
-      router.push("/login"); // Redirect to Login if not authenticated
+      router.push("/login");
     }
   };
 

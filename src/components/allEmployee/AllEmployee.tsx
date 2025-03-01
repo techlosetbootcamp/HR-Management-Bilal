@@ -132,7 +132,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { deleteEmployee } from "@/redux/slice/employeeSlice";
-import { Edit, Trash, Eye } from "lucide-react";
+import {  Trash, Eye, PencilLine } from "lucide-react";
 import Image from "next/image";
 
 interface Employee {
@@ -158,14 +158,12 @@ export default function AllEmployee({ employees, isAdmin }: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <div className="dark:bg-gray-800 dark:text-white rounded-b-lg">
+    <div className="dark:bg-[#131313] dark:text-white rounded-b-lg">
       {employees.length > 0 ? (
-        employees.map((emp, index) => (
+        employees.map((emp) => (
           <div
             key={emp.id}
-            className={`grid grid-cols-7 gap-4 border-b border-gray-700 p-3 ${
-              index % 2 === 0 ? "dark:bg-gray-700" : "dark:bg-gray-800"
-            }`}
+            className="grid grid-cols-7 gap-4 border-b border-gray-700 p-3"
           >
             {/* Employee Name & Image */}
             <div className="flex items-center gap-2">
@@ -191,33 +189,32 @@ export default function AllEmployee({ employees, isAdmin }: Props) {
             <div>
               <span
                 className={`px-3 py-1 rounded-md text-xs ${
-                  emp.status === "Permanent" ? "bg-orange-600" : "bg-blue-600"
+                  emp.status === "Permanent" ? "text-customOrange" : "bg-blue-600"
                 }`}
               >
                 {emp.status}
               </span>
             </div>
 
-            {/* Action Buttons (Admins Only) OR City */}
             {isAdmin ? (
               <div className="flex justify-center gap-2">
                 <button
                   onClick={() => router.push(`/employees/${emp.id}`)}
-                  className="text-white bg-gray-700 p-2 rounded"
+                  className="dark:text-white p-2 rounded hover:text-blue-500"
                 >
-                  <Eye size={16} />
+                  <Eye size={24} />
                 </button>
                 <button
                   onClick={() => router.push(`/employees/${emp.id}?edit=true`)}
-                  className="text-white bg-blue-500 p-2 rounded"
+                  className="dark:text-white p-2 rounded hover:text-green-600"
                 >
-                  <Edit size={16} />
+                  <PencilLine  size={24}/>
                 </button>
                 <button
                   onClick={() => dispatch(deleteEmployee(emp.id))}
-                  className="text-white bg-red-500 p-2 rounded"
+                  className="dark:text-white p-2 rounded hover:text-customOrange font-extrabold"
                 >
-                  <Trash size={16} />
+                  <Trash size={24} />
                 </button>
               </div>
             ) : (

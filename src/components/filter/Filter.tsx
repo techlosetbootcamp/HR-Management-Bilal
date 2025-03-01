@@ -25,7 +25,7 @@ const FilterComponent = () => {
 
   // Corrected Designation List
   const designations = [
-    "UI/X Designer",
+    "UI/U Designer",
     "PHP Developer",
     "HR Executive",
     "Project Manager",
@@ -54,14 +54,16 @@ const FilterComponent = () => {
     <div className="relative">
       <button
         onClick={() => setShowFilters(!showFilters)}
-        className="border-gray-200 hover:border-customOrange ease-in-out duration-300 hover:text-customOrange border-[1px] flex items-center ms-5 rounded-[10px] px-[22.5px] dark:border-gray-700"
+        className="border-[1px] border-gray-300 dark:border-gray-600 bg-white dark:bg-[#131313] text-gray-900 dark:text-white flex items-center rounded-lg px-6 py-3 mr-3 mt-3"
       >
-        <SlidersHorizontal />
-        <div className="ml-[10px] text-[16px]">Filter</div>
+        <div className="hover:text-customOrange flex transition-all duration-300 ease-in-out">
+        <SlidersHorizontal size={24} className=""/>
+        <span className="ml-3 text-[16px] font-[300]">Filter</span>
+        </div>
       </button>
 
       {showFilters && (
-        <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 z-50">
+        <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#222121] shadow-lg rounded-lg p-4 z-50">
           <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
             Filter Employees
           </h3>

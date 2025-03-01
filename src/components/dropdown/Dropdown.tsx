@@ -48,9 +48,9 @@ const DropDown = () => {
   const userImage = session?.user?.image || Profile; // Use profile pic from session or fallback
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <button
-        className="flex items-center pe-1 justify-between h-12 ms-5 w-46 rounded border dark:border-gray-700 border-gray-200 focus:outline-none"
+        className="flex items-center pe-1 justify-between h-12 ms-5 w-46 rounded border dark:border-gray-700 border-gray-200 focus:outline-none "
         onClick={toggleDropdown}
         aria-expanded={isOpen}
       >
@@ -76,7 +76,7 @@ const DropDown = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-[0px] mt-2 w-[184px] border dark:border-gray-700 border-gray-200 rounded shadow-lg">
+        <div className="absolute right-[0px] mt-2 w-[184px] border dark:border-gray-700 border-gray-200 rounded shadow-lg dark:bg-[#131313] bg-white">
           <ul className="">
             <li className="px-4 py-2 hover:bg-customOrange cursor-pointer">
               About
