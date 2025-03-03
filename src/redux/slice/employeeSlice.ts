@@ -29,7 +29,7 @@ export interface Employee {
   skypeId?: string;
   appointmentLetter?: string;
   experienceLetter?: string;
-  relievingLetter?: string;
+  relivingLetter?: string;
   photoURL?: string;
   attendance?: string;
   status?: string;
@@ -147,7 +147,6 @@ export const deleteEmployee = createAsyncThunk<
   }
 });
 
-// Slice
 const employeeSlice = createSlice({
   name: "employees",
   initialState: {

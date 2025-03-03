@@ -29,7 +29,7 @@ interface Employee {
   skypeId?: string;
   appointmentLetter?: string;
   experienceLetter?: string;
-  relievingLetter?: string;
+  relivingLetter?: string;
   photoURL?: string;
   attendance?: string;
   status?: string;

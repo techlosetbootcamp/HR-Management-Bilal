@@ -143,7 +143,7 @@ interface Employee {
   department: string;
   designation: string;
   employmentType: string;
-  status?: string; // ✅ Allow undefined
+  status?: string;
   city?: string;
   photoURL?: string;
 }

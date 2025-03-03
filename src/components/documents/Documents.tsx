@@ -12,8 +12,11 @@ const Documents: React.FC<DocumentsProps> = ({ handleFileUpload }) => {
         <div>
           <h3 className="text-gray-400 mb-2">Upload Appointment Letter</h3>
           <FileUpload
-            label="Upload Appointment Letter"
-            onFileSelect={(file) => handleFileUpload("appointmentLetter", file)}
+            label="Appointment Letter"
+            onFileSelect={(file) => {
+              console.log("📤 Uploading relivingLetter:", file.name);
+              handleFileUpload("appointmentLetter", file);
+            }}
           />
         </div>
         <div>
@@ -27,7 +30,7 @@ const Documents: React.FC<DocumentsProps> = ({ handleFileUpload }) => {
           <h3 className="text-gray-400 mb-2">Upload Relieving Letter</h3>
           <FileUpload
             label="Upload Relieving Letter"
-            onFileSelect={(file) => handleFileUpload("relievingLetter", file)}
+            onFileSelect={(file) => handleFileUpload("relivingLetter", file)}
           />
         </div>
         <div>

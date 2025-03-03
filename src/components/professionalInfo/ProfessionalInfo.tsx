@@ -71,39 +71,11 @@ export default function ProfessionalInfo({
         name="department"
         type="select"
         value={form.department || ""}
-        options={[
-          "Design",
-          "Development",
-          "HR",
-          "Design",
-          "PM",
-          "Sales",
-        ]}
+        options={["Design", "Development", "HR", "Design", "PM", "Sales"]}
         onChange={handleChange} // Fix applied
       />
-      {/* <InputField
-        name="employeeId"
-        placeholder="Employee ID"
-        value={form.employeeId}
-        onChange={handleChange} // No need to manually create an event
-      /> */}
 
-      {/* <select
-        name="department"
-        value={form.department}
-        onChange={handleChange}
-        className="bg-[#131313] border border-gray-700 rounded-md p-2 text-gray-300"
-      >
-        <option value="">Select Department</option>
-        <option value="Full Stack Developer">Full Stack Developer</option>
-        <option value="UI/X Design">UI/X Design</option>
-        <option value="HR Manager">HR Manager</option>
-        <option value="Project Manager">Project Manager</option>
-        <option value="Python Developer">Python Developer</option>
-        <option value="Node Developer">Node Developer</option>
-      </select> */}
-
-<InputField
+      <InputField
         label="Designation"
         name="designation"
         type="select"
@@ -117,22 +89,10 @@ export default function ProfessionalInfo({
           "Sales Manager",
           "Next JS Developer",
           "Node JS Developer",
-          "Design Lead"
+          "Design Lead",
         ]}
         onChange={handleChange} // Fix applied
       />
-      {/* 
-      <select
-        name="workingDays"
-        value={form.workingDays}
-        onChange={handleChange}
-        className="bg-[#131313] border border-gray-700 rounded-md p-2 text-gray-300"
-      >
-        <option value="">Select Working Days</option>
-        <option value="Monday-Friday">Monday-Friday</option>
-        <option value="Sunday-Thursday">Sunday-Thursday</option>
-        <option value="Flexible">Flexible</option>
-      </select> */}
       <InputField
         label="Working Days"
         name="workingDays"
@@ -157,7 +117,7 @@ export default function ProfessionalInfo({
         onChange={handleChange}
       />
 
-<InputField
+      <InputField
         label="Office Location"
         name="officeLocation"
         type="select"

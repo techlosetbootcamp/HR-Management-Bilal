@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { addEmployee } from "@/redux/slice/employeeSlice";
+import { useRouter } from "next/navigation";
 
 export default function useAddEmployee() {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +34,7 @@ export default function useAddEmployee() {
     salarySlip: "",
     appointmentLetter: "",
     experienceLetter: "",
-    relievingLetter: "",
+    relivingLetter: "",
     maritalStatus: "",
     photoURL: "", // ✅ Added Profile Picture
   });
@@ -98,10 +99,12 @@ export default function useAddEmployee() {
 
   // ✅ Handle Other File Uploads
   const handleFileUpload = async (fieldName: string, file: File) => {
+    console.log(`📤 Uploading ${fieldName}:`, file.name); // Debug log
+  
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "default_preset");
-
+  
     try {
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
@@ -110,23 +113,35 @@ export default function useAddEmployee() {
           body: formData,
         }
       );
-
-      if (!response.ok) throw new Error("Upload failed");
-
+  
+      if (!response.ok) throw new Error(`Upload failed for ${fieldName}`);
+  
       const data = await response.json();
+      console.log(`✅ ${fieldName} uploaded successfully:`, data);
+  
+      if (!data.secure_url) throw new Error(`Missing secure_url for ${fieldName}`);
+  
       setForm((prev) => ({
         ...prev,
         [fieldName]: data.secure_url, // ✅ Store file URL
       }));
     } catch (error) {
-      console.error(`File upload for ${fieldName} failed:`, error);
+      console.error(`❌ File upload failed for ${fieldName}:`, error);
     }
   };
-
+  const router = useRouter()
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addEmployee(form));
-  };
+    
+    try {
+      await dispatch(addEmployee(form)).unwrap(); // ✅ Ensure form submission completes
+      console.log("✅ Employee added successfully!");
 
+      router.push("/employees"); // ✅ Navigate to Employees page
+    } catch (error) {
+      console.error("❌ Error adding employee:", error);
+    }
+  };
+  
   return { form,setForm, handleChange, handleSubmit, loading, error, handleImageUpload, handleFileUpload };
 }

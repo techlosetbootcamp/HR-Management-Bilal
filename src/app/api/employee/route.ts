@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         photoURL: data.photoURL ?? "",
         attendance: data.attendance ?? "",
         status: data.status ?? "",
-        checkOut: data.checkOut ?? "",
+        photoPublicId: data.checkOut ?? "",
       },
     });
 

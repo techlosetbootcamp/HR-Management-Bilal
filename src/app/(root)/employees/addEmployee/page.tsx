@@ -7,6 +7,7 @@ import PersonalInfo from "@/components/personalInfo/PersonalInfo";
 import Documents from "@/components/documents/Documents";
 import AccountAccess from "@/components/accountAccess/AccountAccess";
 import ProfessionalInfo from "@/components/professionalInfo/ProfessionalInfo";
+import { useRouter } from "next/navigation";
 
 export default function AddEmployeeForm() {
   const {
@@ -20,7 +21,7 @@ export default function AddEmployeeForm() {
   } = useAddEmployee();
 
   const [activeTab, setActiveTab] = useState(0);
-
+const router = useRouter();
   const tabs = [
     {
       label: "Personal Information",

@@ -289,11 +289,9 @@
 // };
 
 // export default EmployeeDetails;
-import {  useState } from "react";
+import { useState } from "react";
 import { useEmployeeDetails } from "@/hooks/useEmployeeDetails";
 import { Briefcase, Edit, FileText, Lock, User } from "lucide-react";
-// import EditableInput from "../editableInput/EditableInput";
-// import EditableSelect from "../editableSelect/EditableSelect";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import InputField from "../infoInput/InfoInput";
@@ -306,8 +304,17 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   id,
   isEditMode,
 }) => {
-  const { employee, loading, error, handleUpdate, saveChanges } =
-    useEmployeeDetails(id);
+  const {
+    employee,
+    loading,
+    error,
+    handleUpdate,
+    saveChanges,
+    updatedImage,
+    handleImageChange,
+    handleDocumentChange,
+    updateDocument
+  } = useEmployeeDetails(id);
   const [activeTab, setActiveTab] = useState("profile");
   const [subTab, setSubTab] = useState("personal");
   const router = useRouter();
@@ -336,13 +343,45 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           <>
             {/* Profile Header */}
             <div className="flex items-center gap-4 mb-6">
-              <Image
-                width={100}
-                height={50}
-                src={employee?.photoURL || "/default-avatar.png"}
-                alt="Profile"
-                className="w-[100px] h-[100px] object-cover "
-              />
+              {/* Profile Image */}
+              <label
+                htmlFor="profileImageUpload"
+                className="cursor-pointer relative"
+              >
+                <Image
+                  width={100}
+                  height={100}
+                  src={
+                    updatedImage || employee?.photoURL || "/default-avatar.png"
+                  }
+                  alt="Profile"
+                  className="w-[100px] h-[100px] object-cover rounded-full border border-gray-500"
+                />
+
+                {/* Show Edit Icon when in Edit Mode */}
+                {isEditMode && (
+                  <div className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full">
+                    <Edit size={16} />
+                  </div>
+                )}
+              </label>
+
+              {/* Hidden File Input for Image Upload */}
+              {isEditMode && (
+                <input
+                  type="file"
+                  id="profileImageUpload"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files?.[0]) {
+                      handleImageChange(e.target.files[0]);
+                    }
+                  }}
+                />
+              )}
+
+              {/* Employee Info */}
               <div>
                 <h2 className="text-2xl font-bold">
                   {employee?.firstName} {employee?.lastName}
@@ -350,6 +389,8 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <p className="text-orange-400">{employee?.designation}</p>
                 <p>{employee?.email}</p>
               </div>
+
+              {/* Edit Profile Button */}
               <button
                 onClick={() =>
                   router.push(`/employees/${employee.id}?edit=true`)
@@ -412,7 +453,9 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     label="Mobile Number"
                     value={employee.mobileNumber}
                     isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("mobileNumber", e.target.value)}
+                    onChange={(e) =>
+                      handleUpdate("mobileNumber", e.target.value)
+                    }
                   />
                   <InputField
                     name="emailAddress"
@@ -456,7 +499,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     name="lastName"
                     value={employee.nationality}
                     isEditMode={isEditMode}
-                    options={["Pakistan","Forign"]}
+                    options={["Pakistan", "Forign"]}
                     onChange={(e) =>
                       handleUpdate("nationality", e.target.value)
                     }
@@ -632,10 +675,42 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               </div>
             )}
             {subTab === "documents" && (
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Documents</h3>
-                <p>No documents available.</p>
-              </div>
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+               {["appointmentLetter", "salarySlip", "relievingLetter", "experienceLetter"].map((field) => (
+                 <div key={field}>
+                   <h3 className="text-gray-400 mb-2">{field.replace(/([A-Z])/g, " $1")}</h3>
+             
+                   {/* Show existing document */}
+                   {employee[field] ? (
+                     <a href={employee[field]} target="_blank" rel="noopener noreferrer">
+                       <img
+                         src={employee[field]}
+                         alt={field}
+                         className="w-32 h-32 object-cover border border-gray-500 rounded-md"
+                       />
+                     </a>
+                   ) : (
+                     <p className="text-gray-500 text-sm">No {field} uploaded</p>
+                   )}
+             
+                   {/* File Input & Update Button */}
+                   <input
+                     type="file"
+                     accept="image/*"
+                     className="mt-2"
+                     onChange={(e) => handleDocumentChange(field, e.target.files?.[0]!)}
+                   />
+                   <button
+                     onClick={() => updateDocument(field)}
+                     className="mt-2 bg-orange-500 text-white px-4 py-2 rounded"
+                   >
+                     Update {field.replace(/([A-Z])/g, " $1")}
+                   </button>
+                 </div>
+               ))}
+             </div>
+             
+            
             )}
             {subTab === "account" && (
               <div className="mb-6">

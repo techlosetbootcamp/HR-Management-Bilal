@@ -6,7 +6,7 @@ interface FileUploadProps {
   onFileSelect: (file: File) => void;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ label, onFileSelect }) => {
+const FileUpload: React.FC<FileUploadProps> = ({  onFileSelect }) => {
   const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
