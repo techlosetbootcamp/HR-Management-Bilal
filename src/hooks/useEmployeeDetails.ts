@@ -120,13 +120,11 @@ export function useEmployeeDetails(id: string) {
     fetchEmployee();
   }, [id]);
 
-  // Handle field updates
   const handleUpdate = (field: string, value: string) => {
     setEmployee((prev) => ({ ...prev, [field]: value }));
     setUpdatedFields((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Handle Image Change (Preview before upload)
   const handleImageChange = (file: File) => {
     setSelectedFile(file);
     const reader = new FileReader();
@@ -134,7 +132,6 @@ export function useEmployeeDetails(id: string) {
     reader.readAsDataURL(file);
   };
 
-  // Upload Image & Save Changes
   const saveChanges = async () => {
     try {
       let newPhotoURL = employee?.photoURL;
@@ -167,7 +164,6 @@ export function useEmployeeDetails(id: string) {
         newPublicId = uploadData.public_id;
       }
 
-      // ✅ Only send fields that have changed
       const updatePayload: Record<string, any> = {
         ...updatedFields,
         ...(newPhotoURL ? { photoURL: newPhotoURL } : {}),
