@@ -45,11 +45,9 @@ export const useLoginForm = () => {
 
     toast.success("Successfully logged in!");
 
-    // Wait for session update
     setTimeout(() => {
       const userRole = session?.user?.role || "EMPLOYEE"; // Default to EMPLOYEE
 
-      // Redirect based on role
       if (userRole === "ADMIN") {
         router.push("/admin-dashboard");
       } else {
