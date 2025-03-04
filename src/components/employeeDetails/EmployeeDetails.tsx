@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useEmployeeDetails } from "@/hooks/useEmployeeDetails";
+import { Employee, useEmployeeDetails } from "@/hooks/useEmployeeDetails";
 import { Briefcase, Edit, FileText, Lock, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -22,9 +22,12 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     updatedImage,
     handleImageChange,
     handleDocumentChange,
-    updateDocument
+    updateDocument,
   } = useEmployeeDetails(id);
   const [activeTab, setActiveTab] = useState("profile");
+  // const fields: (keyof Employee)[] = ["photoURL", "salarySlip"]; // Add more document-related fields if needed.
+  const fields: Extract<keyof Employee, string>[] = ["appointmentLetter", "salarySlip", "experienceLetter", "relivingLetter"];
+
   const [subTab, setSubTab] = useState("personal");
   const router = useRouter();
   if (loading) return <p className="text-white">Loading employee details...</p>;
@@ -102,7 +105,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               {/* Edit Profile Button */}
               <button
                 onClick={() =>
-                  router.push(`/employees/${employee.id}?edit=true`)
+                  router.push(`/employees/${employee?.id}?edit=true`)
                 }
                 className="ml-auto bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
               >
@@ -146,21 +149,21 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="firstName"
                     label="First Name"
-                    value={employee.firstName}
+                    value={employee?.firstName}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("firstName", e.target.value)}
                   />
                   <InputField
                     name="lastName"
                     label="Last Name"
-                    value={employee.lastName}
+                    value={employee?.lastName}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("lastName", e.target.value)}
                   />
                   <InputField
                     name="mobileNumber"
                     label="Mobile Number"
-                    value={employee.mobileNumber}
+                    value={employee?.mobileNumber}
                     isEditMode={isEditMode}
                     onChange={(e) =>
                       handleUpdate("mobileNumber", e.target.value)
@@ -169,7 +172,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="emailAddress"
                     label="Email Address"
-                    value={employee.email}
+                    value={employee?.email}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("email", e.target.value)}
                   />
@@ -177,7 +180,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="dateOfBirth"
                     label="Date of Birth"
-                    value={employee.dateOfBirth}
+                    value={employee?.dateOfBirth}
                     isEditMode={isEditMode}
                     onChange={(e) =>
                       handleUpdate("dateOfBirth", e.target.value)
@@ -187,7 +190,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     label="Marital Status"
                     name="maritalStatus"
                     type="select"
-                    value={employee.maritalStatus || ""}
+                    value={employee?.maritalStatus || ""}
                     options={["Single", "Married"]}
                     isEditMode={isEditMode}
                     onChange={(e) =>
@@ -198,7 +201,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="gender"
                     label="Gender"
-                    value={employee.maritalStatus || ""}
+                    value={employee?.maritalStatus || ""}
                     options={["Male", "Female"]}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("gender", e.target.value)}
@@ -206,7 +209,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     label="Nationality"
                     name="lastName"
-                    value={employee.nationality}
+                    value={employee?.nationality}
                     isEditMode={isEditMode}
                     options={["Pakistan", "Forign"]}
                     onChange={(e) =>
@@ -217,7 +220,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="address"
                     label="Address"
-                    value={employee.address}
+                    value={employee?.address}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("address", e.target.value)}
                   />
@@ -225,7 +228,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     name="city"
                     label="City"
                     type="select"
-                    value={employee.city}
+                    value={employee?.city}
                     isEditMode={isEditMode}
                     options={[
                       "Faisalabad",
@@ -241,7 +244,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     name="state"
                     label="State"
                     type="select"
-                    value={employee.state}
+                    value={employee?.state}
                     isEditMode={isEditMode}
                     options={["Punjab", "Sindh", "Balochistan", "KPK"]}
                     onChange={(e) => handleUpdate("state", e.target.value)}
@@ -249,7 +252,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="zipCode"
                     label="Zip Code"
-                    value={employee.zipCode}
+                    value={employee?.zipCode}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("zipCode", e.target.value)}
                   />
@@ -267,14 +270,14 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="employeeID"
                     label="Employee ID"
-                    value={employee.employeeId}
+                    value={employee?.employeeId}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("employeeId", e.target.value)}
                   />
                   <InputField
                     name="userName"
                     label="User Name"
-                    value={employee.userName}
+                    value={employee?.userName}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("userName", e.target.value)}
                   />
@@ -282,7 +285,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     name="employeeType"
                     label="Employee Type"
                     type="select"
-                    value={employee.employmentType || ""}
+                    value={employee?.employmentType || ""}
                     options={["Office", "Remote"]}
                     isEditMode={isEditMode}
                     onChange={(e) =>
@@ -292,7 +295,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="emailAddress"
                     label="Email Address"
-                    value={employee.email}
+                    value={employee?.email}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("email", e.target.value)}
                   />
@@ -300,7 +303,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     name="employeeStatus"
                     type="select"
                     label="Employee Status"
-                    value={employee.status}
+                    value={employee?.status}
                     options={["Permanent", "Contract"]}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("status", e.target.value)}
@@ -309,7 +312,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     name="department"
                     type="select"
                     label="Department"
-                    value={employee.department || ""}
+                    value={employee?.department || ""}
                     options={[
                       "Design",
                       "Development",
@@ -325,7 +328,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     type="select"
                     label="Designation"
                     name="designation"
-                    value={employee.designation}
+                    value={employee?.designation}
                     isEditMode={isEditMode}
                     options={[
                       "UI/X Designer",
@@ -346,7 +349,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     name="workingDays"
                     type="select"
                     label="Working Days"
-                    value={employee.workingDays || ""}
+                    value={employee?.workingDays || ""}
                     options={["Monday-Friday", "Sunday-Thursday", "Flexible"]}
                     isEditMode={isEditMode}
                     onChange={(e) =>
@@ -356,7 +359,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="joiningDate"
                     label="Joining Date"
-                    value={employee.joiningDate}
+                    value={employee?.joiningDate}
                     isEditMode={isEditMode}
                     onChange={(e) =>
                       handleUpdate("joiningDate", e.target.value)
@@ -366,7 +369,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     type="select"
                     name="officeLocation"
                     label="Office Location"
-                    value={employee.officeLocation}
+                    value={employee?.officeLocation}
                     isEditMode={isEditMode}
                     options={[
                       "Faisalabad",
@@ -384,43 +387,48 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               </div>
             )}
             {subTab === "documents" && (
-               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-               {["appointmentLetter", "salarySlip", "relievingLetter", "experienceLetter"].map((field) => (
-                 <div key={field}>
-                   <h3 className="text-gray-400 mb-2">{field.replace(/([A-Z])/g, " $1")}</h3>
-             
-                   {/* Show existing document */}
-                   {employee[field] ? (
-                     <a href={employee[field]} target="_blank" rel="noopener noreferrer">
-                       <img
-                         src={employee[field]}
-                         alt={field}
-                         className="w-32 h-32 object-cover border border-gray-500 rounded-md"
-                       />
-                     </a>
-                   ) : (
-                     <p className="text-gray-500 text-sm">No {field} uploaded</p>
-                   )}
-             
-                   {/* File Input & Update Button */}
-                   <input
-                     type="file"
-                     accept="image/*"
-                     className="mt-2"
-                     onChange={(e) => handleDocumentChange(field, e.target.files?.[0]!)}
-                   />
-                   <button
-                     onClick={() => updateDocument(field)}
-                     className="mt-2 bg-orange-500 text-white px-4 py-2 rounded"
-                   >
-                     Update {field.replace(/([A-Z])/g, " $1")}
-                   </button>
-                 </div>
-               ))}
-             </div>
-             
-            
+              <div className="grid grid-cols-2">
+                {fields.map((field) => (
+                  <div key={field}>
+                    {employee && employee[field] ? (
+                      <a
+                        href={employee[field] as string}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Image
+                          width={32}
+                          height={32}
+                          src={employee[field] as string}
+                          alt={String(field)}
+                          className="w-32 h-32 object-cover border border-gray-500 rounded-md"
+                        />
+                      </a>
+                    ) : (
+                      <p className="text-gray-500 text-sm">
+                        No {field} uploaded
+                      </p>
+                    )}
+
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="mt-2"
+                      onChange={(e) =>
+                        handleDocumentChange(field as string , e.target.files?.[0] as File)
+                      }
+                    />
+                    <button
+                      onClick={() => updateDocument(field)}
+                      className="mt-2 bg-orange-500 text-white px-4 py-2 rounded"
+                    >
+                      Update {(field as string).replace(/([A-Z])/g, " $1")}
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
+
             {subTab === "account" && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-2">Account Access</h3>
@@ -428,28 +436,28 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   <InputField
                     name="emailAddress"
                     label="Email Address"
-                    value={employee.email}
+                    value={employee?.email}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("email", e.target.value)}
                   />
                   <InputField
                     name="slackID"
                     label="Slack ID"
-                    value={employee.slackId}
+                    value={employee?.slackId}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("slackId", e.target.value)}
                   />
                   <InputField
                     name="skypeID"
                     label="Skype ID"
-                    value={employee.skypeId}
+                    value={employee?.skypeId}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("skypeId", e.target.value)}
                   />
                   <InputField
                     name="githubID"
                     label="Github ID"
-                    value={employee.githubId}
+                    value={employee?.githubId}
                     isEditMode={isEditMode}
                     onChange={(e) => handleUpdate("githubId", e.target.value)}
                   />

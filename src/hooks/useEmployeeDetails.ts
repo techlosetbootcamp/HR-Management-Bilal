@@ -94,13 +94,47 @@ import { useEffect, useState } from "react";
 //   return { employee, loading, error, handleUpdate, saveChanges };
 // }
 
+
+// Define an Employee interface based on usage
+export interface Employee {
+  id: string;
+  firstName?: string;
+  lastName: string;
+  email: string;
+  department: string;
+  designation: string;
+  dateOfBirth: string
+  zipCode: string
+  state: string
+  city: string;
+  gender: string;
+  mobileNumber: string;
+  photoURL?: string;
+  salarySlip?: string;
+  address: string;
+  maritalStatus: string
+  nationality: string
+  employeeId: string
+  userName: string
+  employmentType: string
+  status: string
+  workingDays: string
+  joiningDate: string
+  officeLocation: string
+  [key: string]: string |File | undefined;
+  photoPublicId?: string;
+  slackId: string
+  skypeId: string
+  githubId: string
+}
+
 export function useEmployeeDetails(id: string) {
-  const [employee, setEmployee] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [updatedFields, setUpdatedFields] = useState<Partial<any>>({});
-  const [updatedImage, setUpdatedImage] = useState<string | null>(null); // Store preview image
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Store new file
+  const [updatedFields, setUpdatedFields] = useState<Partial<Employee>>({});
+  const [updatedImage, setUpdatedImage] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -109,10 +143,10 @@ export function useEmployeeDetails(id: string) {
       try {
         const response = await fetch(`/api/employee/${encodeURIComponent(id)}`);
         if (!response.ok) throw new Error("Failed to fetch employee details");
-        const data = await response.json();
+        const data: Employee = await response.json();
         setEmployee(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError((err as Error).message);
       } finally {
         setLoading(false);
       }
@@ -121,8 +155,8 @@ export function useEmployeeDetails(id: string) {
   }, [id]);
 
   const handleUpdate = (field: string, value: string) => {
-    setEmployee((prev) => ({ ...prev, [field]: value }));
-    setUpdatedFields((prev) => ({ ...prev, [field]: value }));
+    setEmployee(prev => (prev ? { ...prev, [field]: value } : null));
+    setUpdatedFields(prev => ({ ...prev, [field]: value }));
   };
 
   const handleImageChange = (file: File) => {
@@ -164,7 +198,7 @@ export function useEmployeeDetails(id: string) {
         newPublicId = uploadData.public_id;
       }
 
-      const updatePayload: Record<string, any> = {
+      const updatePayload: Partial<Employee> = {
         ...updatedFields,
         ...(newPhotoURL ? { photoURL: newPhotoURL } : {}),
         ...(newPublicId ? { photoPublicId: newPublicId } : {}),
@@ -191,14 +225,14 @@ export function useEmployeeDetails(id: string) {
         throw new Error(`Update failed: ${errorData.error}`);
       }
 
-      const updatedEmployee = await updateResponse.json();
+      const updatedEmployee: Employee = await updateResponse.json();
       setEmployee(updatedEmployee);
       setUpdatedFields({});
       setUpdatedImage(null);
       setSelectedFile(null);
       alert("Profile updated successfully!");
       router.push(`/employees/${id}`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("❌ Error saving changes:", err);
       alert("Error updating profile.");
     }
@@ -206,10 +240,10 @@ export function useEmployeeDetails(id: string) {
 
   const handleDocumentChange = (field: string, file: File) => {
     setSelectedFile(file);
-    setUpdatedFields((prev) => ({ ...prev, [field]: file })); // Store new file
+    setUpdatedFields(prev => ({ ...prev, [field]: file }));
   };
 
-  const updateDocument = async (field: string) => {
+  const updateDocument = async (field: keyof Employee) => {
     if (!selectedFile) {
       alert("Please select a file before updating.");
       return;
@@ -235,8 +269,7 @@ export function useEmployeeDetails(id: string) {
       const data = await uploadResponse.json();
       const updatedFileURL = data.secure_url;
 
-      // ✅ Call API to update employee document in MongoDB
-      const updateResponse = await fetch(`/api/employee/${employee.id}`, {
+      const updateResponse = await fetch(`/api/employee/${employee!.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ [field]: updatedFileURL }),
@@ -245,8 +278,8 @@ export function useEmployeeDetails(id: string) {
       if (!updateResponse.ok) throw new Error("Document update failed");
 
       alert(`${field} updated successfully!`);
-      window.location.reload(); // Refresh to reflect changes
-    } catch (error) {
+      window.location.reload();
+    } catch (error: unknown) {
       console.error(`Error updating ${field}:`, error);
       alert("Failed to update document.");
     }
@@ -261,6 +294,6 @@ export function useEmployeeDetails(id: string) {
     handleImageChange,
     updatedImage,
     updateDocument,
-    handleDocumentChange
+    handleDocumentChange,
   };
 }
