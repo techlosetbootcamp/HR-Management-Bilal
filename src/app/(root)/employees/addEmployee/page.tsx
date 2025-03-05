@@ -17,7 +17,7 @@ export default function AddEmployeeForm() {
     loading,
     error,
     handleFileUpload,
-    handleImageUpload,
+    // handleImageUpload,
   } = useAddEmployee();
 
   const [activeTab, setActiveTab] = useState(0);
@@ -30,7 +30,7 @@ const router = useRouter();
         <PersonalInfo
           form={form}
           handleChange={handleChange}
-          handleImageUpload={handleImageUpload}
+          handleFileUpload={handleFileUpload}
         />
       ),
     },

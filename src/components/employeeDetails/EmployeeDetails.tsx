@@ -22,11 +22,37 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     updatedImage,
     handleImageChange,
     handleDocumentChange,
-    updateDocument,
+    // updateDocument,
   } = useEmployeeDetails(id);
   const [activeTab, setActiveTab] = useState("profile");
   // const fields: (keyof Employee)[] = ["photoURL", "salarySlip"]; // Add more document-related fields if needed.
-  const fields: Extract<keyof Employee, string>[] = ["appointmentLetter", "salarySlip", "experienceLetter", "relivingLetter"];
+  const fields: Extract<keyof Employee, string>[] = [
+    "appointmentLetter",
+    "salarySlip",
+    "experienceLetter",
+    "relivingLetter",
+  ];
+  const [pdfPreview, setPdfPreview] = useState<string | null>(null);
+
+  const openPdfPreview = (url: string) => {
+    console.log("Opening PDF:", url);
+  
+    // Set preview in modal first
+    setPdfPreview(url);
+    
+    // If the user prefers a new tab, they can click "Open in new tab"
+  };
+  
+  
+  
+
+  const getPdfUrl = (url: string) => {
+    return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(url)}`;
+  };
+
+  const closePdfPreview = () => {
+    setPdfPreview(null);
+  };
 
   const [subTab, setSubTab] = useState("personal");
   const router = useRouter();
@@ -34,7 +60,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className=" dark:bg-[#131313] dark:text-white rounded-lg shadow-lg flex border border-gray-700">
+    <div className="dark:bg-[#131313] dark:text-white rounded-lg shadow-lg flex border border-gray-700">
       {/* Sidebar Navigation */}
       <div className="w-1/4 h-[700px] dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4">
         {["profile", "attendance", "projects", "leave"].map((tab) => (
@@ -53,9 +79,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
       <div className="w-3/4 p-4">
         {activeTab === "profile" && (
           <>
-            {/* Profile Header */}
             <div className="flex items-center gap-4 mb-6">
-              {/* Profile Image */}
               <label
                 htmlFor="profileImageUpload"
                 className="cursor-pointer relative"
@@ -70,7 +94,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   className="w-[100px] h-[100px] object-cover rounded-full border border-gray-500"
                 />
 
-                {/* Show Edit Icon when in Edit Mode */}
                 {isEditMode && (
                   <div className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full">
                     <Edit size={16} />
@@ -78,7 +101,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 )}
               </label>
 
-              {/* Hidden File Input for Image Upload */}
               {isEditMode && (
                 <input
                   type="file"
@@ -93,7 +115,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 />
               )}
 
-              {/* Employee Info */}
               <div>
                 <h2 className="text-2xl font-bold">
                   {employee?.firstName} {employee?.lastName}
@@ -102,7 +123,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <p>{employee?.email}</p>
               </div>
 
-              {/* Edit Profile Button */}
               <button
                 onClick={() =>
                   router.push(`/employees/${employee?.id}?edit=true`)
@@ -112,8 +132,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <Edit /> Edit Profile
               </button>
             </div>
-
-            {/* Sub Tab Navigation */}
             <div className="flex border-b border-gray-700 mb-4">
               {[
                 { key: "personal", label: "Personal", icon: <User /> },
@@ -138,7 +156,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 </button>
               ))}
             </div>
-
             {/* Content Display */}
             {subTab === "personal" && (
               <div className="mb-6">
@@ -260,7 +277,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <button onClick={saveChanges}>Submit</button>
               </div>
             )}
-
             {subTab === "professional" && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-2">
@@ -386,47 +402,85 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 </div>
               </div>
             )}
+            {/* const fields: Extract<keyof Employee, string>[] = ["appointmentLetter", "salarySlip", "experienceLetter", "relivingLetter"]; */}
             {subTab === "documents" && (
-              <div className="grid grid-cols-2">
-                {fields.map((field) => (
-                  <div key={field}>
-                    {employee && employee[field] ? (
-                      <a
-                        href={employee[field] as string}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Image
-                          width={32}
-                          height={32}
-                          src={employee[field] as string}
-                          alt={String(field)}
-                          className="w-32 h-32 object-cover border border-gray-500 rounded-md"
-                        />
-                      </a>
-                    ) : (
-                      <p className="text-gray-500 text-sm">
-                        No {field} uploaded
-                      </p>
-                    )}
-
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="mt-2"
-                      onChange={(e) =>
-                        handleDocumentChange(field as string , e.target.files?.[0] as File)
-                      }
-                    />
-                    <button
-                      onClick={() => updateDocument(field)}
-                      className="mt-2 bg-orange-500 text-white px-4 py-2 rounded"
-                    >
-                      Update {(field as string).replace(/([A-Z])/g, " $1")}
-                    </button>
-                  </div>
-                ))}
-              </div>
+               <div>
+               <div className="grid grid-cols-2 gap-4">
+                 {fields.map((field) => (
+                   <div
+                     key={field}
+                     className="flex items-center gap-2 bg-gray-800 p-3 rounded-md"
+                   >
+                     {employee && employee[field] ? (
+                       <>
+                         {/* File Name */}
+                         <span className="text-white flex-grow">
+                           {field.replace(/([A-Z])/g, " $1")}.pdf
+                         </span>
+         
+                         {/* View PDF */}
+                         <button
+                           onClick={() => openPdfPreview(employee[field] as string)}
+                           className="text-blue-400 hover:underline"
+                         >
+                           👁 View
+                         </button>
+         
+                         {/* Download PDF */}
+                         <a
+                           href={employee[field] as string}
+                           download
+                           className="text-green-400 hover:underline"
+                         >
+                           ⬇ Download
+                         </a>
+                       </>
+                     ) : (
+                       <p className="text-gray-500 text-sm">No {field} uploaded</p>
+                     )}
+         
+                     {/* File Upload */}
+                     {isEditMode && (
+                       <>
+                         <input
+                           type="file"
+                           accept=".pdf"
+                           className="hidden"
+                           id={`upload-${field}`}
+                           onChange={(e) =>
+                             handleDocumentChange(field, e.target.files?.[0] as File)
+                           }
+                         />
+                         <label
+                           htmlFor={`upload-${field}`}
+                           className="text-orange-500 cursor-pointer"
+                         >
+                           📤 Upload
+                         </label>
+                       </>
+                     )}
+                   </div>
+                 ))}
+               </div>
+         
+               {/* Modal PDF Preview */}
+               {pdfPreview && (
+                 <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center">
+                   <div className="bg-white p-4 rounded-lg max-w-3xl w-full">
+                     <iframe
+                       src={getPdfUrl(pdfPreview)}
+                       className="w-full h-[500px]"
+                     ></iframe>
+                     <button
+                       onClick={closePdfPreview}
+                       className="mt-2 text-red-500"
+                     >
+                       ✖ Close
+                     </button>
+                   </div>
+                 </div>
+               )}
+             </div>
             )}
 
             {subTab === "account" && (
