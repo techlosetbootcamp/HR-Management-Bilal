@@ -104,7 +104,7 @@ export function useEmployeeDetails(id: string) {
       alert("No changes detected.");
       return;
     }
-    console.log("🔄 Sending update payload:", updatePayload);
+    console.log(" Sending update payload:", updatePayload);
     const updateResponse = await fetch(
       `/api/employee/${encodeURIComponent(id)}`,
       {
@@ -125,7 +125,7 @@ export function useEmployeeDetails(id: string) {
     alert("Profile updated successfully!");
     router.push(`/employees/${id}`);
   } catch (err: unknown) {
-    console.error("❌ Error saving changes:", err);
+    console.error(" Error saving changes:", err);
     alert("Error updating profile.");
   }
 };
@@ -153,16 +153,15 @@ export function useEmployeeDetails(id: string) {
         "upload_preset",
         process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "default_preset"
       );
-      formData.append("resource_type", "raw"); // Ensure non-image upload
+      formData.append("resource_type", "raw");
   
-      // ✅ Upload file to Cloudinary first
       const uploadResponse = await fetch(
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
         { method: "POST", body: formData }
       );
   
       if (!uploadResponse.ok) {
-        console.error("❌ Upload failed:", uploadResponse.status);
+        console.error(" Upload failed:", uploadResponse.status);
         throw new Error("Upload failed");
       }
   
@@ -170,7 +169,7 @@ export function useEmployeeDetails(id: string) {
       console.log("✅ Cloudinary Upload Response:", data);
   
       if (!data || !data.secure_url) {
-        console.error("❌ Missing secure_url in Cloudinary response:", data);
+        console.error("Missing secure_url in Cloudinary response:", data);
         throw new Error("Cloudinary upload failed: No secure_url received");
       }
   
@@ -178,11 +177,9 @@ export function useEmployeeDetails(id: string) {
   
       console.log(`🔄 Updating employee document field: ${field}`);
   
-      const updatePayload: Partial<Employee> = { [field]: updatedFileURL }; // ✅ Send URL instead of File
-  
+      const updatePayload: Partial<Employee> = { [field]: updatedFileURL };   
       console.log("📨 Sending update request with payload:", updatePayload);
   
-      // ✅ Send PATCH request with file URL (NOT the file itself)
       const updateResponse = await fetch(`/api/employee/${encodeURIComponent(employee!.id)}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -194,17 +191,17 @@ export function useEmployeeDetails(id: string) {
         try {
           errorData = await updateResponse.json();
         } catch (jsonError) {
-          console.error("❌ Error parsing update API response:", jsonError);
+          console.error(" Error parsing update API response:", jsonError);
           throw new Error("Invalid JSON response from update API");
         }
-        console.error("❌ Update request failed:", errorData);
+        console.error("Update request failed:", errorData);
         throw new Error("Document update failed");
       }
   
       alert(`${field} updated successfully!`);
       window.location.reload();
     } catch (error: unknown) {
-      console.error(`❌ Error updating ${field}:`, error);
+      console.error(` Error updating ${field}:`, error);
       alert("Failed to update document. Check the console for details.");
     }
   };

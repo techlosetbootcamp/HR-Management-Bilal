@@ -1,0 +1,117 @@
+export const PersonalInfo = [
+  { name: "firstName", label: "First Name", valueKey: "firstName" },
+  { name: "lastName", label: "Last Name", valueKey: "lastName" },
+  { name: "mobileNumber", label: "Mobile Number", valueKey: "mobileNumber" },
+  { name: "email", label: "Email Address", valueKey: "email" },
+  { name: "dateOfBirth", label: "Date of Birth", valueKey: "dateOfBirth" },
+  {
+    name: "maritalStatus",
+    label: "Marital Status",
+    valueKey: "maritalStatus",
+    type: "select",
+    options: ["Single", "Married"],
+  },
+  {
+    name: "gender",
+    label: "Gender",
+    valueKey: "gender",
+    type: "select",
+    options: ["Male", "Female"],
+  },
+  {
+    name: "nationality",
+    label: "Nationality",
+    valueKey: "nationality",
+    type: "select",
+    options: ["Pakistan", "Foreign"],
+  },
+  { name: "address", label: "Address", valueKey: "address" },
+  {
+    name: "city",
+    label: "City",
+    valueKey: "city",
+    type: "select",
+    options: [
+      "Faisalabad",
+      "Lahore",
+      "Rawalpindi",
+      "Islamabad",
+      "Karachi",
+      "Multan",
+    ],
+  },
+  {
+    name: "state",
+    label: "State",
+    valueKey: "state",
+    type: "select",
+    options: ["Punjab", "Sindh", "Balochistan", "KPK"],
+  },
+  { name: "zipCode", label: "Zip Code", valueKey: "zipCode" },
+];
+
+export const ProfessionalInfo = [
+  { name: "employeeId", label: "Employee ID", type: "text" },
+  { name: "userName", label: "User Name", type: "text" },
+  {
+    name: "employmentType",
+    label: "Employee Type",
+    type: "select",
+    options: ["Office", "Remote"],
+  },
+  { name: "email", label: "Email Address", type: "text" },
+  {
+    name: "status",
+    label: "Employee Status",
+    type: "select",
+    options: ["Permanent", "Contract"],
+  },
+  {
+    name: "department",
+    label: "Department",
+    type: "select",
+    options: ["Design", "Development", "HR", "PM", "Sales"],
+  },
+  {
+    name: "designation",
+    label: "Designation",
+    type: "select",
+    options: [
+      "UI/UX Designer",
+      "PHP Developer",
+      "HR Executive",
+      "Project Manager",
+      "Sales Manager",
+      "Next.js Developer",
+      "Node.js Developer",
+      "Design Lead",
+    ],
+  },
+  {
+    name: "workingDays",
+    label: "Working Days",
+    type: "select",
+    options: ["Monday-Friday", "Sunday-Thursday", "Flexible"],
+  },
+  { name: "joiningDate", label: "Joining Date", type: "text" },
+  {
+    name: "officeLocation",
+    label: "Office Location",
+    type: "select",
+    options: [
+      "Faisalabad",
+      "Lahore",
+      "Islamabad",
+      "Karachi",
+      "Rawalpindi",
+      "Multan",
+    ],
+  },
+];
+
+export const AccountAccess = [
+  { name: "email", label: "Email Address" },
+  { name: "slackId", label: "Slack ID" },
+  { name: "skypeId", label: "Skype ID" },
+  { name: "githubId", label: "Github ID" },
+];

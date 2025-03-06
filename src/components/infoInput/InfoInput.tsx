@@ -36,7 +36,7 @@ const InputField: React.FC<InputFieldProps> = ({
             value={value}
             onChange={onChange}
             required={required}
-            className="border p-2 rounded w-full bg-gray-900 text-white border-gray-700 h-[45px]"
+            className="border p-2 rounded w-full dark:bg-[#131313] text-white border-gray-700 h-[45px]"
           >
             <option value="" disabled>{placeholder || "Select an option"}</option>
             {options?.map((option, index) => (
@@ -58,7 +58,7 @@ const InputField: React.FC<InputFieldProps> = ({
           </div>
         )
       ) : (
-        <p className="dark:bg-gray-900 dark:text-gray-300 p-2 rounded-md">
+        <p className="dark:bg-[#131313] dark:text-gray-300 p-2 rounded-md">
           {value || "N/A"}
         </p>
       )}

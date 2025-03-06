@@ -123,14 +123,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         />
       </div>
 
-      {/* Address Details */}
       <InputField
         label="Address"
         type="text"
         name="address"
         value={form.address}
         onChange={handleChange}
-        className="mt-4"
       />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
         <InputField

@@ -1,14 +1,34 @@
 import { useState } from "react";
 import { Employee, useEmployeeDetails } from "@/hooks/useEmployeeDetails";
-import { Briefcase, Edit, FileText, Lock, User } from "lucide-react";
+import {
+  Briefcase,
+  Download,
+  Edit,
+  Eye,
+  FileText,
+  Lock,
+  User,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import InputField from "../infoInput/InfoInput";
+import { AccountAccess, PersonalInfo, ProfessionalInfo } from "@/utils/employeeFeilds";
+
+type InputFieldType =
+  | "number"
+  | "email"
+  | "select"
+  | "date"
+  | "password"
+  | "text"
+  | undefined;
+
 interface EmployeeDetailsProps {
   id: string;
   isEditMode: boolean;
   employeeEmail: string;
 }
+
 const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   id,
   isEditMode,
@@ -21,11 +41,8 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     saveChanges,
     updatedImage,
     handleImageChange,
-    handleDocumentChange,
-    // updateDocument,
   } = useEmployeeDetails(id);
   const [activeTab, setActiveTab] = useState("profile");
-  // const fields: (keyof Employee)[] = ["photoURL", "salarySlip"]; // Add more document-related fields if needed.
   const fields: Extract<keyof Employee, string>[] = [
     "appointmentLetter",
     "salarySlip",
@@ -36,18 +53,15 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
   const openPdfPreview = (url: string) => {
     console.log("Opening PDF:", url);
-  
-    // Set preview in modal first
+
     setPdfPreview(url);
-    
-    // If the user prefers a new tab, they can click "Open in new tab"
+
   };
-  
-  
-  
 
   const getPdfUrl = (url: string) => {
-    return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(url)}`;
+    return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+      url
+    )}`;
   };
 
   const closePdfPreview = () => {
@@ -61,7 +75,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
   return (
     <div className="dark:bg-[#131313] dark:text-white rounded-lg shadow-lg flex border border-gray-700">
-      {/* Sidebar Navigation */}
       <div className="w-1/4 h-[700px] dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4">
         {["profile", "attendance", "projects", "leave"].map((tab) => (
           <button
@@ -156,365 +169,130 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 </button>
               ))}
             </div>
-            {/* Content Display */}
             {subTab === "personal" && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-2">
                   Personal Information
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <InputField
-                    name="firstName"
-                    label="First Name"
-                    value={employee?.firstName}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("firstName", e.target.value)}
-                  />
-                  <InputField
-                    name="lastName"
-                    label="Last Name"
-                    value={employee?.lastName}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("lastName", e.target.value)}
-                  />
-                  <InputField
-                    name="mobileNumber"
-                    label="Mobile Number"
-                    value={employee?.mobileNumber}
-                    isEditMode={isEditMode}
-                    onChange={(e) =>
-                      handleUpdate("mobileNumber", e.target.value)
-                    }
-                  />
-                  <InputField
-                    name="emailAddress"
-                    label="Email Address"
-                    value={employee?.email}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("email", e.target.value)}
-                  />
-
-                  <InputField
-                    name="dateOfBirth"
-                    label="Date of Birth"
-                    value={employee?.dateOfBirth}
-                    isEditMode={isEditMode}
-                    onChange={(e) =>
-                      handleUpdate("dateOfBirth", e.target.value)
-                    }
-                  />
-                  <InputField
-                    label="Marital Status"
-                    name="maritalStatus"
-                    type="select"
-                    value={employee?.maritalStatus || ""}
-                    options={["Single", "Married"]}
-                    isEditMode={isEditMode}
-                    onChange={(e) =>
-                      handleUpdate("maritalStatus", e.target.value)
-                    } // Fix applied
-                  />
-
-                  <InputField
-                    name="gender"
-                    label="Gender"
-                    value={employee?.maritalStatus || ""}
-                    options={["Male", "Female"]}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("gender", e.target.value)}
-                  />
-                  <InputField
-                    label="Nationality"
-                    name="lastName"
-                    value={employee?.nationality}
-                    isEditMode={isEditMode}
-                    options={["Pakistan", "Forign"]}
-                    onChange={(e) =>
-                      handleUpdate("nationality", e.target.value)
-                    }
-                  />
-
-                  <InputField
-                    name="address"
-                    label="Address"
-                    value={employee?.address}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("address", e.target.value)}
-                  />
-                  <InputField
-                    name="city"
-                    label="City"
-                    type="select"
-                    value={employee?.city}
-                    isEditMode={isEditMode}
-                    options={[
-                      "Faisalabad",
-                      "Lashore",
-                      "Rawalpindi",
-                      "Islamabad",
-                      "Karachi",
-                      "Multan",
-                    ]}
-                    onChange={(e) => handleUpdate("city", e.target.value)}
-                  />
-                  <InputField
-                    name="state"
-                    label="State"
-                    type="select"
-                    value={employee?.state}
-                    isEditMode={isEditMode}
-                    options={["Punjab", "Sindh", "Balochistan", "KPK"]}
-                    onChange={(e) => handleUpdate("state", e.target.value)}
-                  />
-                  <InputField
-                    name="zipCode"
-                    label="Zip Code"
-                    value={employee?.zipCode}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("zipCode", e.target.value)}
-                  />
+                  {PersonalInfo.map(
+                    ({ name, label, valueKey, type, options }) => (
+                      <InputField
+                        key={name}
+                        name={name}
+                        label={label}
+                        value={employee?.[valueKey] as string}
+                        isEditMode={isEditMode}
+                        type={type as InputFieldType}
+                        options={options}
+                        onChange={(e) => handleUpdate(name, e.target.value)}
+                      />
+                    )
+                  )}
                 </div>
                 <button onClick={saveChanges}>Submit</button>
               </div>
             )}
+
             {subTab === "professional" && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-2">
                   Professional Information
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <InputField
-                    name="employeeID"
-                    label="Employee ID"
-                    value={employee?.employeeId}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("employeeId", e.target.value)}
-                  />
-                  <InputField
-                    name="userName"
-                    label="User Name"
-                    value={employee?.userName}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("userName", e.target.value)}
-                  />
-                  <InputField
-                    name="employeeType"
-                    label="Employee Type"
-                    type="select"
-                    value={employee?.employmentType || ""}
-                    options={["Office", "Remote"]}
-                    isEditMode={isEditMode}
-                    onChange={(e) =>
-                      handleUpdate("employmentType", e.target.value)
-                    }
-                  />
-                  <InputField
-                    name="emailAddress"
-                    label="Email Address"
-                    value={employee?.email}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("email", e.target.value)}
-                  />
-                  <InputField
-                    name="employeeStatus"
-                    type="select"
-                    label="Employee Status"
-                    value={employee?.status}
-                    options={["Permanent", "Contract"]}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("status", e.target.value)}
-                  />
-                  <InputField
-                    name="department"
-                    type="select"
-                    label="Department"
-                    value={employee?.department || ""}
-                    options={[
-                      "Design",
-                      "Development",
-                      "HR",
-                      "Design",
-                      "PM",
-                      "Sales",
-                    ]}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("department", e.target.value)}
-                  />
-                  <InputField
-                    type="select"
-                    label="Designation"
-                    name="designation"
-                    value={employee?.designation}
-                    isEditMode={isEditMode}
-                    options={[
-                      "UI/X Designer",
-                      "PHP Developer",
-                      "HR Executive",
-                      "Pht Developer",
-                      "Project Mansger",
-                      "Sales Manager",
-                      "Next JS Developer",
-                      "Node JS Developer",
-                      "Design Lead",
-                    ]}
-                    onChange={(e) =>
-                      handleUpdate("designation", e.target.value)
-                    }
-                  />
-                  <InputField
-                    name="workingDays"
-                    type="select"
-                    label="Working Days"
-                    value={employee?.workingDays || ""}
-                    options={["Monday-Friday", "Sunday-Thursday", "Flexible"]}
-                    isEditMode={isEditMode}
-                    onChange={(e) =>
-                      handleUpdate("workingDays", e.target.value)
-                    }
-                  />
-                  <InputField
-                    name="joiningDate"
-                    label="Joining Date"
-                    value={employee?.joiningDate}
-                    isEditMode={isEditMode}
-                    onChange={(e) =>
-                      handleUpdate("joiningDate", e.target.value)
-                    }
-                  />
-                  <InputField
-                    type="select"
-                    name="officeLocation"
-                    label="Office Location"
-                    value={employee?.officeLocation}
-                    isEditMode={isEditMode}
-                    options={[
-                      "Faisalabad",
-                      "Lahore",
-                      "Islamabad",
-                      "Karachi",
-                      "Rawalpindi",
-                      "Multan",
-                    ]}
-                    onChange={(e) =>
-                      handleUpdate("officeLocation", e.target.value)
-                    }
-                  />
+                  {ProfessionalInfo.map(({ name, label, type, options }) => (
+                    <InputField
+                      key={name}
+                      name={name}
+                      label={label}
+                      type={type as "text" | "select"}
+                      value={
+                        typeof employee?.[name] === "string"
+                          ? (employee[name] as string)
+                          : ""
+                      }
+                      options={options}
+                      isEditMode={isEditMode}
+                      onChange={(e) => handleUpdate(name, e.target.value)}
+                    />
+                  ))}
                 </div>
               </div>
             )}
-            {/* const fields: Extract<keyof Employee, string>[] = ["appointmentLetter", "salarySlip", "experienceLetter", "relivingLetter"]; */}
+
             {subTab === "documents" && (
-               <div>
-               <div className="grid grid-cols-2 gap-4">
-                 {fields.map((field) => (
-                   <div
-                     key={field}
-                     className="flex items-center gap-2 bg-gray-800 p-3 rounded-md"
-                   >
-                     {employee && employee[field] ? (
-                       <>
-                         {/* File Name */}
-                         <span className="text-white flex-grow">
-                           {field.replace(/([A-Z])/g, " $1")}.pdf
-                         </span>
-         
-                         {/* View PDF */}
-                         <button
-                           onClick={() => openPdfPreview(employee[field] as string)}
-                           className="text-blue-400 hover:underline"
-                         >
-                           👁 View
-                         </button>
-         
-                         {/* Download PDF */}
-                         <a
-                           href={employee[field] as string}
-                           download
-                           className="text-green-400 hover:underline"
-                         >
-                           ⬇ Download
-                         </a>
-                       </>
-                     ) : (
-                       <p className="text-gray-500 text-sm">No {field} uploaded</p>
-                     )}
-         
-                     {/* File Upload */}
-                     {isEditMode && (
-                       <>
-                         <input
-                           type="file"
-                           accept=".pdf"
-                           className="hidden"
-                           id={`upload-${field}`}
-                           onChange={(e) =>
-                             handleDocumentChange(field, e.target.files?.[0] as File)
-                           }
-                         />
-                         <label
-                           htmlFor={`upload-${field}`}
-                           className="text-orange-500 cursor-pointer"
-                         >
-                           📤 Upload
-                         </label>
-                       </>
-                     )}
-                   </div>
-                 ))}
-               </div>
-         
-               {/* Modal PDF Preview */}
-               {pdfPreview && (
-                 <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center">
-                   <div className="bg-white p-4 rounded-lg max-w-3xl w-full">
-                     <iframe
-                       src={getPdfUrl(pdfPreview)}
-                       className="w-full h-[500px]"
-                     ></iframe>
-                     <button
-                       onClick={closePdfPreview}
-                       className="mt-2 text-red-500"
-                     >
-                       ✖ Close
-                     </button>
-                   </div>
-                 </div>
-               )}
-             </div>
+              <div>
+                <div className="grid grid-cols-2 gap-4">
+                  {fields.map((field) => (
+                    <div
+                      key={field}
+                      className="flex items-center gap-2 bg-[#131313] p-3 rounded-md border border-gray-700"
+                    >
+                      {employee && employee[field] ? (
+                        <>
+                          <span className="text-white flex-grow">
+                            {field.replace(/([A-Z])/g, " $1")}.pdf
+                          </span>
+
+                          <button
+                            onClick={() =>
+                              openPdfPreview(employee[field] as string)
+                            }
+                            className="dark:text-white hover:underline"
+                          >
+                            <Eye />
+                          </button>
+
+                          <a
+                            href={employee[field] as string}
+                            download
+                            className="dark:text-white hover:underline"
+                          >
+                            <Download />
+                          </a>
+                        </>
+                      ) : (
+                        <p className="text-gray-500 text-sm">
+                          No {field} uploaded
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {pdfPreview && (
+                  <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center">
+                    <div className="bg-white p-4 rounded-lg max-w-3xl w-full">
+                      <iframe
+                        src={getPdfUrl(pdfPreview)}
+                        className="w-full h-[500px]"
+                      ></iframe>
+                      <button
+                        onClick={closePdfPreview}
+                        className="mt-2 text-red-500"
+                      >
+                        ✖ Close
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
 
             {subTab === "account" && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-2">Account Access</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <InputField
-                    name="emailAddress"
-                    label="Email Address"
-                    value={employee?.email}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("email", e.target.value)}
-                  />
-                  <InputField
-                    name="slackID"
-                    label="Slack ID"
-                    value={employee?.slackId}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("slackId", e.target.value)}
-                  />
-                  <InputField
-                    name="skypeID"
-                    label="Skype ID"
-                    value={employee?.skypeId}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("skypeId", e.target.value)}
-                  />
-                  <InputField
-                    name="githubID"
-                    label="Github ID"
-                    value={employee?.githubId}
-                    isEditMode={isEditMode}
-                    onChange={(e) => handleUpdate("githubId", e.target.value)}
-                  />
+                  {AccountAccess.map(({ name, label }) => (
+                    <InputField
+                      key={name}
+                      name={name}
+                      label={label}
+                      value={typeof employee?.[name] === 'string' ? employee[name] as string : ''}
+                      isEditMode={isEditMode}
+                      onChange={(e) => handleUpdate(name, e.target.value)}
+                    />
+                  ))}
                 </div>
               </div>
             )}

@@ -40,17 +40,6 @@ export default function ProfessionalInfo({
         value={form.userName}
         onChange={handleChange}
       />
-
-      {/* <select
-        name="employmentType"
-        value={form.employmentType}
-        onChange={handleChange}
-        className="bg-[#131313] border border-gray-700 rounded-md p-2 text-gray-300"
-      >
-        <option value="">Select Employee Type</option>
-        <option value="Office">Office</option>
-        <option value="Remote">Remote</option>
-      </select> */}
       <InputField
         label="Employee Type"
         name="employmentType"
