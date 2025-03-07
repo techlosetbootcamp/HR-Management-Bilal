@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Employee, useEmployeeDetails } from "@/hooks/useEmployeeDetails";
+import { useEmployeeDetails } from "@/hooks/useEmployeeDetails";
 import {
   Briefcase,
   Download,
@@ -12,7 +12,12 @@ import {
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import InputField from "../infoInput/InfoInput";
-import { AccountAccess, PersonalInfo, ProfessionalInfo } from "@/utils/employeeFeilds";
+import {
+  AccountAccess,
+  PersonalInfo,
+  ProfessionalInfo,
+} from "@/utils/employeeFeilds";
+import { Employee } from "@/redux/slice/employeeSlice";
 
 type InputFieldType =
   | "number"
@@ -40,6 +45,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     handleUpdate,
     saveChanges,
     updatedImage,
+    updatedFields,
     handleImageChange,
   } = useEmployeeDetails(id);
   const [activeTab, setActiveTab] = useState("profile");
@@ -55,7 +61,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     console.log("Opening PDF:", url);
 
     setPdfPreview(url);
-
   };
 
   const getPdfUrl = (url: string) => {
@@ -174,14 +179,18 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <h3 className="text-lg font-semibold mb-2">
                   Personal Information
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {PersonalInfo.map(
                     ({ name, label, valueKey, type, options }) => (
                       <InputField
                         key={name}
                         name={name}
                         label={label}
-                        value={employee?.[valueKey] as string}
+                        value={
+                          updatedFields[name as keyof Employee]  ??
+                          ((employee?.[valueKey as keyof Employee] as string) ||
+                            "")
+                        }
                         isEditMode={isEditMode}
                         type={type as InputFieldType}
                         options={options}
@@ -190,6 +199,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     )
                   )}
                 </div>
+
                 <button onClick={saveChanges}>Submit</button>
               </div>
             )}
@@ -200,16 +210,16 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   Professional Information
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {ProfessionalInfo.map(({ name, label, type, options }) => (
+                  {ProfessionalInfo.map(({ name, label, type, options ,valueKey}) => (
                     <InputField
                       key={name}
                       name={name}
                       label={label}
                       type={type as "text" | "select"}
                       value={
-                        typeof employee?.[name] === "string"
-                          ? (employee[name] as string)
-                          : ""
+                        updatedFields[name as keyof Employee]  ??
+                        ((employee?.[valueKey as keyof Employee] as string) ||
+                          "")
                       }
                       options={options}
                       isEditMode={isEditMode}
@@ -283,12 +293,16 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-2">Account Access</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {AccountAccess.map(({ name, label }) => (
+                  {AccountAccess.map(({ name, label,valueKey  }) => (
                     <InputField
                       key={name}
                       name={name}
                       label={label}
-                      value={typeof employee?.[name] === 'string' ? employee[name] as string : ''}
+                      value={
+                        updatedFields[name as keyof Employee]  ??
+                        ((employee?.[valueKey as keyof Employee] as string) ||
+                          "")
+                      }
                       isEditMode={isEditMode}
                       onChange={(e) => handleUpdate(name, e.target.value)}
                     />

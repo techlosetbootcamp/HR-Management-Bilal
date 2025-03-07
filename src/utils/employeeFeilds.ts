@@ -51,26 +51,29 @@ export const PersonalInfo = [
 ];
 
 export const ProfessionalInfo = [
-  { name: "employeeId", label: "Employee ID", type: "text" },
-  { name: "userName", label: "User Name", type: "text" },
+  { name: "employeeId", label: "Employee ID", type: "text" , valueKey: "employeeId"},
+  { name: "userName", label: "User Name", type: "text", valueKey: "userName" },
   {
     name: "employmentType",
     label: "Employee Type",
     type: "select",
     options: ["Office", "Remote"],
+    valueKey: "employmentType" 
   },
-  { name: "email", label: "Email Address", type: "text" },
+  { name: "email", label: "Email Address", type: "text", valueKey: "email" },
   {
     name: "status",
     label: "Employee Status",
     type: "select",
     options: ["Permanent", "Contract"],
+    valueKey: "status"
   },
   {
     name: "department",
     label: "Department",
     type: "select",
     options: ["Design", "Development", "HR", "PM", "Sales"],
+    valueKey: "department"  
   },
   {
     name: "designation",
@@ -86,14 +89,16 @@ export const ProfessionalInfo = [
       "Node.js Developer",
       "Design Lead",
     ],
+    valueKey: "designation"
   },
   {
     name: "workingDays",
     label: "Working Days",
     type: "select",
     options: ["Monday-Friday", "Sunday-Thursday", "Flexible"],
+    valueKey: "workingDays"
   },
-  { name: "joiningDate", label: "Joining Date", type: "text" },
+  { name: "joiningDate", label: "Joining Date", type: "text" , valueKey: "joiningDate"},
   {
     name: "officeLocation",
     label: "Office Location",
@@ -106,12 +111,13 @@ export const ProfessionalInfo = [
       "Rawalpindi",
       "Multan",
     ],
+    valueKey: "officeLocation"
   },
 ];
 
 export const AccountAccess = [
-  { name: "email", label: "Email Address" },
-  { name: "slackId", label: "Slack ID" },
-  { name: "skypeId", label: "Skype ID" },
-  { name: "githubId", label: "Github ID" },
+  { name: "email", label: "Email Address" , valueKey: "email"},
+  { name: "slackId", label: "Slack ID" , valueKey: "slackId"},
+  { name: "skypeId", label: "Skype ID", valueKey: "skypeId" },
+  { name: "githubId", label: "Github ID", valueKey: "githubId" },
 ];

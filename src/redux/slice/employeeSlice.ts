@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // Define Employee Interface
 export interface Employee {
@@ -34,13 +35,14 @@ export interface Employee {
   attendance?: string;
   status?: string;
   checkOut?: string;
+  photoPublicId?: string;
 }
 
 // Define API Response Type
-interface ApiResponse<T> {
-  data?: T;
-  error?: string;
-}
+// interface ApiResponse<T> {
+//   data?: T;
+//   error?: string;
+// }
 
 // ✅ Fetch Employees
 export const fetchEmployees = createAsyncThunk<
@@ -49,12 +51,13 @@ export const fetchEmployees = createAsyncThunk<
   { rejectValue: string }
 >("employee/fetch", async (_, { rejectWithValue }) => {
   try {
-    const response = await fetch("/api/employee");
-    if (!response.ok) throw new Error("Failed to fetch employees");
-    return response.json();
-  } catch (error: any) {
-    return rejectWithValue(error.message);
-  }
+    const response = await axios.get("/api/employee");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.error || error.message);
+      }
+    }
 });
 
 export const addEmployee = createAsyncThunk<
@@ -63,10 +66,9 @@ export const addEmployee = createAsyncThunk<
   { rejectValue: string }
 >("employee/add", async (employee, { rejectWithValue }) => {
   try {
-    let body: FormData | string;
+    let body: FormData | Partial<Employee>;
     const headers: HeadersInit = {};
 
-    // If there are files, use FormData
     if (employee.files && Object.keys(employee.files).length > 0) {
       const formData = new FormData();
       Object.entries(employee).forEach(([key, value]) => {
@@ -78,26 +80,53 @@ export const addEmployee = createAsyncThunk<
       });
       body = formData;
     } else {
-      body = JSON.stringify(employee);
+      body = employee;
       headers["Content-Type"] = "application/json";
     }
 
-    const response = await fetch("/api/employee", {
-      method: "POST",
-      body,
-      headers,
-    });
-
-    if (!response.ok) {
-      const errorData: ApiResponse<Employee> = await response.json();
-      throw new Error(errorData.error || "Failed to add employee");
+    const response = await axios.post("/api/employee", body, { headers });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.error || error.message);
+      }
     }
-
-    return response.json();
-  } catch (error: any) {
-    return rejectWithValue(error.message);
-  }
 });
+export const fetchEmployeeById = createAsyncThunk(
+  "employeeDetails/fetchEmployeeById",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `/api/employee/${encodeURIComponent(id)}`
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+          return rejectWithValue(error.response?.data?.error || error.message);
+        }
+      }
+  }
+);
+// Update Employee Details
+export const updateEmployeeDetails = createAsyncThunk(
+  "employeeDetails/updateEmployeeDetails",
+  async (
+    { id, updates }: { id: string; updates: Partial<Employee> },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axios.patch(
+        `/api/employee/${encodeURIComponent(id)}`,
+        updates
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+          return rejectWithValue(error.response?.data?.error || error.message);
+        }
+      }
+  }
+);
 
 // ✅ Update Employee
 export const updateEmployee = createAsyncThunk<
@@ -106,23 +135,14 @@ export const updateEmployee = createAsyncThunk<
   { rejectValue: string }
 >("employee/update", async ({ id, updatedData }, { rejectWithValue }) => {
   try {
-    const response = await fetch(`/api/employee`, {
-      method: "PATCH",
-      body: JSON.stringify({ id, ...updatedData }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (!response.ok) {
-      const errorData: ApiResponse<Employee> = await response.json();
-      throw new Error(errorData.error || "Failed to update employee");
+    const response = await axios.patch(`/api/employee`, { id, ...updatedData });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.error || error.message);
+      }
     }
-
-    return response.json();
-  } catch (error: any) {
-    return rejectWithValue(error.message);
-  }
 });
-
 // ✅ Delete Employee
 export const deleteEmployee = createAsyncThunk<
   string,
@@ -130,20 +150,13 @@ export const deleteEmployee = createAsyncThunk<
   { rejectValue: string }
 >("employee/delete", async (id, { rejectWithValue }) => {
   try {
-    const response = await fetch(`/api/employee`, {
-      method: "DELETE",
-      body: JSON.stringify({ id }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (!response.ok) {
-      const errorData: ApiResponse<Employee> = await response.json();
-      throw new Error(errorData.error || "Failed to delete employee");
-    }
-
+    await axios.delete(`/api/employee`, { data: { id } });
     return id;
-  } catch (error: any) {
-    return rejectWithValue(error);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+    return rejectWithValue("Unknown error occurred");
   }
 });
 
@@ -151,9 +164,10 @@ const employeeSlice = createSlice({
   name: "employees",
   initialState: {
     employees: [] as Employee[],
+    employee: null as Employee | null,
     loading: false,
     error: null as string | null,
-    filters: { department: "", designation: "" , city: "" },
+    filters: { department: "", designation: "", city: "" },
   },
   reducers: {
     setFilters: (state, action) => {
@@ -175,7 +189,30 @@ const employeeSlice = createSlice({
         state.loading = false;
         state.error = action.payload ?? "Unknown error occurred";
       })
-
+      .addCase(fetchEmployeeById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchEmployeeById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.employee = action.payload;
+      })
+      .addCase(fetchEmployeeById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateEmployeeDetails.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateEmployeeDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.employee = { ...state.employee, ...action.payload };
+      })
+      .addCase(updateEmployeeDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) ?? "Failed to update employee details";
+      })
       // ✅ Add Employee
       .addCase(addEmployee.pending, (state) => {
         state.loading = true;
@@ -189,7 +226,6 @@ const employeeSlice = createSlice({
         state.loading = false;
         state.error = action.payload ?? "Unknown error occurred";
       })
-
       // ✅ Update Employee
       .addCase(updateEmployee.pending, (state) => {
         state.loading = true;
@@ -206,7 +242,6 @@ const employeeSlice = createSlice({
         state.loading = false;
         state.error = action.payload ?? "Unknown error occurred";
       })
-
       // ✅ Delete Employee
       .addCase(deleteEmployee.pending, (state) => {
         state.loading = true;

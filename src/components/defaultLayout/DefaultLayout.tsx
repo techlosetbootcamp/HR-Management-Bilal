@@ -12,7 +12,7 @@ export default function DefaultLayout({
 }) {
   const pathname = usePathname();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
+  
   return (
     <div className="flex relative min-h-screen dark:bg-[#131313]">
       {/* Mobile overlay */}
