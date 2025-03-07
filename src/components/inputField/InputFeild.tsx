@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { EyeIcon, EyeOffIcon } from "lucide-react"; // Import eye icons
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 interface InputProps {
   type: string;
@@ -46,86 +46,3 @@ const InputField: React.FC<InputProps> = ({ type, label, value, onChange, name }
 };
 
 export default InputField;
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import { EyeIcon, EyeOffIcon } from "lucide-react";
-
-// interface InputFieldProps {
-//   label?: string;
-//   type?: "text" | "email" | "password" | "date" | "select" | "number";
-//   name: string;
-//   placeholder?: string;
-//   value: string;
-//   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-//   required?: boolean;
-//   options?: string[];
-//   icon?: React.ReactNode;
-// }
-
-// const InputField: React.FC<InputFieldProps> = ({
-//   label,
-//   type = "text",
-//   name,
-//   placeholder,
-//   value,
-//   onChange,
-//   required = false,
-//   options,
-//   icon,
-// }) => {
-//   const [showPassword, setShowPassword] = useState(false);
-
-//   const togglePasswordVisibility = () => {
-//     setShowPassword((prev) => !prev);
-//   };
-
-//   return (
-//     <div className="relative w-full mb-5">
-//       {label && <label className="block text-sm font-medium text-gray-400 mb-1">{label}</label>}
-      
-//       {type === "select" ? (
-//         <select
-//           name={name}
-//           value={value}
-//           onChange={onChange}
-//           required={required}
-//           className="border p-2 rounded w-full bg-[#131313] text-white border-gray-700 h-[45px]"
-//         >
-//           <option value="" disabled>{placeholder || "Select an option"}</option>
-//           {options?.map((option, index) => (
-//             <option key={index} value={option}>{option}</option>
-//           ))}
-//         </select>
-//       ) : (
-//         <div className="flex items-center border px-3 rounded-lg border-gray-700 w-full bg-[#131313] text-white relative">
-//           {icon && <span className="mr-2 text-gray-400">{icon}</span>}
-//           <input
-//             type={type === "password" ? (showPassword ? "text" : "password") : type}
-//             name={name}
-//             placeholder={placeholder}
-//             value={value}
-//             onChange={onChange}
-//             required={required}
-//             className="bg-transparent outline-none flex-1 h-[46px]"
-//           />
-//           {type === "password" && (
-//             <button
-//               type="button"
-//               onClick={togglePasswordVisibility}
-//               className="absolute right-4 text-gray-200 hover:text-customOrange transition-colors"
-//             >
-//               {showPassword ? <EyeIcon size={20} /> : <EyeOffIcon size={20} />}
-//             </button>
-//           )}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default InputField;
