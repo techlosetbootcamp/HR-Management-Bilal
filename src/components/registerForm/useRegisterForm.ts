@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import axios from "axios"; 
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/redux/store"; 
+import { registerUser } from "@/redux/slice/authSlice"; 
 
 export const useRegisterForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: "",
-    role: "EMPLOYEE", // Default role
+    role: "EMPLOYEE" as "EMPLOYEE" | "ADMIN",
+    password: "", 
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
+  const dispatch = useDispatch<AppDispatch>(); 
+const router = useRouter();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (error) setError(null);
@@ -29,17 +31,22 @@ export const useRegisterForm = () => {
     }
 
     try {
-      await axios.post("/api/auth/register", formData, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      toast.success("Successfully registered!");
-      setLoading(true);
-      router.push("/login");
-    } catch {
-      toast.error("Registration failed. Please try again.");
+      const resultAction = await dispatch(registerUser(formData));
+      if (registerUser.fulfilled.match(resultAction)) {
+        toast.success("Successfully registered!");
+        setLoading(true);
+        router.push("/login");
+      } else {
+        if (resultAction.payload) {
+          toast.error(resultAction.payload as string);
+        } else {
+          toast.error("Registration failed. Please try again.");
+        }
+      }
+    } catch  {
+      toast.error("An unexpected error occurred.");
     }
   };
 
-  return { formData, handleChange, handleSubmit, error,loading };
+  return { formData, handleChange, handleSubmit, error, loading };
 };

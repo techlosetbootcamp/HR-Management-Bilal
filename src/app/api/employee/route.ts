@@ -3,6 +3,32 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth";
 import prisma from "../../../../lib/prisma";
 
+// ✅ Fetch Employee by Email
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get("email");
+
+    if (email) {
+      console.log("Fetching employee with email:", email);
+      const employee = await prisma.employee.findUnique({ where: { email } });
+
+      if (!employee) {
+        console.error("❌ Employee not found:", email);
+        return new NextResponse(JSON.stringify({ error: "Employee not found" }), { status: 404 });
+      }
+      return new NextResponse(JSON.stringify(employee), { status: 200 });
+    }
+
+    // ✅ Fetch All Employees
+    const employees = await prisma.employee.findMany();
+    return NextResponse.json(employees);
+  } catch (error) {
+    console.error("Error fetching employee(s):", error);
+    return new NextResponse(JSON.stringify({ error: "Internal server error" }), { status: 500 });
+  }
+}
+
 // ✅ Add New Employee
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +37,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    // 🔍 Read and log raw request body before parsing
     const rawBody = await req.text();
     console.log("Raw Request Body:", rawBody);
 
@@ -23,66 +48,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid JSON format" }, { status: 400 });
     }
 
-    // ✅ Validate required fields
     if (!data.firstName || !data.email) {
-      return NextResponse.json(
-        { error: "Missing required fields: firstName and email" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing required fields: firstName and email" }, { status: 400 });
     }
 
-    const employee = await prisma.employee.create({
-      data: {
-        firstName: data.firstName ?? "",
-        lastName: data.lastName ?? "",
-        email: data.email,
-        mobileNumber: data.mobileNumber ?? "",
-        designation: data.designation ?? "",
-        department: data.department ?? "",
-        joiningDate: data.joiningDate ?? "",
-        employmentType: data.employmentType ?? "",
-        salarySlip: data.salarySlip ?? "",
-        gender: data.gender ?? "Not specified",
-        dateOfBirth: data.dateOfBirth ?? "",
-        address: data.address ?? "",
-        city: data.city ?? "",
-        state: data.state ?? "",
-        zipCode: data.zipCode ?? "",
-        nationality: data.nationality ?? "",
-        officeLocation: data.officeLocation ?? "",
-        type: "employee",
-        employeeId: data.employeeId ?? "",
-        slackId: data.slackId ?? "",
-        maritalStatus: data.maritalStatus ?? "",
-        userName: data.userName ?? "",
-        githubId: data.githubId ?? "",
-        workingDays: data.workingDays ?? "",
-        skypeId: data.skypeId ?? "",
-        appointmentLetter: data.appointmentLetter ?? "",
-        experienceLetter: data.experienceLetter ?? "",
-        relivingLetter: data.relivingLetter ?? "",
-        photoURL: data.photoURL ?? "",
-        attendance: data.attendance ?? "",
-        status: data.status ?? "",
-        photoPublicId: data.checkOut ?? "",
-      },
-    });
-
+    const employee = await prisma.employee.create({ data });
     return NextResponse.json(employee, { status: 201 });
   } catch (error) {
     console.error("Error adding employee:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
-  }
-}
-
-// ✅ Fetch All Employees
-export async function GET() {
-  try {
-    const employees = await prisma.employee.findMany();
-    return NextResponse.json(employees);
-  } catch (error) {
-    console.error("Error fetching employees:", error);
-    return NextResponse.json({ error: "Failed to fetch employees" }, { status: 500 });
   }
 }
 
@@ -103,16 +77,11 @@ export async function PATCH(req: NextRequest) {
     }
 
     const { id, ...updatedData } = data;
-
     if (!id) {
       return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
     }
 
-    const updatedEmployee = await prisma.employee.update({
-      where: { id },
-      data: updatedData,
-    });
-
+    const updatedEmployee = await prisma.employee.update({ where: { id }, data: updatedData });
     return NextResponse.json(updatedEmployee);
   } catch (error) {
     console.error("Error updating employee:", error);
@@ -137,15 +106,11 @@ export async function DELETE(req: NextRequest) {
     }
 
     const { id } = data;
-
     if (!id) {
       return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
     }
 
-    await prisma.employee.delete({
-      where: { id },
-    });
-
+    await prisma.employee.delete({ where: { id } });
     return NextResponse.json({ message: "Employee deleted successfully" });
   } catch (error) {
     console.error("Error deleting employee:", error);

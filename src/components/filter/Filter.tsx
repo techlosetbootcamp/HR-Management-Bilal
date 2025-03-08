@@ -8,8 +8,6 @@ const FilterComponent = () => {
   const dispatch = useDispatch();
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setLocalFilters] = useState({
-    department: "",
-    designation: "",
     city: "",
   });
 
@@ -22,18 +20,18 @@ const FilterComponent = () => {
     "Multan",
   ];
 
-  const designations = [
-    "UI/U Designer",
-    "PHP Developer",
-    "HR Executive",
-    "Project Manager",
-    "Sales Manager",
-    "Next.js Developer",
-    "Node.js Developer",
-    "Design Lead",
-  ];
+  // const designations = [
+  //   "UI/U Designer",
+  //   "PHP Developer",
+  //   "HR Executive",
+  //   "Project Manager",
+  //   "Sales Manager",
+  //   "Next.js Developer",
+  //   "Node.js Developer",
+  //   "Design Lead",
+  // ];
 
-  const departments = ["Design", "Development", "HR", "PM", "Sales"];
+  // const departments = ["Design", "Development", "HR", "PM", "Sales"];
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -63,7 +61,7 @@ const FilterComponent = () => {
             Filter Employees
           </h3>
 
-          <select
+          {/* <select
             name="department"
             value={filters.department}
             onChange={handleFilterChange}
@@ -75,9 +73,9 @@ const FilterComponent = () => {
                 {department}
               </option>
             ))}
-          </select>
+          </select> */}
 
-          <select
+          {/* <select
             name="designation"
             value={filters.designation}
             onChange={handleFilterChange}
@@ -89,7 +87,7 @@ const FilterComponent = () => {
                 {designation}
               </option>
             ))}
-          </select>
+          </select> */}
 
           <select
             name="city"

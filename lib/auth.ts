@@ -50,7 +50,7 @@ export const authOptions: AuthOptions = {
           throw new Error("Invalid credentials");
         }
 
-        return { id: user.id, name: user.name, email: user.email, role: user.role };
+        return { id: user.id, name: user.name, email: user.email, role: user.role, image: user.profilePicture };
       },
     }),
   ],
@@ -66,14 +66,16 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role; // ✅ Ensure role is added
+        token.role = user.role;
+        token.picture= user.image 
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
-        session.user.role = token.role as "ADMIN" | "EMPLOYEE"; // ✅ Fix role mapping
+        session.user.role = token.role as "ADMIN" | "EMPLOYEE"; 
+        session.user.image= token.picture;
       }
       return session;
     },

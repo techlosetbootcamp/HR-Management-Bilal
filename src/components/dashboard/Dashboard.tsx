@@ -23,7 +23,7 @@ const Dashboard = () => {
           id: session.user.id ?? "",
           name: session.user.name ?? "",
           email: session.user.email ?? "",
-          role: session.user.role ?? "EMPLOYEE", // Default to employee if role is missing
+          role: session.user.role ?? "EMPLOYEE"
         })
       );
     } else {

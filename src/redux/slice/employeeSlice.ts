@@ -1,50 +1,9 @@
+import { Employee } from "@/types/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Define Employee Interface
-export interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  mobileNumber: string;
-  designation: string;
-  department: string;
-  joiningDate: string;
-  employmentType: string;
-  salarySlip?: string;
-  gender: string;
-  dateOfBirth: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  nationality: string;
-  officeLocation: string;
-  employeeId: string;
-  slackId?: string;
-  maritalStatus?: string;
-  userName?: string;
-  githubId?: string;
-  workingDays?: string;
-  skypeId?: string;
-  appointmentLetter?: string;
-  experienceLetter?: string;
-  relivingLetter?: string;
-  photoURL?: string;
-  attendance?: string;
-  status?: string;
-  checkOut?: string;
-  photoPublicId?: string;
-}
 
-// Define API Response Type
-// interface ApiResponse<T> {
-//   data?: T;
-//   error?: string;
-// }
 
-// ✅ Fetch Employees
 export const fetchEmployees = createAsyncThunk<
   Employee[],
   void,
@@ -107,7 +66,7 @@ export const fetchEmployeeById = createAsyncThunk(
       }
   }
 );
-// Update Employee Details
+
 export const updateEmployeeDetails = createAsyncThunk(
   "employeeDetails/updateEmployeeDetails",
   async (
@@ -128,7 +87,7 @@ export const updateEmployeeDetails = createAsyncThunk(
   }
 );
 
-// ✅ Update Employee
+
 export const updateEmployee = createAsyncThunk<
   Employee,
   { id: string; updatedData: Partial<Employee> },
@@ -143,7 +102,7 @@ export const updateEmployee = createAsyncThunk<
       }
     }
 });
-// ✅ Delete Employee
+
 export const deleteEmployee = createAsyncThunk<
   string,
   string,
@@ -152,6 +111,34 @@ export const deleteEmployee = createAsyncThunk<
   try {
     await axios.delete(`/api/employee`, { data: { id } });
     return id;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+    return rejectWithValue("Unknown error occurred");
+  }
+});
+
+
+export const uploadImage = createAsyncThunk<
+  { secure_url: string; public_id: string },
+  { file: File; oldPublicId?: string },
+  { rejectValue: string }
+>("employee/uploadImage", async ({ file, oldPublicId }, { rejectWithValue }) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "default_preset"
+    );
+
+    if (oldPublicId) {
+      formData.append("oldPublicId", oldPublicId);
+    }
+
+    const response = await axios.post("/api/upload", formData);
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return rejectWithValue(error.response?.data?.error || error.message);
@@ -176,7 +163,7 @@ const employeeSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // ✅ Fetch Employees
+      
       .addCase(fetchEmployees.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -213,7 +200,7 @@ const employeeSlice = createSlice({
         state.error =
           (action.payload as string) ?? "Failed to update employee details";
       })
-      // ✅ Add Employee
+      
       .addCase(addEmployee.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -226,7 +213,7 @@ const employeeSlice = createSlice({
         state.loading = false;
         state.error = action.payload ?? "Unknown error occurred";
       })
-      // ✅ Update Employee
+
       .addCase(updateEmployee.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -242,7 +229,7 @@ const employeeSlice = createSlice({
         state.loading = false;
         state.error = action.payload ?? "Unknown error occurred";
       })
-      // ✅ Delete Employee
+      
       .addCase(deleteEmployee.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -256,8 +243,20 @@ const employeeSlice = createSlice({
       .addCase(deleteEmployee.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "Unknown error occurred";
+      })
+      .addCase(uploadImage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(uploadImage.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(uploadImage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Failed to upload image";
       });
   },
 });
+
 export const { setFilters } = employeeSlice.actions;
 export default employeeSlice.reducer;

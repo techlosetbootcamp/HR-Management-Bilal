@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchEmployeeById,
   updateEmployeeDetails,
+  uploadImage,
 } from "@/redux/slice/employeeSlice";
 import { RootState, AppDispatch } from "../redux/store";
-import { Employee } from "@/redux/slice/employeeSlice";
+import { Employee } from "@/types/types";
 
 export function useEmployeeDetails(id: string) {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,31 +46,15 @@ export function useEmployeeDetails(id: string) {
 
       if (selectedFile) {
         console.log("📸 Uploading new image...");
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        formData.append(
-          "upload_preset",
-          process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "default_preset"
-        );
-
-        if (employee.photoPublicId) {
-          formData.append("oldPublicId", employee.photoPublicId);
-        }
-
-        const uploadResponse = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!uploadResponse.ok) {
-          const errorData = await uploadResponse.json();
-          throw new Error(`Image upload failed: ${errorData.error}`);
-        }
-
-        const uploadData = await uploadResponse.json();
-        console.log("Image uploaded successfully:", uploadData);
-        newPhotoURL = uploadData.secure_url;
-        newPublicId = uploadData.public_id;
+        const uploadResult = await dispatch(
+          uploadImage({
+            file: selectedFile,
+            oldPublicId: employee.photoPublicId,
+          })
+        ).unwrap();
+        console.log("Image uploaded successfully:", uploadResult);
+        newPhotoURL = uploadResult.secure_url;
+        newPublicId = uploadResult.public_id;
       }
 
       const updatePayload: Partial<Employee> = {

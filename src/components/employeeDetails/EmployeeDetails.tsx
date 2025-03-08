@@ -17,7 +17,7 @@ import {
   PersonalInfo,
   ProfessionalInfo,
 } from "@/utils/employeeFeilds";
-import { Employee } from "@/redux/slice/employeeSlice";
+import { Employee } from "@/types/types";
 
 type InputFieldType =
   | "number"

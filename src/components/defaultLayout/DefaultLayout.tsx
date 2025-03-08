@@ -15,7 +15,6 @@ export default function DefaultLayout({
   
   return (
     <div className="flex relative min-h-screen dark:bg-[#131313]">
-      {/* Mobile overlay */}
       {isSidebarOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
@@ -23,14 +22,12 @@ export default function DefaultLayout({
         />
       )}
       
-      {/* Sidebar */}
       <div className={`fixed lg:static lg:translate-x-0 transition-transform duration-300 z-30 ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <Sidebar activePath={pathname} onClose={() => setSidebarOpen(false)} />
       </div>
 
-      {/* Main content */}
       <div className="flex flex-col flex-1 dark:bg-[#131313] min-h-screen w-full">
         <Header onMenuClick={() => setSidebarOpen(true)} />
         <main className="p-4 lg:p-6 dark:bg-[#131313]">{children}</main>

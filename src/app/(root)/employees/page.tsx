@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchEmployees } from "@/redux/slice/employeeSlice";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, SlidersHorizontal } from "lucide-react";
 import { useSession } from "next-auth/react";
-import FilterComponent from "@/components/filter/Filter";
 import Link from "next/link";
 import SearchBar from "@/components/searchbar/Searchbar";
 import AllEmployee from "@/components/allEmployee/AllEmployee";
+import FilterDepatment from "@/components/filterdepartment/FilterDepartment";
 
 export default function EmployeePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,6 +19,7 @@ export default function EmployeePage() {
   const isAdmin = session?.user?.role === "ADMIN";
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilter, setShowFilter] = useState(false); // Toggle state for filter
 
   useEffect(() => {
     dispatch(fetchEmployees());
@@ -57,28 +58,34 @@ export default function EmployeePage() {
                 </span>
               </Link>
             )}
-            <FilterComponent />
+            {/* Toggle filter state on button click */}
+            <button onClick={() => setShowFilter(!showFilter)} className="p-2">
+              <SlidersHorizontal size={24} className="text-white hover:text-gray-400" />
+            </button>
           </div>
         </div>
 
         {loading && <p className="text-white">Loading employees...</p>}
         {error && <p className="text-red-500">{error}</p>}
 
-        <div className="grid grid-cols-7 gap-4 bg-gray-900 text-white font-semibold p-3 rounded-t-lg mt-10">
-          <div>Employee</div>
-          <div>Employee ID</div>
-          <div>Department</div>
-          <div>Designation</div>
-          <div>Type</div>
-          <div>Status</div>
-          {isAdmin ? (
-            <div className="text-center">Action</div>
-          ) : (
-            <div>City</div>
-          )}
-        </div>
+        {/* Conditionally render FilterDepartment or AllEmployee */}
+        {showFilter ? (
+          <FilterDepatment employees={filteredEmployees} />
+        ) : (
+          <>
+            <div className="grid grid-cols-7 gap-4 bg-gray-900 text-white font-semibold p-3 rounded-t-lg mt-10">
+              <div>Employee</div>
+              <div>Employee ID</div>
+              <div>Department</div>
+              <div>Designation</div>
+              <div>Type</div>
+              <div>Status</div>
+              {isAdmin ? <div className="text-center">Action</div> : <div>City</div>}
+            </div>
 
-        <AllEmployee employees={filteredEmployees} isAdmin={isAdmin} />
+            <AllEmployee isAdmin={isAdmin} employees={filteredEmployees} />
+          </>
+        )}
       </div>
     </div>
   );

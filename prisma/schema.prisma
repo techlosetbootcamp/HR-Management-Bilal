@@ -19,6 +19,7 @@ model User {
   email     String   @unique
   Password  String
   role      Role     @default(EMPLOYEE)
+  profilePicture String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
