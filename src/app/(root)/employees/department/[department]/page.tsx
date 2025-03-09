@@ -41,8 +41,8 @@ export default function DepartmentEmployees() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-900">
-        <LottieAnimation /> {/* Show loader animation */}
+      <div className="flex justify-center items-center h-screen bg-[#131313]">
+        <LottieAnimation /> 
       </div>
     );
   }

@@ -41,7 +41,7 @@ export default function EmployeePage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-900">
+      <div className="flex justify-center items-center h-screen bg-[#131313]">
         <LottieAnimation /> {/* Display the Lottie animation loader */}
       </div>
     );

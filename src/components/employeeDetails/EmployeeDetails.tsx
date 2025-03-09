@@ -18,6 +18,7 @@ import {
   ProfessionalInfo,
 } from "@/utils/employeeFeilds";
 import { Employee } from "@/types/types";
+import LottieAnimation from "../lottieAnimation/LottieAnimation";
 
 type InputFieldType =
   | "number"
@@ -75,7 +76,13 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
   const [subTab, setSubTab] = useState("personal");
   const router = useRouter();
-  if (loading) return <p className="text-white">Loading employee details...</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-[#131313]">
+        <LottieAnimation />
+      </div>
+    );
+  }
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
