@@ -5,32 +5,23 @@ import Sidebar from "../sidebar/Sidebar";
 import Header from "../header/Header";
 import { useState } from "react";
 
-export default function DefaultLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DefaultLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  
+
   return (
-    <div className="flex relative min-h-screen dark:bg-[#131313]">
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      
-      <div className={`fixed lg:static lg:translate-x-0 transition-transform duration-300 z-30 ${
-        isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+    <div className="flex h-screen dark:bg-[#131313]">
+      {/* Sidebar (Fixed, No Scroll) */}
+      <div className={`h-full fixed lg:static w-[280px] dark:bg-[#A2A1A80D] bg-gray-300 overflow-hidden transition-transform duration-300 z-30 ${
+        isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         <Sidebar activePath={pathname} onClose={() => setSidebarOpen(false)} />
       </div>
 
-      <div className="flex flex-col flex-1 dark:bg-[#131313] min-h-screen w-full">
+      {/* Right Side (Scrollable Content) */}
+      <div className="flex flex-col flex-1 h-screen w-full overflow-y-auto">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        <main className="p-4 lg:p-6 dark:bg-[#131313]">{children}</main>
+        <main className="p-4 lg:p-6 dark:bg-[#131313] h-full">{children}</main>
       </div>
     </div>
   );

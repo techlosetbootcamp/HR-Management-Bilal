@@ -1,34 +1,20 @@
 "use client";
-
 import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Trash, Eye, PencilLine, CirclePlus } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { deleteEmployee } from "@/redux/slice/employeeSlice";
 import { useSession } from "next-auth/react";
-// import FilterComponent from "@/components/filter/Filter";
+import Image from "next/image";
+import {
+  Trash,
+  Eye,
+  PencilLine,
+  CirclePlus,
+  SlidersHorizontal,
+} from "lucide-react";
 import Link from "next/link";
 import SearchBar from "@/components/searchbar/Searchbar";
-
-interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  employeeId: string;
-  department: string;
-  designation: string;
-  employmentType: string;
-  status?: string;
-  city?: string;
-  photoURL?: string;
-}
+import useEmployees from "./useDepartment";
+import LottieAnimation from "@/components/lottieAnimation/LottieAnimation";
 
 export default function DepartmentEmployees() {
-  const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
   const departmentName = params
     ? decodeURIComponent(params.department as string)
@@ -37,50 +23,40 @@ export default function DepartmentEmployees() {
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "ADMIN";
 
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const {
+    employees,
+    loading,
+    error,
+    searchTerm,
+    selectedCity,
+    isFilterOpen,
+    uniqueCities,
+    setIsFilterOpen,
+    handleSearchChange,
+    handleCityChange,
+    handleDeleteEmployee,
+    handleViewEmployee,
+    handleEditEmployee,
+  } = useEmployees(departmentName);
 
-  useEffect(() => {
-    if (!departmentName) return;
-
-    const fetchEmployees = async () => {
-      try {
-        console.log("Fetching employees for department:", departmentName);
-        const response = await fetch(
-          `/api/employees?department=${departmentName}`
-        );
-        if (!response.ok) throw new Error("Failed to fetch employees");
-        const data = await response.json();
-        setEmployees(data);
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
-    };
-
-    fetchEmployees();
-  }, [departmentName]);
-
-  const filteredEmployees = employees.filter(
-    (emp) =>
-      `${emp.firstName} ${emp.lastName}`
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-900">
+        <LottieAnimation /> {/* Show loader animation */}
+      </div>
+    );
+  }
 
   return (
-    <div className="dark:bg-[#131313] dark:text-white rounded-b-lg p-4">
-      {/* Search and Filter Section */}
+    <div className="dark:bg-[#131313] dark:text-white rounded-b-lg p-4 border dark:border-gray-700 rounded-[15px]">
       <div className="flex justify-between items-center mt-3">
-        <SearchBar
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <div className="flex">
+        <SearchBar value={searchTerm} onChange={handleSearchChange} />
+
+        <div className="flex gap-4">
           {isAdmin && (
             <Link
               href="/employees/addEmployee"
-              className="mt-3 flex items-center mr-10 bg-customOrange text-white hover:text-customOrange dark:hover:bg-[#131313] hover:bg-white font-medium transition-all duration-300 ease-in-out border-[1px] border-customOrange px-6 py-3 rounded-lg shadow-md hover:shadow-lg"
+              className="mt-3 flex items-center bg-customOrange text-white hover:text-customOrange dark:hover:bg-[#131313] hover:bg-white font-medium transition-all duration-300 ease-in-out border-[1px] border-customOrange px-6 py-3 rounded-lg shadow-md hover:shadow-lg"
             >
               <CirclePlus size={20} />
               <span className="ml-2 text-[16px] font-[300]">
@@ -88,32 +64,65 @@ export default function DepartmentEmployees() {
               </span>
             </Link>
           )}
-          {/* <FilterComponent /> */}
+          <button
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+            className="border-[1px] border-gray-300 dark:border-gray-600 bg-white dark:bg-[#131313] text-gray-900 dark:text-white flex items-center rounded-lg px-6 py-3 mr-3 mt-3"
+          >
+            <div className="hover:text-customOrange flex transition-all duration-300 ease-in-out">
+              <SlidersHorizontal size={24} />
+              <span className="ml-3 text-[16px] font-[300]">Filter</span>
+            </div>
+          </button>
         </div>
       </div>
 
-      <h2 className="text-lg font-bold mb-4">{departmentName} Department</h2>
+      {isFilterOpen && (
+        <div className="absolute z-50 mt-2 w-48 bg-gray-800 text-white p-4 rounded-md shadow-md right-0">
+          <label className="block text-sm font-medium mb-2">
+            Filter by City:
+          </label>
+          <select
+            value={selectedCity}
+            onChange={handleCityChange}
+            className="w-full p-2 bg-gray-700 text-white rounded-md"
+          >
+            <option value="">All Cities</option>
+            {uniqueCities.map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            ))}
+          </select>
 
-      {filteredEmployees.length === 0 ? (
+          <button
+            onClick={() => setIsFilterOpen(false)}
+            className="w-full mt-3 bg-customOrange text-white px-4 py-2 rounded-md hover:bg-orange-600 transition"
+          >
+            Apply Filter
+          </button>
+        </div>
+      )}
+
+      {error && <p className="text-red-500">{error}</p>}
+
+      {employees.length === 0 ? (
         <p>No employees found in this department.</p>
       ) : (
         <div className="w-full">
-          <div className="flex bg-gray-700 dark:bg-gray-800 px-4 py-2 rounded-md font-bold">
-            <div className="w-1/6">Employee ID</div>
+          <div className="flex mt-10 px-4 py-2 rounded-md font-bold">
             <div className="w-1/4">Employee Name</div>
+            <div className="w-1/6">Employee ID</div>
             <div className="w-1/6">Designation</div>
             <div className="w-1/6">Type</div>
             <div className="w-1/6">Status</div>
             <div className="w-1/6">{isAdmin ? "Action" : "City"}</div>
           </div>
-
-          {filteredEmployees.map((emp) => (
+          <hr className="border-gray-700" />
+          {employees.map((emp) => (
             <div
               key={emp.id}
               className="flex items-center border-b border-gray-700 px-4 py-3"
             >
-              <div className="w-1/6">{emp.employeeId}</div>
-
               <div className="w-1/4 flex items-center gap-2">
                 <Image
                   width={30}
@@ -124,31 +133,39 @@ export default function DepartmentEmployees() {
                 />
                 {emp.firstName} {emp.lastName}
               </div>
+              <div className="w-1/6">{emp.employeeId}</div>
 
               <div className="w-1/6">{emp.designation}</div>
-
               <div className="w-1/6">{emp.employmentType}</div>
-                <div className="w-1/6">{emp.status || "N/A"}</div>
+              <div className="w-1/6">
+                <span
+                  className={` text-xs ${
+                    emp.status === "Permanent"
+                      ? "text-customOrange"
+                      : "bg-blue-600"
+                  }`}
+                >
+                  {emp.status}
+                </span>
+              </div>
 
               <div className="w-1/6">
                 {isAdmin ? (
                   <div className="flex gap-2">
                     <button
-                      onClick={() => router.push(`/employees/${emp.id}`)}
+                      onClick={() => handleViewEmployee(emp.id)}
                       className="dark:text-white p-2 rounded hover:text-blue-500"
                     >
                       <Eye size={20} />
                     </button>
                     <button
-                      onClick={() =>
-                        router.push(`/employees/${emp.id}?edit=true`)
-                      }
+                      onClick={() => handleEditEmployee(emp.id)}
                       className="dark:text-white p-2 rounded hover:text-green-600"
                     >
                       <PencilLine size={20} />
                     </button>
                     <button
-                      onClick={() => dispatch(deleteEmployee(emp.id))}
+                      onClick={() => handleDeleteEmployee(emp.id)}
                       className="dark:text-white p-2 rounded hover:text-customOrange font-extrabold"
                     >
                       <Trash size={20} />

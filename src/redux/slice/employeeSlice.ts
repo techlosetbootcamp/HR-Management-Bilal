@@ -146,13 +146,26 @@ export const uploadImage = createAsyncThunk<
     return rejectWithValue("Unknown error occurred");
   }
 });
-
+export const fetchByDepartment = createAsyncThunk<
+  Employee[],
+  string,
+  { rejectValue: string }
+>("employees/fetchByDepartment", async (department, { rejectWithValue }) => {
+  try {
+    const response = await fetch(`/api/employee?department=${department}`);
+    if (!response.ok) throw new Error("Failed to fetch employees");
+    return await response.json();
+  } catch (error) {
+    return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
+  }
+});
 const employeeSlice = createSlice({
   name: "employees",
   initialState: {
     employees: [] as Employee[],
     employee: null as Employee | null,
     loading: false,
+
     error: null as string | null,
     filters: { department: "", designation: "", city: "" },
   },
@@ -254,6 +267,17 @@ const employeeSlice = createSlice({
       .addCase(uploadImage.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "Failed to upload image";
+      })
+      .addCase(fetchByDepartment.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchByDepartment.fulfilled, (state, action) => {
+        state.loading=false;
+        state.employees = action.payload;
+      })
+      .addCase(fetchByDepartment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch employees";
       });
   },
 });

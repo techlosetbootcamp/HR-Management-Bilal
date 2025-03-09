@@ -60,7 +60,7 @@ export default function ProfessionalInfo({
         name="department"
         type="select"
         value={form.department || ""}
-        options={["Design", "Development", "HR", "Design", "PM", "Sales"]}
+        options={["Design", "Development", "HR", "Sales"]}
         onChange={handleChange} // Fix applied
       />
 
@@ -73,14 +73,17 @@ export default function ProfessionalInfo({
           "UI/X Designer",
           "PHP Developer",
           "HR Executive",
-          "Pht Developer",
-          "Project Mansger",
+          "HR Cordinator",
+          "HR Assistant",
           "Sales Manager",
+          "BDM",
+          "Sales Engineer",
+          "Dirextor of Sales",
           "Next JS Developer",
           "Node JS Developer",
           "Design Lead",
         ]}
-        onChange={handleChange} // Fix applied
+        onChange={handleChange}
       />
       <InputField
         label="Working Days"

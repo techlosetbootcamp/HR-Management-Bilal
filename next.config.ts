@@ -4,7 +4,9 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['res.cloudinary.com'],
   },
-  /* config options here */
+  experimental: {
+    // turbopack: true, // or false if you want to use Webpack
+  },
 };
 
 export default nextConfig;

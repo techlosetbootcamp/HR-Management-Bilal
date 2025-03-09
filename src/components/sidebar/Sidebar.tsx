@@ -9,6 +9,7 @@ import { SIDE_BAR_LINKS } from "@/constants/sidebarLinks";
 import { X } from "lucide-react";
 
 interface SidebarProps {
+  activePath: string | null;
   onClose: () => void;
 }
 
@@ -16,7 +17,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname(); // ✅ Get current path
 
   // ✅ Check if the user is on any employee-related page
-  const isEmployeeSection = pathname.startsWith("/employees");
+  const isEmployeeSection = pathname?.startsWith("/employees") ?? false;
 
   return (
     <div className="flex flex-col w-[280px] h-screen rounded-r-2xl text-black px-6 lg:px-10 py-12 dark:bg-[#A2A1A80D] dark:text-white bg-gray-300">

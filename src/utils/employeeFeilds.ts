@@ -72,7 +72,7 @@ export const ProfessionalInfo = [
     name: "department",
     label: "Department",
     type: "select",
-    options: ["Design", "Development", "HR", "PM", "Sales"],
+    options: ["Design", "Development", "HR", "Sales"],
     valueKey: "department"  
   },
   {
@@ -83,8 +83,12 @@ export const ProfessionalInfo = [
       "UI/UX Designer",
       "PHP Developer",
       "HR Executive",
-      "Project Manager",
+      "HR Cordinator",
+      "HR Assistant",
       "Sales Manager",
+      "BDM",
+      "Sales Engineer",
+      "Dirextor of Sales",
       "Next.js Developer",
       "Node.js Developer",
       "Design Lead",
