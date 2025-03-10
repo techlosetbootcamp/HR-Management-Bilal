@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
+import { CalendarDays } from "lucide-react";
 
 interface InputFieldProps {
-  label?: string;
+  label?: string; // New prop to control label display
   type?: "text" | "email" | "password" | "date" | "number" | "select";
   name: string;
   value?: string;
@@ -9,8 +10,9 @@ interface InputFieldProps {
   required?: boolean;
   options?: string[];
   isEditMode?: boolean;
-  icon?: React.ReactNode;
   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  showLabel?: boolean; // New prop to control label display
+
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -22,12 +24,21 @@ const InputField: React.FC<InputFieldProps> = ({
   required = false,
   options,
   isEditMode = true,
-  icon,
   onChange,
+  showLabel = true, // Default is true
+
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleIconClick = () => {
+    if (inputRef.current) {
+      inputRef.current.showPicker();
+    }
+  };
+
   return (
     <div className="flex flex-col">
-      {label && <label className="text-sm text-gray-400 mb-1">{label}</label>}
+            {showLabel && label && <label className="text-sm text-gray-400 mb-1">{label}</label>}
 
       {isEditMode ? (
         type === "select" ? (
@@ -36,7 +47,7 @@ const InputField: React.FC<InputFieldProps> = ({
             value={value}
             onChange={onChange}
             required={required}
-            className="border p-2 rounded w-full dark:bg-[#131313] text-white border-gray-700 h-[45px]"
+            className="border p-2 rounded-xl w-full dark:bg-[#131313] text-white border-gray-700 h-[56px]"
           >
             <option value="" disabled>{placeholder || "Select an option"}</option>
             {options?.map((option, index) => (
@@ -44,17 +55,26 @@ const InputField: React.FC<InputFieldProps> = ({
             ))}
           </select>
         ) : (
-          <div className="flex items-center border pl-2 rounded-lg border-gray-700 w-full text-white">
-            {icon && <span className="mr-2 text-gray-400">{icon}</span>}
+          <div className="relative flex items-center border border-gray-700 rounded-xl w-full text-white bg-[#131313]">
             <input
+              ref={inputRef}
               type={type}
               name={name}
               value={value}
-              placeholder={placeholder}
+              placeholder={placeholder || label}
               onChange={onChange}
               required={required}
-              className="bg-transparent outline-none w-full h-[46px]"
+              className="bg-transparent outline-none w-full h-[56px] pl-3 pr-10 text-white"
             />
+            {type === "date" && (
+              <button
+                type="button"
+                onClick={handleIconClick}
+                className="absolute right-3 cursor-pointer"
+              >
+                <CalendarDays  size={24} />
+              </button>
+            )}
           </div>
         )
       ) : (

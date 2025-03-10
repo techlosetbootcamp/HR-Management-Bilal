@@ -26,7 +26,6 @@ export default function ProfessionalInfo({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 sm:p-6">
       <InputField
-        label="Employee ID"
         name="employeeId"
         placeholder="Employee ID"
         value={form.employeeId}
@@ -34,14 +33,12 @@ export default function ProfessionalInfo({
       />
 
       <InputField
-        label="User Name"
         name="userName"
         placeholder="User Name"
         value={form.userName}
         onChange={handleChange}
       />
       <InputField
-        label="Employee Type"
         name="employmentType"
         type="select"
         value={form.employmentType || ""}
@@ -49,14 +46,12 @@ export default function ProfessionalInfo({
         onChange={handleChange}
       />
       <InputField
-        label="Email Address"
         name="email"
         placeholder="Email Address"
         value={form.email}
         onChange={handleChange}
       />
       <InputField
-        label="Department"
         name="department"
         type="select"
         value={form.department || ""}
@@ -65,7 +60,6 @@ export default function ProfessionalInfo({
       />
 
       <InputField
-        label="Designation"
         name="designation"
         type="select"
         value={form.designation || ""}
@@ -86,7 +80,6 @@ export default function ProfessionalInfo({
         onChange={handleChange}
       />
       <InputField
-        label="Working Days"
         name="workingDays"
         type="select"
         value={form.workingDays || ""}
@@ -94,7 +87,6 @@ export default function ProfessionalInfo({
         onChange={handleChange} // Fix applied
       />
       <InputField
-        label="Employee Status"
         name="status"
         type="select"
         value={form.status || ""}
@@ -102,7 +94,6 @@ export default function ProfessionalInfo({
         onChange={handleChange} // Fix applied
       />
       <InputField
-        label="Date of Joining"
         type="date"
         name="joiningDate"
         value={form.joiningDate}
@@ -110,7 +101,6 @@ export default function ProfessionalInfo({
       />
 
       <InputField
-        label="Office Location"
         name="officeLocation"
         type="select"
         value={form.officeLocation || ""}

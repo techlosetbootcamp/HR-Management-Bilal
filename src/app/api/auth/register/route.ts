@@ -30,24 +30,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-// export async function GET() {
-//   try {
-//     const users = await prisma.user.findMany({
-//       select: {
-//         id: true,
-//         name: true,
-//         email: true,
-//         role: true,
-//         createdAt: true,
-//       },
-//     });
-// console.log(users)
-//     return NextResponse.json({ users }, { status: 200 });
-//   } catch (error) {
-//     console.error("Error Fetching Users:", error);
-//     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-//   }
-// }
+// src/app/api/register/route.ts
 
 export async function GET(req: NextRequest) {
   const email = req.nextUrl.searchParams.get("email");
@@ -67,7 +50,27 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
-    console.error("❌ Error fetching user:", error);
+    console.error("Error fetching user:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const { name, email, profilePicture } = await req.json();
+
+    if (!email) {
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { email },
+      data: { name, profilePicture },
+    });
+
+    return NextResponse.json({ message: "Profile updated successfully", user: updatedUser }, { status: 200 });
+  } catch (error) {
+    console.error("Error updating user:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

@@ -2,18 +2,36 @@
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Profile } from "@/constants/images";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 
 const DropDown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<{ name: string; role: string; profilePicture: string } | null>(null);
   const { data: session } = useSession();
   const router = useRouter();
-  const user = useSelector((state: RootState) => state.auth.user); // Get user from Redux state
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!session?.user?.email) return;
+  
+      try {
+        const res = await fetch(`/api/auth/register?email=${session.user.email}`);
+        if (!res.ok) {
+          console.error("Failed to fetch user:", res.statusText); // Debugging log
+          throw new Error("Failed to fetch user");
+        }
+  
+        const userData = await res.json();
+        setUser(userData);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+  
+    fetchUser();
+  }, [session]);
   const handleProfileClick = () => {
     if (!session?.user?.email) {
       console.error("❌ No user email found in session!");
@@ -33,7 +51,6 @@ const DropDown = () => {
 
     try {
       const res = await fetch(`/api/employee?email=${session.user.email}`);
-
       if (!res.ok) throw new Error("Employee not found");
 
       const employee = await res.json();

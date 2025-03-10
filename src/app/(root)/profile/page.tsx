@@ -1,15 +1,55 @@
 "use client";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import Image from "next/image";
 
 export default function ProfilePage() {
-  const { data: session, update } = useSession();
-  const [name, setName] = useState(session?.user?.name || "");
-  const [email, setEmail] = useState(session?.user?.email || "");
-  const [profilePicture, setProfilePicture] = useState(session?.user?.image || "/default-avatar.png");
+  const { data: session, status, update } = useSession();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profilePicture, setProfilePicture] = useState("/default-avatar.png");
   const [previewImage, setPreviewImage] = useState(profilePicture);
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isSessionLoading, setIsSessionLoading] = useState(true); // Track session loading state
+
+  useEffect(() => {
+    if (status === "loading") {
+      setIsSessionLoading(true);
+      return;
+    }
+
+    if (status === "unauthenticated" || !session?.user?.email) {
+      console.error("No email found in session");
+      setIsSessionLoading(false);
+      return;
+    }
+
+    const fetchUserData = async () => {
+      try {
+        const res = await fetch(`/api/auth/register?email=${session.user.email}`);
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.error("Failed to fetch user data:", errorData.error || res.statusText);
+          throw new Error(errorData.error || "Failed to fetch user data");
+        }
+
+        const userData = await res.json();
+        console.log("User data fetched:", userData); // Debugging log
+
+        setName(userData.name);
+        setEmail(userData.email);
+        setProfilePicture(userData.profilePicture || "/default-avatar.png");
+        setPreviewImage(userData.profilePicture || "/default-avatar.png");
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setIsSessionLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [session, status]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -17,7 +57,6 @@ export default function ProfilePage() {
 
     setFile(selectedFile);
 
-    // Show preview of selected file
     const fileReader = new FileReader();
     fileReader.onloadend = () => {
       setPreviewImage(fileReader.result as string);
@@ -31,7 +70,6 @@ export default function ProfilePage() {
 
     let uploadedImageUrl = profilePicture;
 
-    // ✅ 1. Upload picture to Cloudinary if a new file is selected
     if (file) {
       const imageData = new FormData();
       imageData.append("file", file);
@@ -51,27 +89,31 @@ export default function ProfilePage() {
       }
     }
 
-    // ✅ 2. Update user profile with new data
-    const updateRes = await fetch("/api/user/update", {
-      method: "POST",
+    const updateRes = await fetch("/api/auth/register", {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, profilePicture: uploadedImageUrl }),
     });
 
     const updateData = await updateRes.json();
     if (updateRes.ok) {
+      setName(updateData.user.name);
+      setEmail(updateData.user.email);
       setProfilePicture(updateData.user.profilePicture);
+      setPreviewImage(updateData.user.profilePicture);
+
       if (session) {
-       await update({
+        await update({
           ...session,
           user: {
             ...session.user,
-            name,
-            email,
-            image: uploadedImageUrl,
+            name: updateData.user.name,
+            email: updateData.user.email,
+            image: updateData.user.profilePicture,
           },
-        }); // Refresh session
+        });
       }
+
       alert("Profile updated successfully!");
     } else {
       alert("Profile update failed");
@@ -79,6 +121,10 @@ export default function ProfilePage() {
 
     setLoading(false);
   };
+
+  if (isSessionLoading) {
+    return <div>Loading session...</div>;
+  }
 
   return (
     <div className="max-w-md mx-auto p-6 bg-black rounded-lg shadow-md">
@@ -106,7 +152,7 @@ export default function ProfilePage() {
 
         <div>
           <p className="text-gray-600 mb-2">Profile Picture Preview:</p>
-          <img src={previewImage} alt="Profile Preview" className="w-24 h-24 rounded-full mb-2 border" />
+          <Image width={40} height={40} src={previewImage} alt="Profile Preview" className="w-24 h-24 rounded-full mb-2 border" />
           <input type="file" accept="image/*" onChange={handleFileChange} className="block" />
         </div>
 

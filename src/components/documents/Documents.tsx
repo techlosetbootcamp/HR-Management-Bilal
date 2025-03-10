@@ -7,7 +7,7 @@ interface DocumentsProps {
 
 const Documents: React.FC<DocumentsProps> = ({ handleFileUpload }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 py-8 px-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
           <h3 className="text-gray-400 mb-2">Upload Appointment Letter</h3>

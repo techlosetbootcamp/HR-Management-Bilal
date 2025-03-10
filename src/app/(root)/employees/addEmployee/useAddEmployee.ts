@@ -37,6 +37,7 @@ export default function useAddEmployee() {
     relivingLetter: "",
     maritalStatus: "",
     photoURL: "", // ✅ Profile Picture
+    status: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
