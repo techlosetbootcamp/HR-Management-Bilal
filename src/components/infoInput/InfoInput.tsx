@@ -12,7 +12,8 @@ interface InputFieldProps {
   isEditMode?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   showLabel?: boolean; // New prop to control label display
-
+  className?: string;
+  disabled?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -26,6 +27,8 @@ const InputField: React.FC<InputFieldProps> = ({
   isEditMode = true,
   onChange,
   showLabel = true, // Default is true
+  className,
+  disabled = false,
 
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -57,6 +60,7 @@ const InputField: React.FC<InputFieldProps> = ({
         ) : (
           <div className="relative flex items-center border border-gray-700 rounded-xl w-full text-white bg-[#131313]">
             <input
+              disabled={disabled}
               ref={inputRef}
               type={type}
               name={name}
@@ -64,7 +68,7 @@ const InputField: React.FC<InputFieldProps> = ({
               placeholder={placeholder || label}
               onChange={onChange}
               required={required}
-              className="bg-transparent outline-none w-full h-[56px] pl-3 pr-10 text-white"
+              className={`bg-transparent outline-none w-full h-[56px] pl-3 pr-10 text-white` + className}
             />
             {type === "date" && (
               <button

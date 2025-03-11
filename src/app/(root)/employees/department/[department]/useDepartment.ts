@@ -4,47 +4,37 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { fetchEmployees, deleteEmployee } from "@/redux/slice/employeeSlice";
 
-const useEmployees = (departmentName: string,) => {
-    
+const useEmployees = (departmentName: string) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { employees, error,loading } = useSelector((state: RootState) => state.employees);
-
+  const { employees, error, loading } = useSelector((state: RootState) => state.employees);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-
   useEffect(() => {
-    if (departmentName) {
-      dispatch(fetchEmployees());
-    }
-  }, [departmentName, dispatch]);
-
+    dispatch(fetchEmployees());
+  }, [dispatch]);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
-
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(e.target.value);
   };
-
   const handleDeleteEmployee = (id: string) => {
     dispatch(deleteEmployee(id));
   };
-
   const handleViewEmployee = (id: string) => {
     router.replace(`/employees/${id}`);
   };
-
   const handleEditEmployee = (id: string) => {
     router.replace(`/employees/${id}?edit=true`);
   };
-
-  const uniqueCities = employees.length
-    ? [...new Set(employees.map((emp) => emp.city).filter(Boolean))]
-    : [];
-
-  const filteredEmployees = employees.filter(
+  // First filter by department
+  const departmentEmployees = employees.filter(
+    (emp) => emp.department === departmentName
+  );
+  // Then apply additional filters (search and city)
+  const filteredEmployees = departmentEmployees.filter(
     (emp) =>
       (`${emp.firstName} ${emp.lastName}`
         .toLowerCase()
@@ -52,7 +42,10 @@ const useEmployees = (departmentName: string,) => {
         emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase())) &&
       (selectedCity === "" || emp.city === selectedCity)
   );
-
+  // Get unique cities only from the department employees
+  const uniqueCities = departmentEmployees.length
+    ? [...new Set(departmentEmployees.map((emp) => emp.city).filter(Boolean))]
+    : [];
   return {
     employees: filteredEmployees,
     loading,

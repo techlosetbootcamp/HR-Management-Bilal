@@ -8,5 +8,6 @@ export default function EmployeeDetailsPage() {
   const searchParams = useSearchParams();
   const isEditMode = searchParams.get("edit") === "true";
 
-  return <EmployeeDetails id={id as string} isEditMode={isEditMode} />;
+  const employeeEmail = searchParams.get("email") || ""; // Assuming email is passed as a query parameter
+  return <EmployeeDetails id={id as string} isEditMode={isEditMode} employeeEmail={employeeEmail} />;
 }

@@ -2,7 +2,7 @@ export const PersonalInfo = [
   { name: "firstName", label: "First Name", valueKey: "firstName" },
   { name: "lastName", label: "Last Name", valueKey: "lastName" },
   { name: "mobileNumber", label: "Mobile Number", valueKey: "mobileNumber" },
-  { name: "email", label: "Email Address", valueKey: "email" },
+  { name: "email", label: "Email Address", valueKey: "email", disable: true ,  className: "cursor-not-allowed bg-gray-400 dark:bg-gray-700 rounded-xl"  },
   { name: "dateOfBirth", label: "Date of Birth", valueKey: "dateOfBirth" },
   {
     name: "maritalStatus",
@@ -60,7 +60,7 @@ export const ProfessionalInfo = [
     options: ["Office", "Remote"],
     valueKey: "employmentType" 
   },
-  { name: "email", label: "Email Address", type: "text", valueKey: "email" },
+  { name: "email", label: "Email Address", type: "text", valueKey: "email", disable: true ,  className: "cursor-not-allowed bg-gray-400 dark:bg-gray-700 rounded-xl" },
   {
     name: "status",
     label: "Employee Status",
@@ -120,7 +120,7 @@ export const ProfessionalInfo = [
 ];
 
 export const AccountAccess = [
-  { name: "email", label: "Email Address" , valueKey: "email"},
+  { name: "email", label: "Email Address" , valueKey: "email" , disable: true ,  className: "cursor-not-allowed bg-gray-400 dark:bg-gray-700 rounded-xl" },
   { name: "slackId", label: "Slack ID" , valueKey: "slackId"},
   { name: "skypeId", label: "Skype ID", valueKey: "skypeId" },
   { name: "githubId", label: "Github ID", valueKey: "githubId" },

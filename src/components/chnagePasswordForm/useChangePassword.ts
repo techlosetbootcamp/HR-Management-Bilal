@@ -3,22 +3,27 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useSession } from "next-auth/react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { changePassword, clearMessages } from "@/redux/slice/authSlice";
 
 export const useChangePassword = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
+  const { loading, error, successMessage } = useSelector((state: RootState) => state.auth);
+
   useEffect(() => {
     setIsOpen(true);
-  }, []);
+    dispatch(clearMessages());
+  }, [dispatch]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -42,43 +47,37 @@ export const useChangePassword = () => {
     }
   }, [session, router]);
 
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      localStorage.removeItem("otpData");
+      router.push("/success");
+      dispatch(clearMessages());
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(clearMessages());
+    }
+  }, [successMessage, error, dispatch, router]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "newPassword") setNewPassword(value);
     if (name === "confirmPassword") setConfirmPassword(value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPassword || !confirmPassword) {
       toast.error("Please fill in all fields.");
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords does not match!");
+      toast.error("Passwords do not match!");
       return;
     }
 
-    setLoading(true);
-    try {
-      const res = await axios.put("/api/changePassword", {
-        email,
-        newPassword,
-      });
-
-      if (res.status === 200) {
-        toast.success("Password changed successfully!");
-        localStorage.removeItem("otpData");
-        router.push("/success");
-      }
-    } catch (error: any) {
-      console.error("Error changing password:", error);
-      toast.error(
-        error?.response?.data?.message || "Failed to change password"
-      );
-    } finally {
-      setLoading(false);
-    }
+    dispatch(changePassword({ email, newPassword }));
   };
 
   return {

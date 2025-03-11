@@ -1,4 +1,4 @@
-// components/LottieAnimation.tsx
+'use client'
 import React from 'react';
 // import Lottie from 'react-lottie';
 import animationData from '../../../public/Animation - 1741457497962.json';

@@ -1,0 +1,70 @@
+
+import {  useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { Profile } from "@/constants/images";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfileByEmail, getEmployeeByEmail } from "@/redux/slice/authSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+
+export const useDropDown = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  
+  const { user, loading } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (!session?.user?.email) return;
+    
+    dispatch(getProfileByEmail(session.user.email));
+  }, [session, dispatch]);
+
+  const handleProfileClick = () => {
+    if (!session?.user?.email) {
+      console.error("❌ No user email found in session!");
+      alert("User email not found");
+      return;
+    }
+    router.push(`/profile`);
+  };
+
+  const handleAboutClick = async () => {
+    if (!session?.user?.email) {
+      console.error("❌ No user email found in session!");
+      alert("User email not found");
+      return;
+    }
+
+    try {
+      const resultAction = await dispatch(getEmployeeByEmail(session.user.email));
+      if (getEmployeeByEmail.fulfilled.match(resultAction)) {
+        const employee = resultAction.payload;
+        router.push(`/employees/${employee.id}`);
+      } else {
+        throw new Error("Employee not found");
+      }
+    } catch (error) {
+      console.error("❌ Error fetching employee details:", error);
+      alert("Failed to fetch profile information");
+    }
+  };
+const handleChangePasswordClick = () => {
+    router.push("/changePassword");
+}
+  const userData = user ? {
+    name: user.name,
+    role: user.role,
+    profilePicture: user.profilePicture || Profile,
+    id: user.id
+  } : { name: "Guest", role: "Employee", profilePicture: Profile };
+
+  return {
+    user: userData,
+    loading,
+    handleProfileClick,
+     handleChangePasswordClick,
+    handleAboutClick,
+    signOut,
+  };
+};

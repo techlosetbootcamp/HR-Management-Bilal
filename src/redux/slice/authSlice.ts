@@ -25,36 +25,51 @@ const initialState: AuthState = {
 
 // ✅ Change Password
 export const changePassword = createAsyncThunk(
-  "auth/changePassword",
-  async (
-    { oldPassword, newPassword }: { oldPassword: string; newPassword: string },
-    { rejectWithValue }
-  ) => {
+  "password/change",
+  async ({ email, newPassword }: { email: string; newPassword: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        "/api/auth/changePassword",
-        { oldPassword, newPassword },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      return response.data.message;
+      const res = await axios.put("/api/changePassword", { email, newPassword });
+      return res.data;
     } catch (error) {
       return rejectWithValue(
-        axios.isAxiosError(error) ? error.response?.data?.error || error.message : "Failed to change password"
+        axios.isAxiosError(error) && error.response
+          ? error.response.data.message
+          : "Failed to change password"
       );
     }
   }
 );
+
+
+// ✅ Get Profile by Email
+export const getProfileByEmail = createAsyncThunk<User, string>(
+  "auth/getProfileByEmail",
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/api/auth/register?email=${email}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        axios.isAxiosError(error)
+          ? error.response?.data?.error || error.message
+          : "Failed to fetch profile by email"
+      );
+    }
+  }
+);
+
 export const getProfile = createAsyncThunk<User, string>(
   "auth/getProfile",
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`/api/auth/register/${userId}`);
       return response.data.user;
-    } catch  {
+    } catch {
       return rejectWithValue("Failed to fetch profile.");
     }
   }
 );
+
 // ✅ Register User
 export const registerUser = createAsyncThunk<
   void,
@@ -67,7 +82,30 @@ export const registerUser = createAsyncThunk<
     });
   } catch (error) {
     return rejectWithValue(
-      axios.isAxiosError(error) ? error.response?.data?.error || error.message : "Registration failed. Please try again."
+      axios.isAxiosError(error)
+        ? error.response?.data?.error || error.message
+        : "Registration failed. Please try again."
+    );
+  }
+});
+
+// ✅ Upload Profile Image
+export const uploadProfileImage = createAsyncThunk<
+  string,
+  File,
+  { rejectValue: string }
+>("auth/uploadProfileImage", async (file, { rejectWithValue }) => {
+  try {
+    const imageData = new FormData();
+    imageData.append("file", file);
+
+    const response = await axios.post("/api/upload", imageData);
+    return response.data.imageUrl;
+  } catch (error) {
+    return rejectWithValue(
+      axios.isAxiosError(error)
+        ? error.response?.data?.error || error.message
+        : "Image upload failed"
     );
   }
 });
@@ -75,23 +113,53 @@ export const registerUser = createAsyncThunk<
 // ✅ Update Profile (Name & Profile Picture)
 export const updateProfile = createAsyncThunk<
   User,
-  { userId: string; name?: string; email?: string; image?: string }
+  { name: string; email: string; profilePicture: string },
+  { rejectValue: string }
 >(
   "auth/updateProfile",
-  async ({ userId, name, email, image }, { rejectWithValue }) => {
+  async ({ name, email, profilePicture }, { rejectWithValue }) => {
     try {
-      const formData = new FormData();
-      if (name) formData.append("name", name);
-      if (email) formData.append("email", email);
-      if (image) formData.append("image", image);
-
-      const response = await axios.put(`/api/auth/register/${userId}`, formData);
+      const response = await axios.put(
+        "/api/auth/register",
+        { name, email, profilePicture },
+        { headers: { "Content-Type": "application/json" } }
+      );
       return response.data.user;
-    } catch {
-      return rejectWithValue("Profile update failed.");
+    } catch (error) {
+      return rejectWithValue(
+        axios.isAxiosError(error)
+          ? error.response?.data?.error || error.message
+          : "Profile update failed"
+      );
     }
   }
 );
+
+// Add this interface for employee data
+interface Employee {
+  id: string;
+  email: string;
+  [key: string]: unknown; // For other employee properties
+}
+
+// ✅ Get Employee by Email
+export const getEmployeeByEmail = createAsyncThunk<
+  Employee,
+  string,
+  { rejectValue: string }
+>("auth/getEmployeeByEmail", async (email, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`/api/employee?email=${email}`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(
+      axios.isAxiosError(error)
+        ? error.response?.data?.error || error.message
+        : "Failed to fetch employee by email"
+    );
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -118,15 +186,43 @@ const authSlice = createSlice({
         state.error = null;
         state.successMessage = null;
       })
-      .addCase(changePassword.fulfilled, (state, action) => {
+      .addCase(changePassword.fulfilled, (state) => {
         state.loading = false;
-        state.successMessage = action.payload;
+        state.successMessage = "Password changed successfully!";
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-      
+
+      // ✅ Get Profile By Email Handlers
+      .addCase(getProfileByEmail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProfileByEmail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(getProfileByEmail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // ✅ Get Profile Handlers
+      .addCase(getProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
       // ✅ Register User Handlers
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
@@ -142,6 +238,19 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
 
+      // ✅ Upload Profile Image Handlers
+      .addCase(uploadProfileImage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(uploadProfileImage.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(uploadProfileImage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
       // ✅ Update Profile Handlers
       .addCase(updateProfile.pending, (state) => {
         state.loading = true;
@@ -150,7 +259,7 @@ const authSlice = createSlice({
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = { ...state.user, ...action.payload } as User;
+        state.user = action.payload;
         state.successMessage = "Profile updated successfully!";
       })
       .addCase(updateProfile.rejected, (state, action) => {

@@ -1,13 +1,9 @@
 import { useState } from "react";
 import { useEmployeeDetails } from "@/hooks/useEmployeeDetails";
 import {
-  Briefcase,
   Download,
   Edit,
   Eye,
-  FileText,
-  Lock,
-  User,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -19,6 +15,8 @@ import {
 } from "@/utils/employeeFeilds";
 import { Employee } from "@/types/types";
 import LottieAnimation from "../lottieAnimation/LottieAnimation";
+import TabBar from "../tabBar/TabBar";
+import { mainTabs, subTabs } from "@/utils/tabConfigs";
 
 type InputFieldType =
   | "number"
@@ -60,7 +58,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
   const openPdfPreview = (url: string) => {
     console.log("Opening PDF:", url);
-
     setPdfPreview(url);
   };
 
@@ -76,6 +73,8 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
   const [subTab, setSubTab] = useState("personal");
   const router = useRouter();
+
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-[#131313]">
@@ -88,17 +87,14 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   return (
     <div className="dark:bg-[#131313] dark:text-white rounded-lg shadow-lg flex border border-gray-700">
       <div className="w-1/4 h-[700px] dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4">
-        {["profile", "attendance", "projects", "leave"].map((tab) => (
-          <button
-            key={tab}
-            className={`block w-full text-left px-4 py-3 mb-2 rounded-lg  ${
-              activeTab === tab ? "bg-customOrange" : "dark:text-white"
-            }`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
+        <TabBar
+          tabs={mainTabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          orientation="vertical"
+          activeClassName="bg-customOrange text-white"
+          inactiveClassName="dark:text-white"
+        />
       </div>
 
       <div className="w-3/4 p-4">
@@ -157,50 +153,46 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <Edit /> Edit Profile
               </button>
             </div>
-            <div className="flex border-b border-gray-700 mb-4">
-              {[
-                { key: "personal", label: "Personal", icon: <User /> },
-                {
-                  key: "professional",
-                  label: "Professional",
-                  icon: <Briefcase />,
-                },
-                { key: "documents", label: "Documents", icon: <FileText /> },
-                { key: "account", label: "Account", icon: <Lock /> },
-              ].map(({ key, label, icon }) => (
-                <button
-                  key={key}
-                  className={`px-4 py-2 flex items-center gap-2 ${
-                    subTab === key
-                      ? "text-orange-500 border-b-2 border-orange-500"
-                      : "dark:text-white"
-                  }`}
-                  onClick={() => setSubTab(key)}
-                >
-                  {icon} {label} Info
-                </button>
-              ))}
-            </div>
+
+            <TabBar
+              tabs={subTabs}
+              activeTab={subTab}
+              onTabChange={setSubTab}
+              orientation="horizontal"
+              activeClassName="text-orange-500 border-b-2 border-orange-500"
+              inactiveClassName="dark:text-white"
+            />
+
             {subTab === "personal" && (
-              <div className="mb-6">
+              <div className="mb-6 mt-5">
                 <h3 className="text-lg font-semibold mb-2">
                   Personal Information
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {PersonalInfo.map(
-                    ({ name, label, valueKey, type, options }) => (
+                    ({
+                      name,
+                      label,
+                      valueKey,
+                      type,
+                      options,
+                      disable,
+                      className,
+                    }) => (
                       <InputField
                         key={name}
                         name={name}
                         label={label}
                         value={
-                          updatedFields[name as keyof Employee]  ??
+                          updatedFields[name as keyof Employee] ??
                           ((employee?.[valueKey as keyof Employee] as string) ||
                             "")
                         }
                         isEditMode={isEditMode}
                         type={type as InputFieldType}
+                        disabled={disable}
                         options={options}
+                        className={className}
                         onChange={(e) => handleUpdate(name, e.target.value)}
                       />
                     )
@@ -212,33 +204,37 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             )}
 
             {subTab === "professional" && (
-              <div className="mb-6">
+              <div className="mb-6 mt-5">
                 <h3 className="text-lg font-semibold mb-2">
                   Professional Information
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {ProfessionalInfo.map(({ name, label, type, options ,valueKey}) => (
-                    <InputField
-                      key={name}
-                      name={name}
-                      label={label}
-                      type={type as "text" | "select"}
-                      value={
-                        updatedFields[name as keyof Employee]  ??
-                        ((employee?.[valueKey as keyof Employee] as string) ||
-                          "")
-                      }
-                      options={options}
-                      isEditMode={isEditMode}
-                      onChange={(e) => handleUpdate(name, e.target.value)}
-                    />
-                  ))}
+                  {ProfessionalInfo.map(
+                    ({ name, label, type, options, valueKey }) => (
+                      <InputField
+                        key={name}
+                        name={name}
+                        label={label}
+                        type={type as "text" | "select"}
+                        value={
+                          updatedFields[name as keyof Employee] ??
+                          ((employee?.[valueKey as keyof Employee] as string) ||
+                            "")
+                        }
+                        options={options}
+                        isEditMode={isEditMode}
+                        onChange={(e) => handleUpdate(name, e.target.value)}
+                      />
+                    )
+                  )}
                 </div>
               </div>
             )}
 
             {subTab === "documents" && (
-              <div>
+              <div className="mb-6 mt-5">
+                <h3 className="text-lg font-semibold mb-2">Documents</h3>
+
                 <div className="grid grid-cols-2 gap-4">
                   {fields.map((field) => (
                     <div
@@ -297,16 +293,16 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             )}
 
             {subTab === "account" && (
-              <div className="mb-6">
+              <div className="mb-6 mt-5">
                 <h3 className="text-lg font-semibold mb-2">Account Access</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {AccountAccess.map(({ name, label,valueKey  }) => (
+                  {AccountAccess.map(({ name, label, valueKey }) => (
                     <InputField
                       key={name}
                       name={name}
                       label={label}
                       value={
-                        updatedFields[name as keyof Employee]  ??
+                        updatedFields[name as keyof Employee] ??
                         ((employee?.[valueKey as keyof Employee] as string) ||
                           "")
                       }

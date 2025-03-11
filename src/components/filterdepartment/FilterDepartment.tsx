@@ -14,8 +14,6 @@ interface Employee {
 
 interface Props {
   employees: Employee[];
-//   setShowFilter: React.Dispatch<React.SetStateAction<boolean>>;
-
 }
 
 export default function FilterDepatment({ employees }: Props) {

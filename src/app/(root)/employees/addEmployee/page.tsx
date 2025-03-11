@@ -2,11 +2,8 @@
 
 import { useState } from "react";
 import useAddEmployee from "./useAddEmployee";
-import { User, Briefcase, FileText, Lock } from "lucide-react";
-import PersonalInfo from "@/components/personalInfo/PersonalInfo";
-import Documents from "@/components/documents/Documents";
-import AccountAccess from "@/components/accountAccess/AccountAccess";
-import ProfessionalInfo from "@/components/professionalInfo/ProfessionalInfo";
+import TabBar from "@/components/tabBar/TabBar";
+import { getAddEmployeeTabs } from "@/utils/addEmployeeTabs";
 
 export default function AddEmployeeForm() {
   const {
@@ -16,57 +13,28 @@ export default function AddEmployeeForm() {
     loading,
     error,
     handleFileUpload,
-    // handleImageUpload,
   } = useAddEmployee();
 
   const [activeTab, setActiveTab] = useState(0);
-  const tabs = [
-    {
-      label: "Personal Information",
-      icon: <User size={24} />,
-      component: (
-        <PersonalInfo
-          form={form}
-          handleChange={handleChange}
-          handleFileUpload={handleFileUpload}
-        />
-      ),
-    },
-    {
-      label: "Professional Information",
-      icon: <Briefcase size={24} />,
-      component: <ProfessionalInfo form={form} handleChange={handleChange} />,
-    },
-    {
-      label: "Documents",
-      icon: <FileText size={24} />,
-      component: <Documents handleFileUpload={handleFileUpload} />,
-    },
-    {
-      label: "Account Access",
-      icon: <Lock size={24} />,
-      component: <AccountAccess form={form} handleChange={handleChange} />,
-    },
-  ];
+  
+  // Get tabs configuration from the utility file
+  const tabs = getAddEmployeeTabs(form, handleChange, handleFileUpload);
+
+  const handleTabChange = (tabKey: string) => {
+    setActiveTab(parseInt(tabKey));
+  };
 
   return (
     <div className="w-full min-h-screen bg-[#131313] text-white shadow-md rounded-lg">
-      <div className="flex flex-wrap border-b border-gray-700 w-full">
-        {tabs.map((tab, index) => (
-          <button
-            key={index}
-            className={`flex items-center gap-3 px-5 py-2 text-sm font-semibold border-b-2 transition-all ${
-              activeTab === index
-                ? "border-orange-500 text-orange-500 text-[18px]"
-                : "border-transparent text-[18px]"
-            }`}
-            onClick={() => setActiveTab(index)}
-          >
-            {tab.icon}
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <TabBar 
+        tabs={tabs}
+        activeTab={activeTab.toString()}
+        onTabChange={handleTabChange}
+        orientation="horizontal"
+        className="border-b border-gray-700 w-full"
+        activeClassName="border-orange-500 text-orange-500 text-[18px] border-b-2"
+        inactiveClassName="border-transparent text-[18px]"
+      />
 
       <div className="">{tabs[activeTab].component}</div>
 
