@@ -76,14 +76,20 @@ export const updateEmployeeDetails = createAsyncThunk(
     try {
       const response = await axios.patch(
         `/api/employee/${encodeURIComponent(id)}`,
-        updates
+        updates,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-          return rejectWithValue(error.response?.data?.error || error.message);
-        }
+        return rejectWithValue(error.response?.data?.error || error.message);
       }
+      return rejectWithValue("Unknown error occurred");
+    }
   }
 );
 
@@ -120,32 +126,38 @@ export const deleteEmployee = createAsyncThunk<
 });
 
 
-export const uploadImage = createAsyncThunk<
-  { secure_url: string; public_id: string },
-  { file: File; oldPublicId?: string },
-  { rejectValue: string }
->("employee/uploadImage", async ({ file, oldPublicId }, { rejectWithValue }) => {
-  try {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append(
-      "upload_preset",
-      process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "default_preset"
-    );
+export const uploadImage = createAsyncThunk(
+  "employee/uploadImage",
+  async ({ file, fieldName }: { file: File; fieldName: string }, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append(
+        "upload_preset",
+        process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "default_preset"
+      );
 
-    if (oldPublicId) {
-      formData.append("oldPublicId", oldPublicId);
-    }
+      // Determine resource type based on file type
+      const isPDF = file.type === "application/pdf";
+      const resourceType = isPDF ? "raw" : "image";
 
-    const response = await axios.post("/api/upload", formData);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return rejectWithValue(error.response?.data?.error || error.message);
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`,
+        formData
+      );
+
+      return { 
+        secure_url: response.data.secure_url,
+        fieldName 
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.error || error.message);
+      }
+      return rejectWithValue("Unknown error occurred");
     }
-    return rejectWithValue("Unknown error occurred");
   }
-});
+);
 export const fetchByDepartment = createAsyncThunk<
   Employee[],
   string,
@@ -261,12 +273,18 @@ const employeeSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(uploadImage.fulfilled, (state) => {
+      .addCase(uploadImage.fulfilled, (state, action) => {
         state.loading = false;
+        if (state.employee) {
+          state.employee = {
+            ...state.employee,
+            [action.payload.fieldName]: action.payload.secure_url
+          };
+        }
       })
       .addCase(uploadImage.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? "Failed to upload image";
+        state.error = (action.payload as string) ?? "Failed to upload image";
       })
       .addCase(fetchByDepartment.pending, (state) => {
         state.loading = true;

@@ -13,7 +13,33 @@ interface TabConfig {
 }
 
 export const getAddEmployeeTabs = (
-  form: any,
+  form: {
+    firstName: string;
+    lastName: string;
+    mobileNumber: string;
+    email: string;
+    dateOfBirth: string;
+    maritalStatus: string;
+    gender: string;
+    nationality: string;
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    photoURL?: string;
+    employeeId: string;
+    userName: string;
+    employmentType: string;
+    department: string;
+    designation: string;
+    workingDays: string;
+    joiningDate: string;
+    officeLocation: string;
+    status: string;
+    slackId: string;
+    skypeId: string;
+    githubId: string;
+  },
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void,
   handleFileUpload: (file: File, field: string) => void
 ): TabConfig[] => {

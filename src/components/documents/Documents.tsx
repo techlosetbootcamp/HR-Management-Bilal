@@ -2,7 +2,7 @@ import React from "react";
 import FileUpload from "@/components/fileUpload/FileUpload";
 
 interface DocumentsProps {
-  handleFileUpload: (fieldName: string, file: File) => void;
+  handleFileUpload: (file: File, field: string) => void;
 }
 
 const Documents: React.FC<DocumentsProps> = ({ handleFileUpload }) => {
@@ -15,7 +15,7 @@ const Documents: React.FC<DocumentsProps> = ({ handleFileUpload }) => {
             label="Appointment Letter"
             onFileSelect={(file) => {
               console.log("📤 Uploading relivingLetter:", file.name);
-              handleFileUpload("appointmentLetter", file);
+              handleFileUpload(file, "appointmentLetter");
             }}
           />
         </div>
@@ -23,21 +23,21 @@ const Documents: React.FC<DocumentsProps> = ({ handleFileUpload }) => {
           <h3 className="text-gray-400 mb-2">Upload Salary Slips</h3>
           <FileUpload
             label="Upload Salary Slips"
-            onFileSelect={(file) => handleFileUpload("salarySlip", file)}
+            onFileSelect={(file) => handleFileUpload(file, "salarySlip")}
           />
         </div>
         <div>
           <h3 className="text-gray-400 mb-2">Upload Relieving Letter</h3>
           <FileUpload
             label="Upload Relieving Letter"
-            onFileSelect={(file) => handleFileUpload("relivingLetter", file)}
+            onFileSelect={(file) => handleFileUpload(file, "relivingLetter")}
           />
         </div>
         <div>
           <h3 className="text-gray-400 mb-2">Upload Experience Letter</h3>
           <FileUpload
             label="Upload Experience Letter"
-            onFileSelect={(file) => handleFileUpload("experienceLetter", file)}
+            onFileSelect={(file) => handleFileUpload(file, "experienceLetter")}
           />
         </div>
       </div>

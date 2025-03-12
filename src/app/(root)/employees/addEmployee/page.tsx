@@ -17,7 +17,6 @@ export default function AddEmployeeForm() {
 
   const [activeTab, setActiveTab] = useState(0);
   
-  // Get tabs configuration from the utility file
   const tabs = getAddEmployeeTabs(form, handleChange, handleFileUpload);
 
   const handleTabChange = (tabKey: string) => {

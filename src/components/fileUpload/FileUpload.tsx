@@ -13,7 +13,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ label, accept = "image/*, .pdf"
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      setFileName(file.name); // Store file name for display
+      setFileName(file.name);
       onFileSelect(file);
     }
   };

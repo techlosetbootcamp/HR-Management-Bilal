@@ -41,41 +41,54 @@ export function useEmployeeDetails(id: string) {
   const saveChanges = async () => {
     try {
       if (!employee) return;
-      let newPhotoURL = employee.photoURL;
-      let newPublicId = employee.photoPublicId;
 
+      let updatePayload: Partial<Employee> = { ...updatedFields };
+
+      // Handle image upload if there's a new image
       if (selectedFile) {
         console.log("📸 Uploading new image...");
         const uploadResult = await dispatch(
           uploadImage({
             file: selectedFile,
-            oldPublicId: employee.photoPublicId,
+            fieldName: employee.photoPublicId || "",
           })
         ).unwrap();
+        
         console.log("Image uploaded successfully:", uploadResult);
-        newPhotoURL = uploadResult.secure_url;
-        newPublicId = uploadResult.public_id;
+        
+        // Add image data to the update payload
+        updatePayload = {
+          ...updatePayload,
+          photoURL: uploadResult.secure_url,
+          photoPublicId: uploadResult.fieldName
+        };
+
+        // Immediately update the local state with the new image
+        setUpdatedImage(uploadResult.secure_url);
       }
 
-      const updatePayload: Partial<Employee> = {
-        ...updatedFields,
-        ...(newPhotoURL ? { photoURL: newPhotoURL } : {}),
-        ...(newPublicId ? { photoPublicId: newPublicId } : {}),
-      };
+      // Only proceed if there are actual changes
+      if (Object.keys(updatePayload).length > 0) {
+        console.log("Sending update request:", updatePayload);
+        const updateResponse = await dispatch(
+          updateEmployeeDetails({
+            id: employee.id,
+            updates: updatePayload
+          })
+        ).unwrap();
 
-      if (Object.keys(updatePayload).length === 0) {
-        alert("No changes detected.");
-        return;
+        console.log("MongoDB update response:", updateResponse);
+
+        // Force a refresh of the employee data
+        const refreshedData = await dispatch(fetchEmployeeById(id)).unwrap();
+        console.log("Refreshed employee data:", refreshedData);
       }
 
-      console.log(" Sending update request:", updatePayload);
-      dispatch(
-        updateEmployeeDetails({ id: employee.id, updates: updatePayload })
-      );
-
+      // Reset states
       setUpdatedFields({});
       setUpdatedImage(null);
       setSelectedFile(null);
+      
       alert("Profile updated successfully!");
       router.push(`/employees/${id}`);
     } catch (err) {

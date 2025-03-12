@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { addEmployee } from "@/redux/slice/employeeSlice";
+import { addEmployee, uploadImage } from "@/redux/slice/employeeSlice";
 import { useRouter } from "next/navigation";
 
 export default function useAddEmployee() {
@@ -38,6 +38,7 @@ export default function useAddEmployee() {
     maritalStatus: "",
     photoURL: "", // ✅ Profile Picture
     status: "",
+    photoPublicId: "", // ✅ Public ID for Cloudinary
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -49,53 +50,16 @@ export default function useAddEmployee() {
   };
 
   // ✅ Cloudinary File Upload (Handles Both Images & PDFs)
-  const handleFileUpload = async (fieldName: string, file: File) => {
-    if (!file) {
-      console.warn(`No file provided for ${fieldName}`);
-      return;
-    }
-
-    const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-
-    if (!uploadPreset || !cloudName) {
-      console.error("Missing Cloudinary configuration!");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", uploadPreset);
-
-    // ✅ Determine file type
-    const isPDF = file.type === "application/pdf";
-    const resourceType = isPDF ? "raw" : "image"; // `raw` for PDFs, `image` for pictures
-
+  const handleFileUpload = async (file: File,fieldName: string) => {
     try {
-      console.log(`📤 Uploading ${fieldName} as ${isPDF ? "PDF" : "Image"}...`);
-
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Upload failed: ${await response.text()}`);
-      }
-
-      const data = await response.json();
-      console.log(`✅ ${fieldName} uploaded successfully:`, data.secure_url);
-
+      const result = await dispatch(uploadImage({ file, fieldName })).unwrap();
       setForm((prev) => ({
         ...prev,
-        [fieldName]: data.secure_url, // ✅ Store uploaded file URL
+        [fieldName]: result.secure_url,
       }));
     } catch (error) {
       console.error(`❌ File upload failed for ${fieldName}:`, error);
-      alert("File upload failed. Please check your Cloudinary settings.");
+      alert("File upload failed. Please try again.");
     }
   };
 

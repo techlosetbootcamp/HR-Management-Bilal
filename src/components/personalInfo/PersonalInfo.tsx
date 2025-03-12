@@ -22,7 +22,7 @@ interface PersonalInfoProps {
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  handleFileUpload: (fieldName: string, file: File) => void;
+  handleFileUpload: (file: File, field: string) => void;
 }
 
 const PersonalInfo: React.FC<PersonalInfoProps> = ({
@@ -53,7 +53,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
             className="hidden"
             accept="image/*"
             onChange={(e) =>
-              e.target.files && handleFileUpload("photoURL", e.target.files[0])
+              e.target.files && handleFileUpload(e.target.files[0], "photoURL")
             }
           />
         </label>
