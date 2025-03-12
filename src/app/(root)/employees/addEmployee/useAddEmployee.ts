@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { addEmployee, uploadImage } from "@/redux/slice/employeeSlice";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function useAddEmployee() {
   const dispatch = useDispatch<AppDispatch>();
@@ -58,21 +59,58 @@ export default function useAddEmployee() {
         [fieldName]: result.secure_url,
       }));
     } catch (error) {
-      console.error(`❌ File upload failed for ${fieldName}:`, error);
+      console.error(` File upload failed for ${fieldName}:`, error);
       alert("File upload failed. Please try again.");
     }
   };
 
   const router = useRouter();
+  const validateForm = () => {
+    const requiredFields = [
+      'firstName', 'lastName', 'email', 'mobileNumber', 'designation',
+      'department', 'joiningDate', 'employmentType', 'gender', 'dateOfBirth',
+      'address', 'city', 'state', 'zipCode', 'nationality', 'officeLocation',
+      'employeeId', 'workingDays', 'maritalStatus', 'photoURL'
+    ];
+
+    for (const field of requiredFields) {
+      if (!form[field as keyof typeof form]) {
+        toast.error(`Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
+        return false;
+      }
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      toast.error('Please enter a valid email address');
+      return false;
+    }
+
+    // Validate mobile number format
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(form.mobileNumber)) {
+      toast.error('Please enter a valid 10-digit mobile number');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       await dispatch(addEmployee(form)).unwrap();
-      console.log("✅ Employee added successfully!");
+      toast.success('Employee added successfully!');
       router.push("/employees");
     } catch (error) {
       console.error("❌ Error adding employee:", error);
+      toast.error('Failed to add employee. Please try again.');
     }
   };
 

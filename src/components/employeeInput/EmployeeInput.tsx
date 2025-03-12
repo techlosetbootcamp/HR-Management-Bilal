@@ -16,7 +16,7 @@ interface InputFieldProps {
   disabled?: boolean;
 }
 
-const InputField: React.FC<InputFieldProps> = ({
+const EmployeeInput: React.FC<InputFieldProps> = ({
   label,
   type = "text",
   name,
@@ -90,4 +90,4 @@ const InputField: React.FC<InputFieldProps> = ({
   );
 };
 
-export default InputField;
+export default EmployeeInput;

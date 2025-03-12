@@ -1,5 +1,5 @@
 import React from "react";
-import InputField from "../infoInput/InfoInput";
+import EmployeeInput from "../employeeInput/EmployeeInput";
 
 interface ProfessionalInfoProps {
   form: {
@@ -25,33 +25,33 @@ export default function ProfessionalInfo({
 }: ProfessionalInfoProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 sm:p-6">
-      <InputField
+      <EmployeeInput
         name="employeeId"
         placeholder="Employee ID"
         value={form.employeeId}
         onChange={handleChange}
       />
 
-      <InputField
+      <EmployeeInput
         name="userName"
         placeholder="User Name"
         value={form.userName}
         onChange={handleChange}
       />
-      <InputField
+      <EmployeeInput
         name="employmentType"
         type="select"
         value={form.employmentType || ""}
         options={["Office", "Remote"]}
         onChange={handleChange}
       />
-      <InputField
+      <EmployeeInput
         name="email"
         placeholder="Email Address"
         value={form.email}
         onChange={handleChange}
       />
-      <InputField
+      <EmployeeInput
         name="department"
         type="select"
         value={form.department || ""}
@@ -59,7 +59,7 @@ export default function ProfessionalInfo({
         onChange={handleChange} // Fix applied
       />
 
-      <InputField
+      <EmployeeInput
         name="designation"
         type="select"
         value={form.designation || ""}
@@ -79,28 +79,28 @@ export default function ProfessionalInfo({
         ]}
         onChange={handleChange}
       />
-      <InputField
+      <EmployeeInput
         name="workingDays"
         type="select"
         value={form.workingDays || ""}
         options={["Monday-Friday", "Sunday-Thursday", "Flexible"]}
         onChange={handleChange} // Fix applied
       />
-      <InputField
+      <EmployeeInput
         name="status"
         type="select"
         value={form.status || ""}
         options={["Permanent", "Contract"]}
         onChange={handleChange} // Fix applied
       />
-      <InputField
+      <EmployeeInput
         type="date"
         name="joiningDate"
         value={form.joiningDate}
         onChange={handleChange}
       />
 
-      <InputField
+      <EmployeeInput
         name="officeLocation"
         type="select"
         value={form.officeLocation || ""}

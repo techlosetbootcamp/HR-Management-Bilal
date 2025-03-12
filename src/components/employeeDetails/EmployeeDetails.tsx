@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { useEmployeeDetails } from "@/hooks/useEmployeeDetails";
+import { useEmployeeDetails } from "@/components/employeeDetails/useEmployeeDetails";
 import {
+  BriefcaseBusiness,
   Download,
   Edit,
   Eye,
+  Mail,
+  Save,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import InputField from "../infoInput/InfoInput";
 import {
   AccountAccess,
   PersonalInfo,
@@ -17,6 +19,7 @@ import { Employee } from "@/types/types";
 import LottieAnimation from "../lottieAnimation/LottieAnimation";
 import TabBar from "../tabBar/TabBar";
 import { mainTabs, subTabs } from "@/utils/tabConfigs";
+import EmployeeInput from "../employeeInput/EmployeeInput";
 
 type InputFieldType =
   | "number"
@@ -74,10 +77,22 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   const [subTab, setSubTab] = useState("personal");
   const router = useRouter();
 
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditSaveClick = async () => {
+    if (isEditing) {
+      await saveChanges();
+      setIsEditing(false);
+      router.push(`/employees/${employee?.id}`);
+    } else {
+      setIsEditing(true);
+      router.push(`/employees/${employee?.id}?edit=true`);
+    }
+  };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-[#131313]">
+      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
         <LottieAnimation />
       </div>
     );
@@ -85,8 +100,8 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="dark:bg-[#131313] dark:text-white rounded-lg shadow-lg flex border border-gray-700">
-      <div className="w-1/4 h-[700px] dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4">
+    <div className="dark:bg-[#131313] dark:text-white rounded-lg shadow-lg flex flex-col md:flex-row border border-gray-700">
+      <div className="w-full md:w-1/4 h-auto md:h-[700px] dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4">
         <TabBar
           tabs={mainTabs}
           activeTab={activeTab}
@@ -97,10 +112,10 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
         />
       </div>
 
-      <div className="w-3/4 p-4">
+      <div className="w-full md:w-3/4 p-4">
         {activeTab === "profile" && (
           <>
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
               <label
                 htmlFor="profileImageUpload"
                 className="cursor-pointer relative"
@@ -112,11 +127,11 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     updatedImage || employee?.photoURL || "/default-avatar.png"
                   }
                   alt="Profile"
-                  className="w-[100px] h-[100px] object-cover rounded-full border border-gray-500"
+                  className="w-[100px] h-[100px] object-cover rounded-lg border border-gray-500"
                 />
 
                 {isEditMode && (
-                  <div className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full">
+                  <div className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-lg">
                     <Edit size={16} />
                   </div>
                 )}
@@ -136,21 +151,32 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 />
               )}
 
-              <div>
-                <h2 className="text-2xl font-bold">
+              <div className="flex flex-col text-center md:text-left">
+                <h2 className="text-xl md:text-2xl font-bold">
                   {employee?.firstName} {employee?.lastName}
                 </h2>
-                <p className="text-orange-400">{employee?.designation}</p>
-                <p>{employee?.email}</p>
+                <p className="text-orange-400 flex my-2 text-sm md:text-base">
+                  <BriefcaseBusiness className="text-white mr-2" />{" "}
+                  {employee?.designation}
+                </p>
+                <p className="flex text-sm md:text-base">
+                  <Mail className="mr-2" /> {employee?.email}
+                </p>
               </div>
 
               <button
-                onClick={() =>
-                  router.push(`/employees/${employee?.id}?edit=true`)
-                }
-                className="ml-auto bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                onClick={handleEditSaveClick}
+                className="mt-4 md:mt-0 ml-auto bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
               >
-                <Edit /> Edit Profile
+                {isEditing ? (
+                  <>
+                    <Save size={16} /> Save
+                  </>
+                ) : (
+                  <>
+                    <Edit size={16} /> Edit Profile
+                  </>
+                )}
               </button>
             </div>
 
@@ -179,7 +205,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                       disable,
                       className,
                     }) => (
-                      <InputField
+                      <EmployeeInput
                         key={name}
                         name={name}
                         label={label}
@@ -198,8 +224,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                     )
                   )}
                 </div>
-
-                <button onClick={saveChanges}>Submit</button>
               </div>
             )}
 
@@ -208,10 +232,10 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <h3 className="text-lg font-semibold mb-2">
                   Professional Information
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {ProfessionalInfo.map(
                     ({ name, label, type, options, valueKey }) => (
-                      <InputField
+                      <EmployeeInput
                         key={name}
                         name={name}
                         label={label}
@@ -235,7 +259,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               <div className="mb-6 mt-5">
                 <h3 className="text-lg font-semibold mb-2">Documents</h3>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {fields.map((field) => (
                     <div
                       key={field}
@@ -295,9 +319,9 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             {subTab === "account" && (
               <div className="mb-6 mt-5">
                 <h3 className="text-lg font-semibold mb-2">Account Access</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {AccountAccess.map(({ name, label, valueKey }) => (
-                    <InputField
+                    <EmployeeInput
                       key={name}
                       name={name}
                       label={label}

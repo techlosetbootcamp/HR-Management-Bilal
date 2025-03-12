@@ -1,7 +1,7 @@
 import React from "react";
 import { LockKeyhole} from "lucide-react";
-import InputField from "../infoInput/InfoInput";
 import Image from "next/image";
+import EmployeeInput from "../employeeInput/EmployeeInput";
 
 interface PersonalInfoProps {
   form: {
@@ -60,42 +60,42 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InputField
+        <EmployeeInput
           type="text"
           name="firstName"
           value={form.firstName}
           placeholder="First Name"
           onChange={handleChange}
         />
-        <InputField
+        <EmployeeInput
           type="text"
           name="lastName"
           value={form.lastName}
           placeholder="Last Name"
           onChange={handleChange}
         />
-        <InputField
+        <EmployeeInput
           type="text"
           name="mobileNumber"
           value={form.mobileNumber}
           placeholder="Mobile Number"
           onChange={handleChange}
         />
-        <InputField
+        <EmployeeInput
           type="email"
           name="email"
           value={form.email}
           placeholder="Email Address"
           onChange={handleChange}
         />
-        <InputField
+        <EmployeeInput
           type="date"
           name="dateOfBirth"
           value={form.dateOfBirth}
           placeholder="Date of Birth"
           onChange={handleChange}
         />
-        <InputField
+        <EmployeeInput
           type="select"
           name="maritalStatus"
           value={form.maritalStatus}
@@ -103,7 +103,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           onChange={handleChange}
           options={["Single", "Married", "Divorced"]}
         />
-        <InputField
+        <EmployeeInput
           type="select"
           name="gender"
           value={form.gender}
@@ -111,7 +111,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           onChange={handleChange}
           options={["Male", "Female", "Other"]}
         />
-        <InputField
+        <EmployeeInput
           type="select"
           name="nationality"
           value={form.nationality}
@@ -122,7 +122,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       </div>
 
       <div className="mt-4">
-      <InputField
+      <EmployeeInput
         type="text"
         name="address"
         value={form.address}
@@ -131,7 +131,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        <InputField
+        <EmployeeInput
           type="select"
           name="city"
           value={form.city}
@@ -146,7 +146,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
             "Multan",
           ]}
         />
-        <InputField
+        <EmployeeInput
           type="select"
           name="state"
           value={form.state}
@@ -154,7 +154,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           onChange={handleChange}
           options={["Punjab", "Sindh", "Balochistan", "KPK"]}
         />
-        <InputField
+        <EmployeeInput
           type="text"
           name="zipCode"
           value={form.zipCode}

@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
+import { useFilterDepartment } from "@/components/filterdepartment/useFilterDepartment";
 
 interface Employee {
   id: string;
@@ -17,7 +18,10 @@ interface Props {
 }
 
 export default function FilterDepatment({ employees }: Props) {
+  const { handleEmployeeClick } = useFilterDepartment();
   const router = useRouter();
+
+  
 
   const employeesByDepartment = employees.reduce((acc, emp) => {
     if (!acc[emp.department]) {
@@ -57,7 +61,7 @@ export default function FilterDepatment({ employees }: Props) {
                 <div
                   key={emp.id}
                   className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-800 cursor-pointer transition"
-                  onClick={() => router.push(`/employees/${emp.id}`)}
+                  onClick={() => handleEmployeeClick(emp.id)}
                 >
                   <div className="flex items-center gap-3">
                     <Image

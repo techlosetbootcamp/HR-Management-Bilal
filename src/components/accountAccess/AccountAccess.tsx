@@ -1,5 +1,5 @@
 import React from "react";
-import InfoInput from "../infoInput/InfoInput";
+import EmployeeInput from "../employeeInput/EmployeeInput";
 
 interface AccountAccessProps {
   form: {
@@ -14,7 +14,7 @@ interface AccountAccessProps {
 export default function AccountAccess({ form, handleChange }: AccountAccessProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 sm:p-6">
-      <InfoInput
+      <EmployeeInput
         type="email"
         name="email"
         placeholder="Enter Email Address"
@@ -22,21 +22,21 @@ export default function AccountAccess({ form, handleChange }: AccountAccessProps
         onChange={handleChange}
       />
       
-      <InfoInput
+      <EmployeeInput
         name="slackId"
         placeholder="Enter Slack ID"
         value={form.slackId}
         onChange={handleChange}
       />
 
-      <InfoInput
+      <EmployeeInput
         name="skypeId"
         placeholder="Enter Skype ID"
         value={form.skypeId}
         onChange={handleChange}
       />
 
-      <InfoInput
+      <EmployeeInput
         name="githubId"
         placeholder="Enter Github ID"
         value={form.githubId}

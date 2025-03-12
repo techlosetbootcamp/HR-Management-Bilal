@@ -28,14 +28,14 @@ const TabBar: React.FC<TabBarProps> = ({
   const isVertical = orientation === "vertical";
   
   return (
-    <div className={`flex ${isVertical ? "flex-col" : "border-b border-gray-700"} ${className}`}>
+    <div className={`flex flex-wrap ${isVertical ? "flex-col" : "border-b border-gray-700"} ${className}`}>
       {tabs.map((tab) => (
         <button
           key={tab.key}
           className={`
             ${isVertical 
               ? "block w-full text-left px-4 py-3 mb-2 rounded-lg" 
-              : "px-4 py-2 flex items-center gap-2"}
+              : "px-4 py-2 flex items-center gap-2 flex-wrap"}
             ${activeTab === tab.key 
               ? activeClassName 
               : inactiveClassName}

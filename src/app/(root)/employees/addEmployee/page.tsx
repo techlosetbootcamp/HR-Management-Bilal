@@ -49,7 +49,7 @@ export default function AddEmployeeForm() {
         {activeTab < tabs.length - 1 ? (
           <button
             onClick={() => setActiveTab(activeTab + 1)}
-            className="mr-4 bg-customOrange hover:bg-[#131313] hover:text-customOrange border transition-all ease-in-out border-customOrange px-4 py-3 rounded-xl text-white"
+            className="mr-4 bg-customOrange hover:bg-[#131313] hover:text-customOrange border transition-all ease-in-out duration-300 border-customOrange px-4 py-3 rounded-xl text-white"
           >
             Next
           </button>
@@ -57,7 +57,7 @@ export default function AddEmployeeForm() {
           <button
             type="submit"
             onClick={handleSubmit}
-            className="bg-customOrange hover:bg-[#131313] hover:text-customOrange border transition-all ease-in-out border-customOrange px-5 py-3 rounded-xl text-white"
+            className="bg-customOrange hover:bg-[#131313] hover:text-customOrange border transition-all ease-in-out duration-300 border-customOrange px-5 py-3 rounded-xl text-white"
             disabled={loading}
           >
             {loading ? "Adding..." : "Add"}

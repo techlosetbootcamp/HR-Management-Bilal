@@ -7,12 +7,12 @@ import {
   uploadProfileImage 
 } from "@/redux/slice/authSlice";
 import { RootState, AppDispatch } from "@/redux/store";
+import toast from "react-hot-toast";
 
 export function useProfile() {
   const dispatch = useDispatch<AppDispatch>();
   const { data: session, status, update } = useSession();
   
-  // Get user data from Redux store
   const { user, loading, error, successMessage } = useSelector(
     (state: RootState) => state.auth
   );
@@ -36,7 +36,6 @@ export function useProfile() {
       return;
     }
 
-    // Fetch user data using Redux action
     dispatch(getProfileByEmail(session.user.email))
       .unwrap()
       .then(() => {
@@ -47,7 +46,6 @@ export function useProfile() {
       });
   }, [session, status, dispatch]);
 
-  // Update local state when Redux user data changes
   useEffect(() => {
     if (user) {
       setName(user.name || "");
@@ -77,7 +75,6 @@ export function useProfile() {
 
     if (file) {
       try {
-        // Upload image using Redux action
         uploadedImageUrl = await dispatch(uploadProfileImage(file)).unwrap();
       } catch (error) {
         console.error("Image upload failed:", error);
@@ -85,7 +82,6 @@ export function useProfile() {
       }
     }
 
-    // Update profile using Redux action
     const result = await dispatch(
       updateProfile({
         name,
@@ -94,7 +90,6 @@ export function useProfile() {
       })
     ).unwrap();
 
-    // Update NextAuth session
     if (result && session) {
       await update({
         ...session,
@@ -105,6 +100,7 @@ export function useProfile() {
           image: result.profilePicture,
         },
       });
+      toast.success("Profile updated successfully!")
     }
   };
 

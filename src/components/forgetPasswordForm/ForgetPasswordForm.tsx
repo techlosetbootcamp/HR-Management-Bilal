@@ -6,7 +6,7 @@ import InputField from "../inputField/InputFeild";
 import Button from "../button/Button";
 
 export default function ForgetPassForm() {
-  const { email, sendOTP, handleChange } = useForgetPassForm();
+  const { email, sendOTP, handleChange,loading } = useForgetPassForm();
   return (
     <div className="flex flex-col items-center max-w-[445px] ">
       <InputField
@@ -20,6 +20,7 @@ export default function ForgetPassForm() {
         type="submit"
         onClick={sendOTP}      >
         Send OTP
+        {loading ? "Sending..." : "Send OTP"}
       </Button>
     </div>
   );

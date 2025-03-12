@@ -6,8 +6,9 @@ import {
   updateEmployeeDetails,
   uploadImage,
 } from "@/redux/slice/employeeSlice";
-import { RootState, AppDispatch } from "../redux/store";
+import { RootState, AppDispatch } from "../../redux/store";
 import { Employee } from "@/types/types";
+import toast from "react-hot-toast";
 
 export function useEmployeeDetails(id: string) {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,7 +45,6 @@ export function useEmployeeDetails(id: string) {
 
       let updatePayload: Partial<Employee> = { ...updatedFields };
 
-      // Handle image upload if there's a new image
       if (selectedFile) {
         console.log("📸 Uploading new image...");
         const uploadResult = await dispatch(
@@ -56,18 +56,16 @@ export function useEmployeeDetails(id: string) {
         
         console.log("Image uploaded successfully:", uploadResult);
         
-        // Add image data to the update payload
         updatePayload = {
           ...updatePayload,
           photoURL: uploadResult.secure_url,
           photoPublicId: uploadResult.fieldName
         };
 
-        // Immediately update the local state with the new image
         setUpdatedImage(uploadResult.secure_url);
+        toast.success("Profile image updated successfully!");
       }
 
-      // Only proceed if there are actual changes
       if (Object.keys(updatePayload).length > 0) {
         console.log("Sending update request:", updatePayload);
         const updateResponse = await dispatch(
@@ -79,21 +77,19 @@ export function useEmployeeDetails(id: string) {
 
         console.log("MongoDB update response:", updateResponse);
 
-        // Force a refresh of the employee data
         const refreshedData = await dispatch(fetchEmployeeById(id)).unwrap();
         console.log("Refreshed employee data:", refreshedData);
       }
 
-      // Reset states
       setUpdatedFields({});
       setUpdatedImage(null);
       setSelectedFile(null);
       
-      alert("Profile updated successfully!");
       router.push(`/employees/${id}`);
+      toast.success("Changes saved successfully!");
     } catch (err) {
       console.error("Error saving changes:", err);
-      alert("Error updating profile.");
+      toast.error("Failed to update profile image");
     }
   };
 

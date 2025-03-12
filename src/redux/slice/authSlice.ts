@@ -6,7 +6,7 @@ interface User {
   name: string;
   email: string;
   role: "ADMIN" | "EMPLOYEE";
-  profilePicture?: string; // ✅ Added profile picture field
+  profilePicture?: string;
 }
 
 interface AuthState {

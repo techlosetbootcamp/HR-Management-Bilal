@@ -61,7 +61,7 @@ const DropDown = () => {
               className="px-4 py-2 hover:bg-customOrange cursor-pointer"
               onClick={handleAboutClick}
             >
-              About
+              Employee Info
             </li>
             <li
               className="px-4 py-2 hover:bg-customOrange cursor-pointer"

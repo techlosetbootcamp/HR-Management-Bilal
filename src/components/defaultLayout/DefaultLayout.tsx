@@ -12,7 +12,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
   return (
     <div className="flex h-screen dark:bg-[#131313]">
       {/* Sidebar (Fixed, No Scroll) */}
-      <div className={`h-full fixed lg:static w-[280px] dark:bg-[#A2A1A80D] bg-gray-300 overflow-hidden transition-transform duration-300 z-30 ${
+      <div className={`h-full fixed lg:static w-full md:w-[280px] dark:bg-[#A2A1A80D] bg-gray-300 overflow-hidden transition-transform duration-300 z-30 ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         <Sidebar activePath={pathname} onClose={() => setSidebarOpen(false)} />

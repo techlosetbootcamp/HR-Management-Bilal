@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
-import InputField from "@/components/infoInput/InfoInput";
 import { Edit } from "lucide-react";
+import EmployeeInput from "@/components/employeeInput/EmployeeInput";
 import { useProfile } from "@/hooks/useProfile";
+import LottieAnimation from "@/components/lottieAnimation/LottieAnimation";
 
 export default function ProfilePage() {
   const {
@@ -14,11 +15,15 @@ export default function ProfilePage() {
     loading,
     isSessionLoading,
     handleFileChange,
-    handleSubmit
+    handleSubmit,
   } = useProfile();
 
   if (isSessionLoading) {
-    return <div>Loading session...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen bg-[#131313]">
+        <LottieAnimation />
+      </div>
+    );
   }
 
   return (
@@ -52,7 +57,7 @@ export default function ProfilePage() {
           </label>
         </div>
         <div>
-          <InputField
+          <EmployeeInput
             label="Name"
             name="name"
             type="text"
@@ -63,7 +68,7 @@ export default function ProfilePage() {
         </div>
 
         <div>
-          <InputField
+          <EmployeeInput
             label="Email"
             name="email"
             type="email"
