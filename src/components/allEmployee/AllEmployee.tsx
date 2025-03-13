@@ -34,6 +34,7 @@ export default function AllEmployee({ employees, isAdmin }: Props) {
     handleDeleteEmployee,
   } = useAllEmployee(employees);
 
+  
   return (
     <div className="dark:bg-[#131313] dark:text-white rounded-b-lg">
       {/* Table header */}

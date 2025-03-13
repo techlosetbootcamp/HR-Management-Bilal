@@ -60,8 +60,34 @@ model Employee {
   workingDays       String?
   zipCode           String?
   dateOfBirth       String?
-  attendance        String?
+  attendances       Attendance[]
   type              String?
   status           String?
    photoPublicId String?
+}
+model Attendance {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  employeeId   String   @db.ObjectId
+  employee     Employee @relation(fields: [employeeId], references: [id])
+  checkIn      DateTime
+  checkOut     DateTime
+  breakTime    String?
+  workingHours String?
+  status       AttendanceStatus
+  date         DateTime // New Date Field
+  createdAt    DateTime @default(now())
+}
+
+enum AttendanceStatus {
+  ON_TIME
+  LATE
+  ABSENT
+  LEAVE
+}
+
+enum Status {
+  ON_TIME
+  LATE
+  ABSENT
+  LEAVE
 }

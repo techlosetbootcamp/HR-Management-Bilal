@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useEmployeeDetails } from "@/components/employeeDetails/useEmployeeDetails";
 import {
   BriefcaseBusiness,
@@ -8,7 +8,7 @@ import {
   Mail,
   Save,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   AccountAccess,
@@ -40,6 +40,38 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   id,
   isEditMode,
 }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [isEditing, setIsEditing] = useState(searchParams.get("edit") === "true");
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  const formatTime = (timeString: string) => {
+    if (!timeString) return "—";
+    const date = new Date(timeString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true, // Optional: Use 12-hour format
+    });
+  };
+
+  const handleEditSaveClick = async () => {
+    if (isEditing) {
+      await saveChanges();
+      setIsEditing(false);
+      router.push(`/employees/${employee?.id}`);
+    } else {
+      setIsEditing(true);
+      router.push(`/employees/${employee?.id}?edit=true`);
+    }
+  };
   const {
     employee,
     loading,
@@ -75,20 +107,34 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   };
 
   const [subTab, setSubTab] = useState("personal");
-  const router = useRouter();
+  interface Attendance {
+    id: string;
+    date: string;
+    checkIn: string;
+    checkOut: string;
+    status: string;
+    breakTime: string;
+    workingHours: string;
+    employeeId: string;
+  }
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [attendanceRecords, setAttendanceRecords] = useState<Attendance[]>([]);
 
-  const handleEditSaveClick = async () => {
-    if (isEditing) {
-      await saveChanges();
-      setIsEditing(false);
-      router.push(`/employees/${employee?.id}`);
-    } else {
-      setIsEditing(true);
-      router.push(`/employees/${employee?.id}?edit=true`);
-    }
-  };
+  useEffect(() => {
+    const fetchAttendance = async () => {
+      try {
+        const res = await fetch(`/api/attendance?employeeId=${id}`);
+        if (!res.ok) throw new Error("Failed to fetch attendance data");
+        const data = await res.json();
+        setAttendanceRecords(data.filter((record: Attendance) => record.employeeId === id));
+      } catch (error) {
+        console.error("Error fetching attendance:", error);
+      }
+    };
+
+    if (id) fetchAttendance();
+  }, [id]);
+
 
   if (loading) {
     return (
@@ -340,10 +386,46 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           </>
         )}
 
-        {activeTab === "attendance" && (
+{activeTab === "attendance" && (
           <div>
-            <h3 className="text-lg font-semibold mb-2">Attendance</h3>
-            <p>Attendance details will be shown here.</p>
+            <h3 className="text-lg font-semibold mb-4">Attendance Records</h3>
+
+            {attendanceRecords.length > 0 ? (
+              <table className="w-full border-collapse border border-gray-700">
+                <thead>
+                  <tr className="bg-gray-800">
+                    <th className="border border-gray-600 p-2">Date</th>
+                    <th className="border border-gray-600 p-2">Check-In</th>
+                    <th className="border border-gray-600 p-2">Check-Out</th>
+                    <th className="border border-gray-600 p-2">Break Time</th>
+                    <th className="border border-gray-600 p-2">Working Hours</th>
+
+                    <th className="border border-gray-600 p-2">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {attendanceRecords.map((record) => (
+                    <tr key={record.id}>
+                      <td className="border border-gray-600 p-2">{formatDate(record.date)}</td>
+                      <td className="border border-gray-600 p-2">{formatTime(record.checkIn)}</td>
+                      <td className="border border-gray-600 p-2">{formatTime(record.checkOut)}</td>
+                      <td className="border border-gray-600 p-2">{record.breakTime}</td>
+                      <td className="border border-gray-600 p-2">{record.workingHours}</td>
+
+                      <td
+                        className={`border border-gray-600 p-2 ${
+                          record.status === "Present" ? "text-green-500" : "text-red-500"
+                        }`}
+                      >
+                        {record.status}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No attendance records found for this employee.</p>
+            )}
           </div>
         )}
         {activeTab === "projects" && (

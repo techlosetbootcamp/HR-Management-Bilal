@@ -41,9 +41,11 @@ export const useAllEmployee = (employees: Employee[]) => {
     router.push(`/employees/${id}`);
   };
 
+
   const handleEditEmployee = (id: string) => {
     router.push(`/employees/${id}?edit=true`);
   };
+
 
   const handleDeleteEmployee = (id: string) => {
     dispatch(deleteEmployee(id));
