@@ -42,7 +42,7 @@ export default function EmployeePage() {
           <FilterDepatment employees={filteredEmployees} />
         ) : (
           <>
-            <AllEmployee isAdmin={isAdmin} employees={filteredEmployees} />
+            <AllEmployee isAdmin={isAdmin} employees={filteredEmployees} isAttendancePage={false} />
           </>
         )}
       </div>

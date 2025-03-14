@@ -36,18 +36,18 @@
 //       if (!session || session.user.role !== "ADMIN") {
 //         return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 //       }
-  
+
 //       // ✅ Ensure body exists
 //       if (!req.body) {
 //         return NextResponse.json({ error: "Missing request body" }, { status: 400 });
 //       }
-  
+
 //       const { employeeId, checkIn, checkOut, status } = await req.json();
-  
+
 //       if (!employeeId || !status) {
 //         return NextResponse.json({ error: "Employee ID and status are required" }, { status: 400 });
 //       }
-  
+
 //       const attendance = await prisma.attendance.create({
 //         data: {
 //           employeeId,
@@ -56,7 +56,7 @@
 //           status,
 //         },
 //       });
-  
+
 //       return NextResponse.json(attendance, { status: 201 });
 //     } catch (error) {
 //       console.error("Error adding attendance:", error);
@@ -83,13 +83,19 @@ export async function GET(req: NextRequest) {
     });
 
     if (!attendances) {
-      return NextResponse.json({ error: "No attendance records found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "No attendance records found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(attendances, { status: 200 });
   } catch (error) {
     console.error("Error fetching attendance:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -104,14 +110,28 @@ export async function POST(req: NextRequest) {
     // Add null check for request body
     const body = await req.json();
     if (!body) {
-      return NextResponse.json({ error: "Empty request body" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Empty request body" },
+        { status: 400 }
+      );
     }
 
-    const { employeeId, date, checkIn, checkOut, breakTime, workingHours, status } = body;
+    const {
+      employeeId,
+      date,
+      checkIn,
+      checkOut,
+      breakTime,
+      workingHours,
+      status,
+    } = body;
 
     // Add validation for all required fields
     if (!employeeId || !date || !status) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     // Handle date conversions safely
@@ -128,16 +148,22 @@ export async function POST(req: NextRequest) {
     if (checkOut) attendanceData.checkOut = new Date(checkOut);
 
     const attendance = await prisma.attendance.create({
-      data: attendanceData
+      data: attendanceData,
     });
 
     return NextResponse.json(attendance, { status: 201 });
   } catch (error) {
     // Add proper error logging
-    console.error("Error creating attendance:", error instanceof Error ? error.message : error);
-    return NextResponse.json({ 
-      error: "Internal Server Error",
-      details: error instanceof Error ? error.message : "Unknown error"
-    }, { status: 500 });
+    console.error(
+      "Error creating attendance:",
+      error instanceof Error ? error.message : error
+    );
+    return NextResponse.json(
+      {
+        error: "Internal Server Error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }

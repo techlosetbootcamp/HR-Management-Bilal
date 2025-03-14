@@ -75,7 +75,7 @@ export default function DepartmentEmployees() {
       )}
 
 
-      <AllEmployee employees={employees} isAdmin={isAdmin} />
+      <AllEmployee employees={employees} isAdmin={isAdmin} isAttendancePage={false}/>
     </div>
   );
 }
