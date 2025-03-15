@@ -37,8 +37,16 @@ export const useAllEmployee = (employees: Employee[]) => {
 
 
   const handleDeleteEmployee = (id: string) => {
-    dispatch(deleteEmployee(id));
+    dispatch(deleteEmployee(id))
+      .unwrap()
+      .then(() => {
+        console.log("Employee deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Failed to delete employee:", error);
+      });
   };
+  
 
   return {
     currentEmployees,

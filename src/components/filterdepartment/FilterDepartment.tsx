@@ -30,7 +30,7 @@ export default function FilterDepatment({ employees }: Props) {
         {Object.entries(employeesByDepartment).map(([department, empList]) => (
           <div
             key={department}
-            className="bg-[#1E1E1E] p-5 rounded-lg shadow-md border border-gray-700"
+            className="dark:bg-[#1E1E1E] p-5 rounded-lg shadow-md border border-gray-700"
           >
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-lg font-semibold">{department} Department</h2>
@@ -53,7 +53,7 @@ export default function FilterDepatment({ employees }: Props) {
               {empList.slice(0, 5).map((emp) => (
                 <div
                   key={emp.id}
-                  className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-800 cursor-pointer transition"
+                  className="flex items-center justify-between p-2 rounded-lg dark:hover:bg-gray-800 cursor-pointer transition"
                   onClick={() => handleEmployeeClick(emp.id)}
                 >
                   <div className="flex items-center gap-3">

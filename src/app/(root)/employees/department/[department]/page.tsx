@@ -27,7 +27,7 @@ export default function DepartmentEmployees() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-[#131313]">
+      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
         <LottieAnimation /> 
       </div>
     );

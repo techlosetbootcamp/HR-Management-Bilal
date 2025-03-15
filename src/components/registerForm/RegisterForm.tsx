@@ -38,7 +38,7 @@ const RegisterForm = () => {
 
       <Button type="submit" disabled={loading}>
         {loading ? (
-          <span className="text-customOrange">Navigating...</span>
+          <span className="text-customOrange cursor-progress">Navigating...</span>
         ) : (
           "Register"
         )}

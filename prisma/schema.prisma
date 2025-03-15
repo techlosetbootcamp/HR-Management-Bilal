@@ -68,7 +68,7 @@ model Employee {
 model Attendance {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   employeeId   String   @db.ObjectId
-  employee     Employee @relation(fields: [employeeId], references: [id])
+  employee     Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   checkIn      DateTime
   checkOut     DateTime
   breakTime    String?

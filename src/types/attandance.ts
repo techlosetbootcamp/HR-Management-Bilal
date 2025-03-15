@@ -61,6 +61,10 @@ export interface Attendance {
   status: string;
   breakTime: string;
   workingHours: string;
+  employeeId: string;
+  designation: string;
+  employeeName: string;
+  type: string;
 }
 
 export interface AttendanceRecordsProps {

@@ -6,8 +6,8 @@ import { RootState } from "@/redux/store";
 import { logout, setUser } from "@/redux/slice/authSlice";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
-
+import Link from "next/link";  
+import AttandanceOverview from "../attandanceOverview/AttandanceOverview";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -44,6 +44,8 @@ const Dashboard = () => {
         <p>Loading session...</p>
       ) : user ? (
         <>
+      <AttandanceOverview/>
+
           <h1>Welcome, {user.user?.name}</h1>
           <p>User ID: {user.user?.id}</p>
           <p>Role: {user.user?.role}</p>
@@ -65,7 +67,6 @@ const Dashboard = () => {
       ) : (
         <p>Redirecting to login...</p>
       )}
-      
       <div>
         <h1 className="text-white">Change Password</h1>
         <Link href="../changePassword" className="white">

@@ -1,50 +1,61 @@
 import { AttendanceRecordsProps } from "@/types/attandance";
 import React from "react";
 
-
 const AttendanceRecords: React.FC<AttendanceRecordsProps> = ({
   attendanceRecords,
   formatDate,
   formatTime,
 }) => {
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4">Attendance Records</h3>
+    <div className="dark:bg-[#131313] dark:text-white p-6 rounded-lg">
+      <div className="hidden md:grid grid-cols-6 gap-4 dark:text-gray-400 font-extrabold text-sm dark:border-b border-gray-700 pb-3">
+        <span>Date</span>
+        <span>Check In</span>
+        <span>Check Out</span>
+        <span>Break</span>
+        <span>Working Hours</span>
+        <span>Status</span>
+      </div>
 
-      {attendanceRecords.length > 0 ? (
-        <table className="w-full border-collapse border border-gray-700">
-          <thead>
-            <tr className="bg-gray-800">
-              <th className="border border-gray-600 p-2">Date</th>
-              <th className="border border-gray-600 p-2">Check-In</th>
-              <th className="border border-gray-600 p-2">Check-Out</th>
-              <th className="border border-gray-600 p-2">Break Time</th>
-              <th className="border border-gray-600 p-2">Working Hours</th>
-              <th className="border border-gray-600 p-2">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {attendanceRecords.map((record) => (
-              <tr key={record.id}>
-                <td className="border border-gray-600 p-2">{formatDate(record.date)}</td>
-                <td className="border border-gray-600 p-2">{formatTime(record.checkIn)}</td>
-                <td className="border border-gray-600 p-2">{formatTime(record.checkOut)}</td>
-                <td className="border border-gray-600 p-2">{record.breakTime}</td>
-                <td className="border border-gray-600 p-2">{record.workingHours}</td>
-                <td
-                  className={`border border-gray-600 p-2 ${
-                    record.status === "Present" ? "text-green-500" : "text-red-500"
-                  }`}
-                >
-                  {record.status}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No attendance records found for this employee.</p>
-      )}
+      {attendanceRecords.map((record) => (
+        <div
+          key={record.id}
+          className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center text-sm py-3 border-b dark:border-gray-800"
+        >
+          <div className="flex justify-between md:block">
+            <span className="md:hidden text-gray-400">Date: </span>
+            {formatDate(record.date)}
+          </div>
+          <div className="flex justify-between md:block">
+            <span className="md:hidden text-gray-400">Check In: </span>
+            {formatTime(record.checkIn)}
+          </div>
+          <div className="flex justify-between md:block">
+            <span className="md:hidden text-gray-400">Check Out: </span>
+            {formatTime(record.checkOut)}
+          </div>
+          <div className="flex justify-between md:block">
+            <span className="md:hidden text-gray-400">Break: </span>
+            {record.breakTime}
+          </div>
+          <div className="flex justify-between md:block">
+            <span className="md:hidden text-gray-400">Working Hours: </span>
+            {record.workingHours}
+          </div>
+          <div className="flex justify-between md:block">
+            <span className="md:hidden text-gray-400">Status: </span>
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                record.status === "ON_TIME"
+                  ? "bg-green-900 text-green-400"
+                  : "bg-red-900 text-red-400"
+              }`}
+            >
+              {record.status}
+            </span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

@@ -23,14 +23,14 @@ export default function Pagination({
 
   return (
     <div className="flex justify-between items-center mt-3">
-      <div className="flex items-center gap-2 text-white">
+      <div className="flex items-center gap-2 dark:text-white">
         <span>Showing</span>
         <select
           value={itemsPerPage}
           onChange={(e) => {
             onItemsPerPageChange(Number(e.target.value));
           }}
-          className="bg-gray-800 text-white border border-gray-600 px-2 py-1 rounded-md"
+          className="dark:bg-[#131313] dark:text-white border border-gray-600 px-2 py-1 rounded-md"
         >
           {[6, 10, 20, 50].map((num) => (
             <option key={num} value={num}>
@@ -40,7 +40,7 @@ export default function Pagination({
         </select>
       </div>
 
-      <div className="text-white">
+      <div className="dark:text-white">
         Showing {totalItems > 0 ? indexOfFirstItem + 1 : 0} to {Math.min(indexOfLastItem, totalItems)} out of {totalItems} records
       </div>
 
@@ -48,7 +48,7 @@ export default function Pagination({
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 rounded-md text-white disabled:opacity-50"
+          className="px-3 py-1 rounded-md dark:text-white disabled:opacity-50"
         >
           {"<"}
         </button>
@@ -57,7 +57,7 @@ export default function Pagination({
           <button
             key={number + 1}
             onClick={() => onPageChange(number + 1)}
-            className={`px-3 py-1 rounded-md border ${currentPage === number + 1 ? "border-customOrange text-customOrange" : "border-gray-500 text-white"}`}
+            className={`px-3 py-1 rounded-md border ${currentPage === number + 1 ? "border-customOrange text-customOrange" : "border-gray-500 dark:text-white"}`}
           >
             {number + 1}
           </button>
@@ -66,7 +66,7 @@ export default function Pagination({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === Math.ceil(totalItems / itemsPerPage) || totalItems === 0}
-          className="px-3 py-1 rounded-md text-white disabled:opacity-50"
+          className="rounded-md text-white disabled:opacity-50"
         >
           {">"}
         </button>

@@ -50,7 +50,7 @@ const LoginForm = () => {
         </div>
         <Button type="submit" disabled={loading}>
           {loading ? (
-            <span className="text-customOrange">Logging in...</span>
+            <span className="text-customOrange cursor-progress">Logging in...</span>
           ) : (
             "Login"
           )}

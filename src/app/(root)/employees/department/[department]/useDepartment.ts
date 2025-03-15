@@ -25,8 +25,16 @@ const useEmployees = (departmentName: string) => {
     setSelectedCity(e.target.value);
   };
   const handleDeleteEmployee = (id: string) => {
-    dispatch(deleteEmployee(id));
+    dispatch(deleteEmployee(id))
+      .unwrap()
+      .then(() => {
+        console.log("Employee deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Failed to delete employee:", error);
+      });
   };
+  
   const handleViewEmployee = (id: string) => {
     router.replace(`/employees/${id}`);
   };

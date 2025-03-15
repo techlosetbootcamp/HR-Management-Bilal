@@ -112,9 +112,15 @@ export const deleteEmployee = createAsyncThunk<
   { rejectValue: string }
 >("employee/delete", async (id, { rejectWithValue }) => {
   try {
-    await axios.delete(`/api/employee`, { data: { id } });
+    console.log("Sending DELETE request for ID:", id);
+
+    await axios.delete(`/api/employee?id=${encodeURIComponent(id)}`);
+
+    console.log("Successfully deleted employee");
+
     return id;
   } catch (error) {
+    console.error("Failed to delete employee:", error);
     if (axios.isAxiosError(error)) {
       return rejectWithValue(error.response?.data?.error || error.message);
     }

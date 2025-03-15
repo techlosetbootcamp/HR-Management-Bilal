@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
       className={`w-full py-[11px] px-5 rounded-[10px] text-white text-[16px] font-[300] transition-all duration-300 border-[1px] border-customOrange 
-        ${disabled ? "bg-[#131313] cursor-not-allowed" : "bg-customOrange"} 
+        ${disabled ? "bg-[#131313] cursor-progress" : "bg-customOrange"} 
         ${!disabled && "ease-in-out hover:text-customOrange hover:bg-[#fff] dark:hover:bg-[#131313] hover:border-customOrange"} 
         ${className}`}
     >

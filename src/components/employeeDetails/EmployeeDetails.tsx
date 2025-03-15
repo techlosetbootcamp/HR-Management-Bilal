@@ -229,11 +229,11 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   {fields.map((field) => (
                     <div
                       key={field}
-                      className="flex items-center gap-2 bg-[#131313] p-3 rounded-md border border-gray-700"
+                      className="flex items-center gap-2 dark:bg-[#131313] p-3 rounded-md border border-gray-700"
                     >
                       {employee && employee[field] ? (
                         <>
-                          <span className="text-white flex-grow">
+                          <span className="dark:text-white flex-grow">
                             {field.replace(/([A-Z])/g, " $1")}.pdf
                           </span>
 
