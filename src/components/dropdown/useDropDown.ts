@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileByEmail, getEmployeeByEmail } from "@/redux/slice/authSlice";
 import { AppDispatch, RootState } from "@/redux/store";
+import toast from "react-hot-toast";
 
 export const useDropDown = () => {
   const { data: session } = useSession();
@@ -46,7 +47,7 @@ export const useDropDown = () => {
       }
     } catch (error) {
       console.error("❌ Error fetching employee details:", error);
-      alert("Failed to fetch profile information");
+      toast.error("Your Are Not The Part of this organization");
     }
   };
 const handleChangePasswordClick = () => {

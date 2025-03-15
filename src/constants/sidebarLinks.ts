@@ -15,7 +15,7 @@ import { LayoutDashboard, Users ,CalendarCheck,NotepadText, Settings  } from 'lu
     },
     {
       name: "Attendance",
-      path: "/attendance",
+      path: "/attandance",
       icon: CalendarCheck ,
       alt: "iconCalender",
     },

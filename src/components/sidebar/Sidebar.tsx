@@ -9,11 +9,11 @@ import { SIDE_BAR_LINKS } from "@/constants/sidebarLinks";
 import { X } from "lucide-react";
 import { SidebarProps } from "@/types/types";
 
-
 export default function Sidebar({ onClose }: SidebarProps) {
-  const pathname = usePathname(); // ✅ Get current path
+  const pathname = usePathname();
 
   const isEmployeeSection = pathname?.startsWith("/employees") ?? false;
+  const isAttendanceSection = pathname?.startsWith("/attandance") ?? false;
 
   return (
     <div className="flex flex-col w-[280px] h-screen rounded-r-2xl text-black px-6 lg:px-10 py-12 dark:bg-[#A2A1A80D] dark:text-white bg-gray-300">
@@ -27,8 +27,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
           <span className="font-[600] mt-4 text-[14px]">HR SEARCH</span>
         </div>
 
-        {/* Close button for mobile */}
-        <button 
+        <button
           onClick={onClose}
           className="lg:hidden p-2 hover:bg-gray-700 rounded-full"
         >
@@ -38,7 +37,10 @@ export default function Sidebar({ onClose }: SidebarProps) {
 
       <nav className="mt-4 flex-1">
         {SIDE_BAR_LINKS.map(({ name, path, icon: Icon }) => {
-          const isActive = path === "/employees" ? isEmployeeSection : pathname === path;
+          const isActive =
+            (path === "/employees" && isEmployeeSection) ||
+            (path === "/attandance" && isAttendanceSection) ||
+            pathname === path;
 
           return (
             <Link

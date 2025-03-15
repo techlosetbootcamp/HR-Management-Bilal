@@ -19,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "busboy": "^1.6.0",
     "cloudinary": "^2.5.1",
+    "clsx": "^2.1.1",
     "formidable": "^3.5.2",
     "framer-motion": "^12.5.0",
     "lottie-web": "^5.12.2",
@@ -34,6 +35,7 @@
     "react-hot-toast": "^2.5.1",
     "react-lottie": "^1.2.10",
     "react-redux": "^9.2.0",
+    "recharts": "^2.15.1",
     "remove": "^0.1.5"
   },
   "devDependencies": {

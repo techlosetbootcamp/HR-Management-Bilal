@@ -61,6 +61,7 @@ model Employee {
   zipCode           String?
   dateOfBirth       String?
   attendances       Attendance[]
+  leaves            Leave[]
   type              String?
   status           String?
    photoPublicId String?
@@ -90,4 +91,22 @@ enum Status {
   LATE
   ABSENT
   LEAVE
+}
+
+model Leave {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  employeeId    String      @db.ObjectId
+  employee      Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  reason        String
+  startDate     DateTime
+  endDate       DateTime
+  status        LeaveStatus @default(PENDING)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

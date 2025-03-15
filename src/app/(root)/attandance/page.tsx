@@ -1,8 +1,11 @@
+"use client";
+
+import { CheckCircle } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const AttendanceOverview: React.FC = () => {
+const AttendancePage: React.FC = () => {
   const router = useRouter();
 
   interface Employee {
@@ -21,9 +24,7 @@ const AttendanceOverview: React.FC = () => {
     status: string;
   }
 
-  const [attendanceRecords, setAttendanceRecords] = useState<
-    AttendanceRecord[]
-  >([]);
+  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,9 +36,7 @@ const AttendanceOverview: React.FC = () => {
           throw new Error("Failed to fetch attendance records");
         }
         const data = await response.json();
-
-        // ✅ Limit the records to the latest 5
-        setAttendanceRecords(data.slice(0, 5));
+        setAttendanceRecords(data); // ✅ Show all records
       } catch (error) {
         setError(error instanceof Error ? error.message : "Unknown error");
       } finally {
@@ -49,11 +48,7 @@ const AttendanceOverview: React.FC = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="text-center text-white">
-        Loading attendance records...
-      </div>
-    );
+    return <div className="text-center text-white">Loading attendance records...</div>;
   }
 
   if (error) {
@@ -63,12 +58,12 @@ const AttendanceOverview: React.FC = () => {
   return (
     <div className="bg-gray-900 p-6 rounded-lg shadow-lg text-white">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">Attendance Overview</h3>
+        <h3 className="text-lg font-semibold">All Employees Attendance</h3>
         <button
           className="px-4 py-2 text-sm bg-gray-800 rounded-lg hover:bg-gray-700"
-          onClick={() => router.push("/attandance")} // ✅ Navigate to the full attendance page
+          onClick={() => router.push('./attandance/markAttandance')} // ✅ Go back to previous page
         >
-          View All
+          <CheckCircle size={24}/> Mark Attandance
         </button>
       </div>
       <table className="w-full text-sm">
@@ -83,10 +78,7 @@ const AttendanceOverview: React.FC = () => {
         </thead>
         <tbody>
           {attendanceRecords.map((record) => (
-            <tr
-              key={record.id}
-              className="border-b border-gray-800 hover:bg-gray-800"
-            >
+            <tr key={record.id} className="border-b border-gray-800 hover:bg-gray-800">
               <td className="py-2 flex items-center gap-2">
                 <Image
                   src={record.employee.photoURL}
@@ -105,9 +97,7 @@ const AttendanceOverview: React.FC = () => {
               <td className="py-2">
                 <span
                   className={`px-2 py-1 rounded-lg text-xs ${
-                    record.status === "On Time"
-                      ? "bg-green-700 text-green-300"
-                      : "bg-red-700 text-red-300"
+                    record.status === "On Time" ? "bg-green-700 text-green-300" : "bg-red-700 text-red-300"
                   }`}
                 >
                   {record.status}
@@ -121,4 +111,4 @@ const AttendanceOverview: React.FC = () => {
   );
 };
 
-export default AttendanceOverview;
+export default AttendancePage;
