@@ -50,7 +50,6 @@ export default function useAddEmployee() {
     }));
   };
 
-  // ✅ Cloudinary File Upload (Handles Both Images & PDFs)
   const handleFileUpload = async (file: File,fieldName: string) => {
     try {
       const result = await dispatch(uploadImage({ file, fieldName })).unwrap();

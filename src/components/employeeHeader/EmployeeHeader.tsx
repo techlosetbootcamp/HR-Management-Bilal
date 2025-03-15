@@ -2,14 +2,9 @@
 import { CirclePlus, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
 import SearchBar from "@/components/searchbar/Searchbar";
+import { EmployeeHeaderProps } from "@/types/empoyee";
 
-interface EmployeeHeaderProps {
-  searchTerm: string;
-  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  showFilter: boolean;
-  setShowFilter: (show: boolean) => void;
-  isAdmin: boolean;
-}
+
 
 export default function EmployeeHeader({
   searchTerm,

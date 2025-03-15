@@ -5,19 +5,8 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { deleteEmployee } from "@/redux/slice/employeeSlice";
+import { Employee } from "@/types/empoyee";
 
-interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  employeeId: string;
-  department: string;
-  designation: string;
-  employmentType: string;
-  status?: string;
-  city?: string;
-  photoURL?: string;
-}
 
 export const useAllEmployee = (employees: Employee[]) => {
   const router = useRouter();

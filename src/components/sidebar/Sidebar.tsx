@@ -7,16 +7,12 @@ import Image from "next/image";
 import { navebarLogo } from "@/constants/images";
 import { SIDE_BAR_LINKS } from "@/constants/sidebarLinks";
 import { X } from "lucide-react";
+import { SidebarProps } from "@/types/types";
 
-interface SidebarProps {
-  activePath: string | null;
-  onClose: () => void;
-}
 
 export default function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname(); // ✅ Get current path
 
-  // ✅ Check if the user is on any employee-related page
   const isEmployeeSection = pathname?.startsWith("/employees") ?? false;
 
   return (

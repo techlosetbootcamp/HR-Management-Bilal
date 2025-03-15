@@ -1,97 +1,110 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/redux/store";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchEmployees,
-  resetAttendanceState,
-  setAttendanceState,
   submitAttendance,
 } from "@/redux/slice/attandanceSlice";
+import { RootState, AppDispatch } from "@/redux/store";
 import { useSession } from "next-auth/react";
-export interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  employeeId: string;
-  department: string;
-  designation: string;
-  employmentType: string;
-  city?: string;
-  photoURL?: string;
-}
+import { Employee } from "@/types/attandance";
 
-export interface AttendanceFormState {
-  selectedEmployee: Employee | null;
-  showModal: boolean;
-  date: string;
-  checkIn: string;
-  checkOut: string;
-  breakTime: string;
-  manualWorkingHours: string;
-  status: string;
-  loading: boolean;
-}
-
-export default function useAttendance() {
+export function useAttendanceForm() {
   const dispatch = useDispatch<AppDispatch>();
+  const employees = useSelector(
+    (state: RootState) => state.attandance.employees
+  );
+  const loading = useSelector((state: RootState) => state.attandance.loading);
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "ADMIN";
 
-  const { employees, attendanceState, loading, error } = useSelector(
-    (state: RootState) => state.attandance
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
+    null
   );
-  const [searchTerm, setSearchTerm] = useState("");
+  const [date, setDate] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [breakTime, setBreakTime] = useState("");
+  const [status, setStatus] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [manualWorkingHours, setManualWorkingHours] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Add search term state
 
   useEffect(() => {
     dispatch(fetchEmployees());
   }, [dispatch]);
-  const filteredEmployees = Array.isArray(employees)
-    ? employees.filter(
-        (emp) =>
-          searchTerm === "" ||
-          emp.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          emp.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          emp.employeeId?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
+
+  const filteredEmployees = employees.filter(
+    (emp) =>
+      emp.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
-  const handleMarkAttendance = (employee: Employee) => {
-    dispatch(
-      setAttendanceState({ selectedEmployee: employee, showModal: true })
-    );
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedEmployee || !status || !date) {
+      alert("Employee, date, and status are required!");
+      return;
+    }
+
+    const payload = {
+      employeeId: selectedEmployee.id,
+      date: new Date(date).toISOString(),
+      checkIn: checkIn ? new Date(`${date}T${checkIn}:00`).toISOString() : null,
+      checkOut: checkOut
+        ? new Date(`${date}T${checkOut}:00`).toISOString()
+        : null,
+      breakTime: breakTime || null,
+      workingHours: manualWorkingHours || "0:00",
+      status,
+    };
+
+    try {
+      await dispatch(submitAttendance(payload)).unwrap();
+      alert("Attendance recorded successfully!");
+      resetForm();
+    } catch {
+      alert("Something went wrong");
+    }
   };
 
- const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  if (attendanceState.selectedEmployee || !attendanceState.date || attendanceState.status) {
-    alert("Employee, date, and status are required!");
-    return;
-  }
-  
-  dispatch(submitAttendance());
-};
-
-  const updateAttendanceState = <K extends keyof AttendanceFormState>(
-    field: K,
-    value: AttendanceFormState[K]
-  ) => {
-    dispatch(setAttendanceState({ [field]: value }));
+  const resetForm = () => {
+    setSelectedEmployee(null);
+    setDate("");
+    setCheckIn("");
+    setCheckOut("");
+    setBreakTime("");
+    setStatus("");
+    setShowModal(false);
   };
 
   return {
-    employees: filteredEmployees,
-    attendanceState,
-    loading,
-    error,
-    handleMarkAttendance,
+    employees: filteredEmployees, // Use filtered employees
+    selectedEmployee,
+    setSelectedEmployee,
+    date,
+    setDate,
+    checkIn,
     isAdmin,
+    setCheckIn,
+    checkOut,
+    setCheckOut,
+    breakTime,
+    setBreakTime,
+    status,
+    setStatus,
+    loading,
+    showModal,
+    setShowModal,
+    manualWorkingHours,
+    setManualWorkingHours,
     handleSubmit,
-    searchTerm,
-    handleSearchChange,
-    updateAttendanceState,
-    resetForm: () => dispatch(resetAttendanceState()),
+    resetForm,
+    searchTerm, // Return search term
+    handleSearchChange, // Return search change handler
   };
 }

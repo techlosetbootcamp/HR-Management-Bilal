@@ -1,12 +1,7 @@
+import { ButtonProps } from "@/types/types";
 import React from "react";
 
-interface ButtonProps {
-  type?: "button" | "submit" | "reset";
-  disabled?: boolean;
-  children: React.ReactNode;
-  onClick?: (event: React.FormEvent<HTMLButtonElement>) => void;
-  className?: string;
-}
+
 
 const Button: React.FC<ButtonProps> = ({
   type = "button",

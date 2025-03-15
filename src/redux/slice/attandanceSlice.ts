@@ -1,49 +1,5 @@
+import { AttendanceFormState, AttendanceState } from "@/types/attandance";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-
-interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  employeeId: string;
-  department: string;
-  designation: string;
-  employmentType: string;
-  city?: string;
-  photoURL?: string;
-}
-
-interface AttendanceFormState {
-  selectedEmployee: Employee | null;
-  showModal: boolean;
-  date: string;
-  checkIn: string;
-  checkOut: string;
-  breakTime: string;
-  manualWorkingHours: string;
-  status: string;
-  loading: boolean;
-}
-
-interface Attendance {
-  id: string;
-  date: string;
-  checkIn: string;
-  checkOut: string;
-  status: string;
-  breakTime: string;
-  workingHours: string;
-  employeeId: string;
-}
-
-interface AttendanceState {
-  employees: Employee[];
-  attendanceRecords: Attendance[];
-  attendanceState: AttendanceFormState;
-  loading: boolean;
-  error: string | null;
-}
-
-// Initial state
 const initialState: AttendanceState = {
   employees: [],
   attendanceRecords: [],
@@ -67,8 +23,7 @@ export const fetchEmployees = createAsyncThunk(
   "attendance/fetchEmployees",
   async () => {
     const res = await fetch("/api/employee");
-    if (!res.ok) throw new Error("Failed to fetch employees");
-    return res.json();
+    return await res.json();
   }
 );
 
@@ -84,46 +39,27 @@ export const fetchAttendanceByEmployeeId = createAsyncThunk(
 
 // Async thunk to submit attendance
 export const submitAttendance = createAsyncThunk(
-    "attendance/submitAttendance",
-    async (_, { getState }) => {
-      const state = getState() as { attendance: AttendanceState };
-      const {
-        selectedEmployee,
-        date,
-        status,
-        checkIn,
-        checkOut,
-        breakTime,
-        manualWorkingHours,
-      } = state.attendance.attendanceState;
-  
-      if (!selectedEmployee || !status || !date) {
-        throw new Error("Employee, date, and status are required!");
-      }
-  
-      const payload = {
-        employeeId: selectedEmployee.id,
-        date: new Date(date).toISOString(),
-        checkIn: checkIn ? new Date(`${date}T${checkIn}:00`).toISOString() : null,
-        checkOut: checkOut
-          ? new Date(`${date}T${checkOut}:00`).toISOString()
-          : null,
-        breakTime: breakTime || null,
-        workingHours: manualWorkingHours || "0:00",
-        status,
-      };
-  
-      const res = await fetch("/api/attendance", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-  
-      if (!res.ok) throw new Error("Failed to submit attendance");
-      return res.json();
-    }
-  );
+  "attendance/submitAttendance",
+  async (payload: {
+    employeeId: string;
+    date: string;
+    checkIn: string | null;
+    checkOut: string | null;
+    breakTime: string | null;
+    workingHours: string;
+    status: string;
+  }) => {
+    const res = await fetch("/api/attendance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
+    if (!res.ok) {
+      throw new Error("Failed to submit attendance");
+    }
+  }
+);
 // Attendance slice
 const attendanceSlice = createSlice({
   name: "attendance",

@@ -1,9 +1,8 @@
 import React from "react";
 import FileUpload from "@/components/fileUpload/FileUpload";
+import { DocumentsProps } from "@/types/empoyee";
 
-interface DocumentsProps {
-  handleFileUpload: (file: File, field: string) => void;
-}
+
 
 const Documents: React.FC<DocumentsProps> = ({ handleFileUpload }) => {
   return (

@@ -3,36 +3,16 @@ import { Trash, Eye, PencilLine, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import Pagination from "@/components/pagination/Pagination";
 import { useAllEmployee } from "./useAllEmployee";
+import { AllEmployeeProps } from "@/types/empoyee";
 
-interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  employeeId: string;
-  department: string;
-  designation: string;
-  employmentType: string;
-  status?: string;
-  city?: string;
-  photoURL?: string;
-}
 
-interface Props {
-  employees: Employee[];
-  isAdmin: boolean;
-  isAttendancePage?: boolean;
-  handleViewEmployee?: (employeeId: string) => void;
-  handleEditEmployee?: (employeeId: string) => void;
-  handleDeleteEmployee?: (employeeId: string) => void;
-  handleMarkAttendance?: (employee: Employee) => void;
-}
 
 export default function AllEmployee({
   employees,
   isAdmin,
   isAttendancePage = false,
   handleMarkAttendance,
-}: Props) {
+}: AllEmployeeProps) {
   const {
     currentEmployees,
     currentPage,
@@ -46,7 +26,6 @@ export default function AllEmployee({
 
   return (
     <div className="dark:bg-[#131313] dark:text-white rounded-b-lg">
-      {/* Table Header */}
       <div className="mt-5 grid grid-cols-7 gap-4 text-white font-semibold p-3 rounded-t-lg">
         <div>Employee</div>
         <div>Employee ID</div>
@@ -89,7 +68,6 @@ export default function AllEmployee({
               </span>
             </div>
 
-            {/* Action Column */}
             <div className="flex justify-center gap-2">
               {isAttendancePage ? (
                 isAdmin ? (

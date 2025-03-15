@@ -1,6 +1,5 @@
 "use client";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import useEmployees from "./useDepartment";
 import LottieAnimation from "@/components/lottieAnimation/LottieAnimation";
 import EmployeeHeader from "@/components/employeeHeader/EmployeeHeader";
@@ -12,9 +11,7 @@ export default function DepartmentEmployees() {
     ? decodeURIComponent(params.department as string)
     : "";
 
-  const { data: session } = useSession();
-  const isAdmin = session?.user?.role === "ADMIN";
-  
+ 
   const {
     employees,
     loading,
@@ -25,6 +22,7 @@ export default function DepartmentEmployees() {
     setIsFilterOpen,
     handleSearchChange,
     handleCityChange,
+    isAdmin,
   } = useEmployees(departmentName);
 
   if (loading) {

@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { InputProps } from "@/types/types";
 
-interface InputProps {
-  type: string;
-  label: string;
-  name: string;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
 
 const InputField: React.FC<InputProps> = ({ type, label, value, onChange, name }) => {
   const [showPassword, setShowPassword] = useState(false);

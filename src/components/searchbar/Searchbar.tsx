@@ -1,11 +1,9 @@
 "use client";
+import { SearchBarProps } from "@/types/types";
 import { Search } from "lucide-react";
 import React from "react";
 
-interface SearchBarProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+
 
 const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
   return (

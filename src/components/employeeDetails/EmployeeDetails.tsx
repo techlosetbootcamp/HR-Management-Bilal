@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useEmployeeDetails } from "@/components/employeeDetails/useEmployeeDetails";
 import {
   BriefcaseBusiness,
@@ -8,7 +8,6 @@ import {
   Mail,
   Save,
 } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   AccountAccess,
@@ -20,66 +19,31 @@ import LottieAnimation from "../lottieAnimation/LottieAnimation";
 import TabBar from "../tabBar/TabBar";
 import { mainTabs, subTabs } from "@/utils/tabConfigs";
 import EmployeeInput from "../employeeInput/EmployeeInput";
+import AttendanceRecords from "../attendanceRecords/AttendanceRecords";
+import { EmployeeDetailsProps, InputFieldType } from "@/types/empoyee";
 
-type InputFieldType =
-  | "number"
-  | "email"
-  | "select"
-  | "date"
-  | "password"
-  | "text"
-  | undefined;
 
-interface EmployeeDetailsProps {
-  id: string;
-  isEditMode: boolean;
-  employeeEmail: string;
-}
 
 const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   id,
   isEditMode,
 }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [isEditing, setIsEditing] = useState(searchParams.get("edit") === "true");
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    });
-  };
-
-  const formatTime = (timeString: string) => {
-    if (!timeString) return "—";
-    const date = new Date(timeString);
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true, // Optional: Use 12-hour format
-    });
-  };
-
-  const handleEditSaveClick = async () => {
-    if (isEditing) {
-      await saveChanges();
-      setIsEditing(false);
-      router.push(`/employees/${employee?.id}`);
-    } else {
-      setIsEditing(true);
-      router.push(`/employees/${employee?.id}?edit=true`);
-    }
-  };
   const {
+    pdfPreview,
+    openPdfPreview,
+    closePdfPreview,
+    isEditing,
+    getPdfUrl,
     employee,
     loading,
     error,
+    formatDate,
+    formatTime,
     handleUpdate,
-    saveChanges,
+    handleEditSaveClick,
     updatedImage,
     updatedFields,
+    attendanceRecords,
     handleImageChange,
   } = useEmployeeDetails(id);
   const [activeTab, setActiveTab] = useState("profile");
@@ -89,52 +53,8 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     "experienceLetter",
     "relivingLetter",
   ];
-  const [pdfPreview, setPdfPreview] = useState<string | null>(null);
-
-  const openPdfPreview = (url: string) => {
-    console.log("Opening PDF:", url);
-    setPdfPreview(url);
-  };
-
-  const getPdfUrl = (url: string) => {
-    return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
-      url
-    )}`;
-  };
-
-  const closePdfPreview = () => {
-    setPdfPreview(null);
-  };
 
   const [subTab, setSubTab] = useState("personal");
-  interface Attendance {
-    id: string;
-    date: string;
-    checkIn: string;
-    checkOut: string;
-    status: string;
-    breakTime: string;
-    workingHours: string;
-    employeeId: string;
-  }
-
-  const [attendanceRecords, setAttendanceRecords] = useState<Attendance[]>([]);
-
-  useEffect(() => {
-    const fetchAttendance = async () => {
-      try {
-        const res = await fetch(`/api/attendance?employeeId=${id}`);
-        if (!res.ok) throw new Error("Failed to fetch attendance data");
-        const data = await res.json();
-        setAttendanceRecords(data.filter((record: Attendance) => record.employeeId === id));
-      } catch (error) {
-        console.error("Error fetching attendance:", error);
-      }
-    };
-
-    if (id) fetchAttendance();
-  }, [id]);
-
 
   if (loading) {
     return (
@@ -386,47 +306,12 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           </>
         )}
 
-{activeTab === "attendance" && (
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Attendance Records</h3>
-
-            {attendanceRecords.length > 0 ? (
-              <table className="w-full border-collapse border border-gray-700">
-                <thead>
-                  <tr className="bg-gray-800">
-                    <th className="border border-gray-600 p-2">Date</th>
-                    <th className="border border-gray-600 p-2">Check-In</th>
-                    <th className="border border-gray-600 p-2">Check-Out</th>
-                    <th className="border border-gray-600 p-2">Break Time</th>
-                    <th className="border border-gray-600 p-2">Working Hours</th>
-
-                    <th className="border border-gray-600 p-2">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {attendanceRecords.map((record) => (
-                    <tr key={record.id}>
-                      <td className="border border-gray-600 p-2">{formatDate(record.date)}</td>
-                      <td className="border border-gray-600 p-2">{formatTime(record.checkIn)}</td>
-                      <td className="border border-gray-600 p-2">{formatTime(record.checkOut)}</td>
-                      <td className="border border-gray-600 p-2">{record.breakTime}</td>
-                      <td className="border border-gray-600 p-2">{record.workingHours}</td>
-
-                      <td
-                        className={`border border-gray-600 p-2 ${
-                          record.status === "Present" ? "text-green-500" : "text-red-500"
-                        }`}
-                      >
-                        {record.status}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <p>No attendance records found for this employee.</p>
-            )}
-          </div>
+        {activeTab === "attendance" && (
+          <AttendanceRecords
+            attendanceRecords={attendanceRecords}
+            formatDate={formatDate}
+            formatTime={formatTime}
+          />
         )}
         {activeTab === "projects" && (
           <div>

@@ -2,8 +2,6 @@ import { Employee } from "@/types/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
-
 export const fetchEmployees = createAsyncThunk<
   Employee[],
   void,
@@ -14,9 +12,9 @@ export const fetchEmployees = createAsyncThunk<
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data?.error || error.message);
-      }
+      return rejectWithValue(error.response?.data?.error || error.message);
     }
+  }
 });
 
 export const addEmployee = createAsyncThunk<
@@ -47,9 +45,9 @@ export const addEmployee = createAsyncThunk<
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data?.error || error.message);
-      }
+      return rejectWithValue(error.response?.data?.error || error.message);
     }
+  }
 });
 export const fetchEmployeeById = createAsyncThunk(
   "employeeDetails/fetchEmployeeById",
@@ -61,9 +59,9 @@ export const fetchEmployeeById = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-          return rejectWithValue(error.response?.data?.error || error.message);
-        }
+        return rejectWithValue(error.response?.data?.error || error.message);
       }
+    }
   }
 );
 
@@ -79,8 +77,8 @@ export const updateEmployeeDetails = createAsyncThunk(
         updates,
         {
           headers: {
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
       return response.data;
@@ -93,7 +91,6 @@ export const updateEmployeeDetails = createAsyncThunk(
   }
 );
 
-
 export const updateEmployee = createAsyncThunk<
   Employee,
   { id: string; updatedData: Partial<Employee> },
@@ -104,9 +101,9 @@ export const updateEmployee = createAsyncThunk<
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data?.error || error.message);
-      }
+      return rejectWithValue(error.response?.data?.error || error.message);
     }
+  }
 });
 
 export const deleteEmployee = createAsyncThunk<
@@ -125,10 +122,12 @@ export const deleteEmployee = createAsyncThunk<
   }
 });
 
-
 export const uploadImage = createAsyncThunk(
   "employee/uploadImage",
-  async ({ file, fieldName }: { file: File; fieldName: string }, { rejectWithValue }) => {
+  async (
+    { file, fieldName }: { file: File; fieldName: string },
+    { rejectWithValue }
+  ) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -146,9 +145,9 @@ export const uploadImage = createAsyncThunk(
         formData
       );
 
-      return { 
+      return {
         secure_url: response.data.secure_url,
-        fieldName 
+        fieldName,
       };
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -168,7 +167,9 @@ export const fetchByDepartment = createAsyncThunk<
     if (!response.ok) throw new Error("Failed to fetch employees");
     return await response.json();
   } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Unknown error"
+    );
   }
 });
 const employeeSlice = createSlice({
@@ -188,7 +189,7 @@ const employeeSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      
+
       .addCase(fetchEmployees.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -225,7 +226,7 @@ const employeeSlice = createSlice({
         state.error =
           (action.payload as string) ?? "Failed to update employee details";
       })
-      
+
       .addCase(addEmployee.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -254,7 +255,7 @@ const employeeSlice = createSlice({
         state.loading = false;
         state.error = action.payload ?? "Unknown error occurred";
       })
-      
+
       .addCase(deleteEmployee.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -278,7 +279,7 @@ const employeeSlice = createSlice({
         if (state.employee) {
           state.employee = {
             ...state.employee,
-            [action.payload.fieldName]: action.payload.secure_url
+            [action.payload.fieldName]: action.payload.secure_url,
           };
         }
       })
@@ -290,7 +291,7 @@ const employeeSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchByDepartment.fulfilled, (state, action) => {
-        state.loading=false;
+        state.loading = false;
         state.employees = action.payload;
       })
       .addCase(fetchByDepartment.rejected, (state, action) => {

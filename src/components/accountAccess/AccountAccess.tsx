@@ -1,15 +1,8 @@
 import React from "react";
 import EmployeeInput from "../employeeInput/EmployeeInput";
+import { AccountAccessProps } from "@/types/empoyee";
 
-interface AccountAccessProps {
-  form: {
-    email: string;
-    slackId: string;
-    skypeId: string;
-    githubId: string;
-  };
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-}
+
 
 export default function AccountAccess({ form, handleChange }: AccountAccessProps) {
   return (

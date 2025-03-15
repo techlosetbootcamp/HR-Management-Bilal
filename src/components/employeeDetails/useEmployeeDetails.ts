@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchEmployeeById,
@@ -9,6 +9,7 @@ import {
 import { RootState, AppDispatch } from "../../redux/store";
 import { Employee } from "@/types/types";
 import toast from "react-hot-toast";
+import { Attendance } from "@/types/attandance";
 
 export function useEmployeeDetails(id: string) {
   const dispatch = useDispatch<AppDispatch>();
@@ -92,8 +93,85 @@ export function useEmployeeDetails(id: string) {
       toast.error("Failed to update profile image");
     }
   };
+const [pdfPreview, setPdfPreview] = useState<string | null>(null);
 
+  const openPdfPreview = (url: string) => {
+    console.log("Opening PDF:", url);
+    setPdfPreview(url);
+  };
+
+  const getPdfUrl = (url: string) => {
+    return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+      url
+    )}`;
+  };
+
+  const closePdfPreview = () => {
+    setPdfPreview(null);
+  };
+    const searchParams = useSearchParams();
+    const [isEditing, setIsEditing] = useState(
+      searchParams.get("edit") === "true"
+    );
+  const handleEditSaveClick = async () => {
+    if (isEditing) {
+      await saveChanges();
+      setIsEditing(false);
+      router.push(`/employees/${employee?.id}`);
+    } else {
+      setIsEditing(true);
+      router.push(`/employees/${employee?.id}?edit=true`);
+    }
+  };
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  const formatTime = (timeString: string) => {
+    if (!timeString) return "—";
+    const date = new Date(timeString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true, // Optional: Use 12-hour format
+    });
+  };
+    
+  
+    const [attendanceRecords, setAttendanceRecords] = useState<Attendance[]>([]);
+  
+    useEffect(() => {
+      const fetchAttendance = async () => {
+        try {
+          const res = await fetch(`/api/attendance?employeeId=${id}`);
+          if (!res.ok) throw new Error("Failed to fetch attendance data");
+          const data = await res.json();
+          setAttendanceRecords(
+            data.filter((record: Attendance) => record.employeeId === id)
+          );
+        } catch (error) {
+          console.error("Error fetching attendance:", error);
+        }
+      };
+  
+      if (id) fetchAttendance();
+    }, [id]);
+  
   return {
+    isEditing,
+    formatDate,
+    attendanceRecords,
+    formatTime,
+    pdfPreview,
+    handleEditSaveClick,
+    openPdfPreview,
+    closePdfPreview,
+    getPdfUrl,
     employee,
     loading,
     error,

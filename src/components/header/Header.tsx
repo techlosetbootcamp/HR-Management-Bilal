@@ -6,10 +6,9 @@ import Link from "next/link";
 import SearchBar from "../searchbar/Searchbar";
 import DropDown from "../dropdown/Dropdown";
 import useHeader from "./useHeader";
+import { HeaderProps } from "@/types/types";
 
-interface HeaderProps {
-  onMenuClick: () => void;
-}
+
 const Header = ({ onMenuClick }: HeaderProps) => {
   const { userName, currentPage, searchTerm, setSearchTerm, firstVisit } =
     useHeader();

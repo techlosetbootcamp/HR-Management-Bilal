@@ -1,24 +1,6 @@
 import React from "react";
 import EmployeeInput from "../employeeInput/EmployeeInput";
-
-interface ProfessionalInfoProps {
-  form: {
-    employeeId: string;
-    userName: string;
-    employmentType: string;
-    email: string;
-    department: string;
-    designation: string;
-    workingDays: string;
-    joiningDate: string;
-    officeLocation: string;
-    status: string;
-  };
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-}
-
+import { ProfessionalInfoProps } from "@/types/empoyee";
 export default function ProfessionalInfo({
   form,
   handleChange,

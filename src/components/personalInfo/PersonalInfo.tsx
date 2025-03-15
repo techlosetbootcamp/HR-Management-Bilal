@@ -2,28 +2,9 @@ import React from "react";
 import { LockKeyhole} from "lucide-react";
 import Image from "next/image";
 import EmployeeInput from "../employeeInput/EmployeeInput";
+import { PersonalInfoProps } from "@/types/empoyee";
 
-interface PersonalInfoProps {
-  form: {
-    firstName: string;
-    lastName: string;
-    mobileNumber: string;
-    email: string;
-    dateOfBirth: string;
-    maritalStatus: string;
-    gender: string;
-    nationality: string;
-    address: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    photoURL?: string;
-  };
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-  handleFileUpload: (file: File, field: string) => void;
-}
+
 
 const PersonalInfo: React.FC<PersonalInfoProps> = ({
   form,

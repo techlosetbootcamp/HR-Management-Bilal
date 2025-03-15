@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { fetchEmployees, deleteEmployee } from "@/redux/slice/employeeSlice";
+import { useSession } from "next-auth/react";
 
 const useEmployees = (departmentName: string) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "ADMIN";
+  
   const router = useRouter();
   const { employees, error, loading } = useSelector((state: RootState) => state.employees);
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,6 +50,7 @@ const useEmployees = (departmentName: string) => {
   const uniqueCities = departmentEmployees.length
     ? [...new Set(departmentEmployees.map((emp) => emp.city).filter(Boolean))]
     : [];
+    
   return {
     employees: filteredEmployees,
     loading,
@@ -60,6 +65,7 @@ const useEmployees = (departmentName: string) => {
     handleDeleteEmployee,
     handleViewEmployee,
     handleEditEmployee,
+    isAdmin,
   };
 };
 

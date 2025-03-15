@@ -1,12 +1,7 @@
+import { PaginationProps } from "@/types/types";
 import { useState, useEffect } from "react";
 
-interface PaginationProps {
-  totalItems: number;
-  itemsPerPage: number;
-  currentPage: number;
-  onPageChange: (pageNumber: number) => void;
-  onItemsPerPageChange: (itemsPerPage: number) => void;
-}
+
 
 export default function Pagination({
   totalItems,
@@ -28,7 +23,6 @@ export default function Pagination({
 
   return (
     <div className="flex justify-between items-center mt-3">
-      {/* Left: Items Per Page Dropdown */}
       <div className="flex items-center gap-2 text-white">
         <span>Showing</span>
         <select
@@ -46,12 +40,10 @@ export default function Pagination({
         </select>
       </div>
 
-      {/* Center: Record Count */}
       <div className="text-white">
         Showing {totalItems > 0 ? indexOfFirstItem + 1 : 0} to {Math.min(indexOfLastItem, totalItems)} out of {totalItems} records
       </div>
 
-      {/* Right: Pagination */}
       <div className="flex items-center gap-2">
         <button
           onClick={() => onPageChange(currentPage - 1)}

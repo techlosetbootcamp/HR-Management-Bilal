@@ -1,20 +1,9 @@
 // components/AttendanceModalForm.tsx
 "use client";
 
+import { AttendanceModalFormProps } from "@/types/attandance";
 import { motion, AnimatePresence } from "framer-motion";
-import { AttendanceFormState, Employee } from "@/app/(root)/attendance/useAttandance";
 
-interface AttendanceModalFormProps {
-    selectedEmployee: Employee | null;
-    showModal: boolean;
-    onClose: () => void;
-    onSubmit: (e: React.FormEvent) => void;
-    updateAttendanceState: <K extends keyof AttendanceFormState>(
-      field: K,
-      value: AttendanceFormState[K]
-    ) => void;
-    attendanceState: AttendanceFormState;
-  }
 
 export default function AttendanceModalForm({
   selectedEmployee,

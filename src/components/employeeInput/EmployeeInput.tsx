@@ -1,20 +1,8 @@
 import React, { useRef } from "react";
 import { CalendarDays } from "lucide-react";
+import { InputFieldProps } from "@/types/types";
 
-interface InputFieldProps {
-  label?: string; // New prop to control label display
-  type?: "text" | "email" | "password" | "date" | "number" | "select";
-  name: string;
-  value?: string;
-  placeholder?: string;
-  required?: boolean;
-  options?: string[];
-  isEditMode?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  showLabel?: boolean; // New prop to control label display
-  className?: string;
-  disabled?: boolean;
-}
+
 
 const EmployeeInput: React.FC<InputFieldProps> = ({
   label,

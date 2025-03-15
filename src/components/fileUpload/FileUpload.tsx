@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { UploadCloud } from "lucide-react";
+import { FileUploadProps } from "@/types/empoyee";
 
-interface FileUploadProps {
-  label: string;
-  accept?: string; // Allow custom file types
-  onFileSelect: (file: File) => void;
-}
 
-const FileUpload: React.FC<FileUploadProps> = ({ label, accept = "image/*, .pdf", onFileSelect }) => {
+const FileUpload: React.FC<FileUploadProps> = ({  accept = "image/*, .pdf", onFileSelect }) => {
   const [fileName, setFileName] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

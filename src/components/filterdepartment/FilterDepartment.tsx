@@ -3,15 +3,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { useFilterDepartment } from "@/components/filterdepartment/useFilterDepartment";
+import { Employee } from "@/types/empoyee";
 
-interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  designation: string;
-  department: string;
-  photoURL?: string;
-}
 
 interface Props {
   employees: Employee[];
