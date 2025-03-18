@@ -21,6 +21,7 @@ import { mainTabs, subTabs } from "@/utils/tabConfigs";
 import EmployeeInput from "../employeeInput/EmployeeInput";
 import AttendanceRecords from "../attendanceRecords/AttendanceRecords";
 import { EmployeeDetailsProps, InputFieldType } from "@/types/empoyee";
+import LeaveRequest from "../leaveRequest/LeaveRequest";
 
 
 
@@ -321,8 +322,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
         )}
         {activeTab === "leave" && (
           <div>
-            <h3 className="text-lg font-semibold mb-2">Leave</h3>
-            <p>Leave details will be shown here.</p>
+            <LeaveRequest/>
           </div>
         )}
       </div>

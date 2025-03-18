@@ -95,6 +95,7 @@ export interface Employee {
     experienceLetter?: string;
     relivingLetter?: string;
     photoURL?: string;
+    leaves?: string;
     attendance?: string;
     status?: string;
     checkOut?: string;
