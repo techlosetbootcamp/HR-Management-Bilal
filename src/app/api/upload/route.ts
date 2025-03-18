@@ -1,23 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
+import "dotenv/config";
 import { v2 as cloudinary } from "cloudinary";
 import { Readable } from "stream";
+import { NextRequest, NextResponse } from "next/server";
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true,
-});
+// Ensure Cloudinary is configured
+if (!cloudinary.config().cloud_name) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("Cloudinary Config:", cloudinary.config());
+
     const formData = await req.formData();
     const file = formData.get("file") as File;
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
-
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -41,7 +46,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(" Upload Error:", error);
+    console.error("Upload Error:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }
