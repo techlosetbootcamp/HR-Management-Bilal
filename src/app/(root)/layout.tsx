@@ -17,5 +17,9 @@ export default async function ProtectedRootLayout({
     redirect("/login");
   }
 
-  return <DefaultLayout>{children}</DefaultLayout>;
+  return (
+    <DefaultLayout>
+      {children}
+    </DefaultLayout>
+  );
 }

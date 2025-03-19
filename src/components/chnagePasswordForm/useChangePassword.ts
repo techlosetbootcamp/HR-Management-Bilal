@@ -18,7 +18,9 @@ export const useChangePassword = () => {
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const { loading, error, successMessage } = useSelector((state: RootState) => state.auth);
+  const { loading, error, successMessage } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   useEffect(() => {
     setIsOpen(true);

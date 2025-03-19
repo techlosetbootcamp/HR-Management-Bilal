@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+import { useLeaveManagement } from "@/hooks/useLeaveManagement";
 
 export interface Leave {
   id: string;
@@ -8,74 +9,28 @@ export interface Leave {
   endDate: string;
   reason: string;
   status: "PENDING" | "APPROVED" | "REJECTED";
+  employeeId: string;
 }
 
-export default function LeaveRequestWithModal() {
-  const [showModal, setShowModal] = useState(false);
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-  const [reason, setReason] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [leaves, setLeaves] = useState<Leave[]>([]);
-
-  // Fetch leaves for the logged-in employee
-  const fetchLeaves = async () => {
-    try {
-      const response = await fetch("/api/leaves");
-      const data = await response.json();
-      if (response.ok) {
-        setLeaves(data.leaves); // Assuming API filters by employeeId
-      } else {
-        throw new Error(data.error || "Failed to fetch leaves");
-      }
-    } catch (error) {
-      console.error("Error fetching leaves:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchLeaves();
-  }, []);
-
-  // Handle leave request submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (new Date(startDate) > new Date(endDate)) {
-      alert("End date must be after the start date.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await fetch("/api/leaves", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ startDate, endDate, reason }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.error || "Failed to request leave");
-
-      alert("Leave requested successfully!");
-      setStartDate("");
-      setEndDate("");
-      setReason("");
-      setShowModal(false);
-      fetchLeaves(); // Refresh leave list after submitting
-    } catch (error) {
-      alert((error as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function LeaveRequestWithModal({ employeeId }: { employeeId: string }) {
+  const {
+    showModal,
+    startDate,
+    endDate,
+    reason,
+    loading,
+    leaves,
+    setShowModal,
+    setStartDate,
+    setEndDate,
+    setReason,
+    handleSubmit
+  } = useLeaveManagement(employeeId);
 
   return (
     <div className="max-w-3xl mx-auto p-6">
       <h2 className="text-3xl font-bold mb-6 text-center">Leave Management</h2>
 
-      {/* Button to open the modal */}
       <button
         onClick={() => setShowModal(true)}
         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
@@ -83,7 +38,6 @@ export default function LeaveRequestWithModal() {
         Request Leave
       </button>
 
-      {/* Leave Request Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">

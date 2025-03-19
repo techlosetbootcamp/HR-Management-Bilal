@@ -16,7 +16,6 @@ const useForgetPassForm = () => {
   };
 
   const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
-
   const sendOTP = async (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -49,7 +48,10 @@ const useForgetPassForm = () => {
 
       if (res.status === 200) {
         console.log("EmailJS response:", res.data);
-        localStorage.setItem("otpData", JSON.stringify({ email, otp, otpExpiry }));
+        localStorage.setItem(
+          "otpData",
+          JSON.stringify({ email, otp, otpExpiry })
+        );
         toast.success(`OTP sent to ${email} successfully!`);
         router.push("/otp");
       } else {

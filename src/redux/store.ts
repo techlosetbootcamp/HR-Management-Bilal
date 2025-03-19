@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slice/authSlice";
 import themeReducer from "./slice/themeSlice";
 import employeeReducer from "./slice/employeeSlice";
-// import employeeDetailsReducer from "./slice/employeeDetailsSlice";
+import leaveReducer from './slice/leaveSlice';
 import attendanceReducer from "./slice/attandanceSlice";
 export const store = configureStore({
   reducer: {
@@ -10,7 +10,7 @@ export const store = configureStore({
     theme: themeReducer,
     employees: employeeReducer,
     attandance: attendanceReducer,
-    // employeeDetails: employeeDetailsReducer,
+    leave: leaveReducer,
   },
 });
 

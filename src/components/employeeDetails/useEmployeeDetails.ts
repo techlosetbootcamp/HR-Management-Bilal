@@ -9,7 +9,7 @@ import {
 import { RootState, AppDispatch } from "../../redux/store";
 import { Employee } from "@/types/types";
 import toast from "react-hot-toast";
-import { Attendance } from "@/types/attandance";
+import { fetchAttendanceRecords } from "@/redux/slice/attandanceSlice";
 
 export function useEmployeeDetails(id: string) {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,7 +18,6 @@ export function useEmployeeDetails(id: string) {
   const { employee, loading, error } = useSelector(
     (state: RootState) => state.employees
   );
-
   const [updatedFields, setUpdatedFields] = useState<Partial<Employee>>({});
   const [updatedImage, setUpdatedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -141,26 +140,15 @@ const [pdfPreview, setPdfPreview] = useState<string | null>(null);
       hour12: true, // Optional: Use 12-hour format
     });
   };
-    
+  // Replace the local state and useEffect with Redux selector
+  const { attendanceRecords } = useSelector((state: RootState) => state.attandance);
   
-    const [attendanceRecords, setAttendanceRecords] = useState<Attendance[]>([]);
-  
-    useEffect(() => {
-      const fetchAttendance = async () => {
-        try {
-          const res = await fetch(`/api/attendance?employeeId=${id}`);
-          if (!res.ok) throw new Error("Failed to fetch attendance data");
-          const data = await res.json();
-          setAttendanceRecords(
-            data.filter((record: Attendance) => record.employeeId === id)
-          );
-        } catch (error) {
-          console.error("Error fetching attendance:", error);
-        }
-      };
-  
-      if (id) fetchAttendance();
-    }, [id]);
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchEmployeeById(id));
+      dispatch(fetchAttendanceRecords(id));
+    }
+  }, [id, dispatch]);
   
   return {
     isEditing,

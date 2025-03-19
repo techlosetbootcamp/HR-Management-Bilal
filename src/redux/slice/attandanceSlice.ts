@@ -1,5 +1,7 @@
 import { AttendanceFormState, AttendanceState } from "@/types/attandance";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+
 const initialState: AttendanceState = {
   employees: [],
   attendanceRecords: [],
@@ -22,42 +24,38 @@ const initialState: AttendanceState = {
 export const fetchEmployees = createAsyncThunk(
   "attendance/fetchEmployees",
   async () => {
-    const res = await fetch("/api/employee");
-    return await res.json();
+    const response = await axios.get("/api/employee");
+    return response.data;
   }
 );
 
-// Async thunk to fetch attendance records for an employee
-export const fetchAttendanceByEmployeeId = createAsyncThunk(
-  "attendance/fetchAttendanceByEmployeeId",
-  async (employeeId: string) => {
-    const res = await fetch(`/api/attendance?employeeId=${employeeId}`);
-    if (!res.ok) throw new Error("Failed to fetch attendance data");
-    return res.json();
-  }
-);
+interface AttendancePayload {
+  employeeId: string;
+  date: string;
+  checkIn: string | null;
+  checkOut: string | null;
+  breakTime: string | null;
+  workingHours: string;
+  status: string;
+}
 
-// Async thunk to submit attendance
 export const submitAttendance = createAsyncThunk(
   "attendance/submitAttendance",
-  async (payload: {
-    employeeId: string;
-    date: string;
-    checkIn: string | null;
-    checkOut: string | null;
-    breakTime: string | null;
-    workingHours: string;
-    status: string;
-  }) => {
-    const res = await fetch("/api/attendance", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+  async (payload: AttendancePayload) => {
+    const response = await axios.post("/api/attendance", payload);
+    return response.data;
+  }
+);
 
-    if (!res.ok) {
-      throw new Error("Failed to submit attendance");
-    }
+export const fetchAttendanceRecords = createAsyncThunk(
+  "attendance/fetchAttendanceRecords",
+  async (employeeId: string) => {
+    const response = await axios.get(`/api/attendance`, {
+      params: { employeeId }
+    });
+    return response.data.filter((record: { employeeId: string }) => 
+      record.employeeId === employeeId
+    );
   }
 );
 // Attendance slice
@@ -75,6 +73,10 @@ const attendanceSlice = createSlice({
       state.attendanceState = initialState.attendanceState;
     },
   },
+  // Add new async thunk
+  
+  
+  // Add these cases to extraReducers
   extraReducers: (builder) => {
     builder
       // Fetch Employees
@@ -90,19 +92,7 @@ const attendanceSlice = createSlice({
         state.error = action.error.message ?? "Something went wrong";
       })
 
-      // Fetch Attendance Records
-      .addCase(fetchAttendanceByEmployeeId.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchAttendanceByEmployeeId.fulfilled, (state, action) => {
-        state.loading = false;
-        state.attendanceRecords = action.payload;
-      })
-      .addCase(fetchAttendanceByEmployeeId.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
-          action.error.message ?? "Failed to fetch attendance records";
-      })
+      
 
       // Submit Attendance
       .addCase(submitAttendance.pending, (state) => {
@@ -115,7 +105,19 @@ const attendanceSlice = createSlice({
       .addCase(submitAttendance.rejected, (state, action) => {
         state.attendanceState.loading = false;
         state.error = action.error.message ?? "Failed to submit attendance";
-      });
+      })
+      // Add these new cases
+      .addCase(fetchAttendanceRecords.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAttendanceRecords.fulfilled, (state, action) => {
+        state.loading = false;
+        state.attendanceRecords = action.payload;
+      })
+      .addCase(fetchAttendanceRecords.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? "Failed to fetch attendance records";
+      })
   },
 });
 

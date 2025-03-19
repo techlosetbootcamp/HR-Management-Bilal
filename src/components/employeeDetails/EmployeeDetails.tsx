@@ -322,7 +322,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
         )}
         {activeTab === "leave" && (
           <div>
-            <LeaveRequest/>
+            <LeaveRequest employeeId={id} />
           </div>
         )}
       </div>
