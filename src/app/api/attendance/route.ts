@@ -4,7 +4,7 @@ import { authOptions } from "../../../../lib/auth";
 import prisma from "../../../../lib/prisma";
 
 // ✅ Get All Attendance Records
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -68,8 +68,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const attendanceData: any = {
+    const attendanceData  = {
       employeeId,
+      checkIn,
+      checkOut,
       date: new Date(date),
       status,
       breakTime: breakTime || null,

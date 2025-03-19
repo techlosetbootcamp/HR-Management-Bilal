@@ -3,52 +3,19 @@
 import { CheckCircle } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import useAttendance from "@/hooks/useAttendance"; // Import the custom hook
 
 const AttendancePage: React.FC = () => {
   const router = useRouter();
-
-  interface Employee {
-    id: number;
-    firstName: string;
-    lastName: string;
-    photoURL: string;
-    designation: string;
-    employmentType: string;
-  }
-
-  interface AttendanceRecord {
-    id: number;
-    employee: Employee;
-    checkIn: string;
-    status: string;
-  }
-
-  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchAttendance = async () => {
-      try {
-        const response = await fetch("/api/attendance");
-        if (!response.ok) {
-          throw new Error("Failed to fetch attendance records");
-        }
-        const data = await response.json();
-        setAttendanceRecords(data); // ✅ Show all records
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAttendance();
-  }, []);
+  const { attendanceRecords, loading, error } = useAttendance(); // Use the custom hook
 
   if (loading) {
-    return <div className="text-center text-white">Loading attendance records...</div>;
+    return (
+      <div className="text-center text-white">
+        Loading attendance records...
+      </div>
+    );
   }
 
   if (error) {
@@ -61,9 +28,9 @@ const AttendancePage: React.FC = () => {
         <h3 className="text-lg font-semibold">All Employees Attendance</h3>
         <button
           className="px-4 py-2 text-sm bg-gray-800 rounded-lg hover:bg-gray-700"
-          onClick={() => router.push('./attandance/markAttandance')} // ✅ Go back to previous page
+          onClick={() => router.push("./attandance/markAttandance")}
         >
-          <CheckCircle size={24}/> Mark Attandance
+          <CheckCircle size={24} /> Mark Attandance
         </button>
       </div>
       <table className="w-full text-sm">
@@ -78,7 +45,10 @@ const AttendancePage: React.FC = () => {
         </thead>
         <tbody>
           {attendanceRecords.map((record) => (
-            <tr key={record.id} className="border-b border-gray-800 hover:bg-gray-800">
+            <tr
+              key={record.id}
+              className="border-b border-gray-800 hover:bg-gray-800"
+            >
               <td className="py-2 flex items-center gap-2">
                 <Image
                   src={record.employee.photoURL}
@@ -97,7 +67,9 @@ const AttendancePage: React.FC = () => {
               <td className="py-2">
                 <span
                   className={`px-2 py-1 rounded-lg text-xs ${
-                    record.status === "On Time" ? "bg-green-700 text-green-300" : "bg-red-700 text-red-300"
+                    record.status === "On Time"
+                      ? "bg-green-700 text-green-300"
+                      : "bg-red-700 text-red-300"
                   }`}
                 >
                   {record.status}

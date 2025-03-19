@@ -1,5 +1,4 @@
-"use client";
-
+'use client'
 import { useAttendanceForm } from "./useAttandance";
 import AllEmployee from "@/components/allEmployee/AllEmployee";
 import AttendanceModalForm from "@/components/attandanceModal/AttandanceModal";

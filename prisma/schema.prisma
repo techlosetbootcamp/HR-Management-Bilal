@@ -14,14 +14,15 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
   name           String
-  email          String   @unique
+  email          String          @unique
   Password       String
-  role           Role     @default(EMPLOYEE)
+  role           Role            @default(EMPLOYEE)
   profilePicture String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  notifications  Notification[]  @relation("UserNotifications")
 }
 
 enum Role {
@@ -109,4 +110,14 @@ enum LeaveStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  message   String
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false)
+  user      User     @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  // user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

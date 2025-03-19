@@ -4,6 +4,8 @@ import { authOptions } from "../../../..//lib/auth";
 import prisma from "../../../../lib/prisma";
 
 // Create Leave Request (POST)
+
+// Create Leave Request (POST)
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session)
@@ -34,6 +36,47 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Notify Admins about the new leave request
+    const admins = await prisma.user.findMany({
+      where: { role: "ADMIN" },
+    });
+
+    const adminNotifications = admins.map((admin) => ({
+      userId: admin.id,
+      message: `New leave request from ${session.user.name}`,
+    }));
+
+    await prisma.notification.createMany({
+      data: adminNotifications,
+    });
+
+    console.log("Admin notifications created:", adminNotifications);
+
+    // Notify the Employee that their leave request was submitted.
+    // Since the Employee model does not have a userId field,
+    // we fetch the corresponding user record using the email.
+    const employeeUser = await prisma.user.findUnique({
+      where: { email: session.user.email ?? "" },
+    });
+
+    if (!employeeUser) {
+      return NextResponse.json(
+        { error: "Employee user record not found" },
+        { status: 404 }
+      );
+    }
+
+    const employeeNotification = {
+      userId: employeeUser.id,
+      message: `Your leave request from ${startDate} to ${endDate} has been submitted.`,
+    };
+
+    await prisma.notification.create({
+      data: employeeNotification,
+    });
+
+    console.log("Employee notification created:", employeeNotification);
+
     return NextResponse.json(
       { leave, message: "Leave request submitted" },
       { status: 201 }
@@ -49,7 +92,7 @@ export async function POST(req: NextRequest) {
 
 
 // Get Leave Status (GET)
-export async function GET(req: NextRequest) {
+export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -95,7 +138,54 @@ export async function PATCH(req: NextRequest) {
     const leave = await prisma.leave.update({
       where: { id: leaveId },
       data: { status },
+      include: { employee: true }, // Include employee details so we can access employee.email
     });
+
+    // If the leave is approved, notify the employee
+    if (status === "APPROVED") {
+      // Fetch the corresponding user record using the employee's email
+      const employeeUser = await prisma.user.findUnique({
+        where: { email: leave.employee.email },
+      });
+    
+      if (!employeeUser) {
+        console.error("Employee user record not found!");
+      } else {
+        await prisma.notification.create({
+          data: {
+            userId: employeeUser.id,
+            message: `Your leave request from ${new Date(
+              leave.startDate
+            ).toDateString()} to ${new Date(
+              leave.endDate
+            ).toDateString()} has been approved successfully.`,
+          },
+        });
+        console.log("Notification sent to employee:", employeeUser.id);
+      }
+    } else if (status === "REJECTED") {
+      // Fetch the corresponding user record using the employee's email
+      const employeeUser = await prisma.user.findUnique({
+        where: { email: leave.employee.email },
+      });
+    
+      if (!employeeUser) {
+        console.error("Employee user record not found!");
+      } else {
+        await prisma.notification.create({
+          data: {
+            userId: employeeUser.id,
+            message: `Your leave request from ${new Date(
+              leave.startDate
+            ).toDateString()} to ${new Date(
+              leave.endDate
+            ).toDateString()} has been rejected.`,
+          },
+        });
+        console.log("Notification sent to employee for rejection:", employeeUser.id);
+      }
+    }
+    
 
     return NextResponse.json(
       { leave, message: `Leave ${status.toLowerCase()}` },
@@ -109,3 +199,4 @@ export async function PATCH(req: NextRequest) {
     );
   }
 }
+

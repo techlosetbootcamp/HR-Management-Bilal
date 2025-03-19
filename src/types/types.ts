@@ -19,6 +19,13 @@ export interface SearchBarProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+export interface Notification {
+  id: string;
+  message: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
 
 export interface SidebarProps {
   activePath: string | null;
