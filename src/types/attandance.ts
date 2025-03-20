@@ -32,6 +32,17 @@ export interface Attendance {
   breakTime: string;
   workingHours: string;
   employeeId: string;
+  employee:{
+    firstName: string;
+    lastName: string;
+    employeeId: string;
+    department: string;
+    designation: string;
+    employmentType: string;
+    officeLocation: string;
+    city?: string;
+    photoURL?: string;
+  }
 }
 
 export interface AttendanceState {

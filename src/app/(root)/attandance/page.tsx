@@ -4,11 +4,11 @@ import { CheckCircle } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import useAttendance from "@/hooks/useAttendance"; // Import the custom hook
+import useAttendance from "@/hooks/useAttendance";
 
 const AttendancePage: React.FC = () => {
   const router = useRouter();
-  const { attendanceRecords, loading, error } = useAttendance(); // Use the custom hook
+  const { attendance, loading, error } = useAttendance();
 
   if (loading) {
     return (
@@ -44,14 +44,14 @@ const AttendancePage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {attendanceRecords.map((record) => (
+          {attendance.map((record) => (
             <tr
               key={record.id}
               className="border-b border-gray-800 hover:bg-gray-800"
             >
               <td className="py-2 flex items-center gap-2">
                 <Image
-                  src={record.employee.photoURL}
+                  src={record.employee.photoURL || "/default-profile.png"}
                   alt={`${record.employee.firstName}'s profile`}
                   width={32}
                   height={32}

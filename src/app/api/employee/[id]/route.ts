@@ -3,34 +3,52 @@ import prisma from "../.././../../../lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../lib/auth";
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
-    try {
-      const { id } = await context.params; // Ensure params are awaited
-  
-      if (!id) {
-        return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
-      }
-  
-      const employee = await prisma.employee.findUnique({
-        where: { id }, // Prisma stores ID as a string
-      });
-  
-      if (!employee) {
-        return NextResponse.json({ error: "Employee not found" }, { status: 404 });
-      }
-  
-      return NextResponse.json(employee, { status: 200 });
-    } catch (error) {
-      console.error("Error fetching employee:", error);
-      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
-    }
-  }
-
-export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = await context.params; // ✅ Ensure params are extracted correctly
+    const { id } = await context.params;
+
     if (!id) {
-      return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Employee ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const employee = await prisma.employee.findUnique({
+      where: { id },
+    });
+
+    if (!employee) {
+      return NextResponse.json(
+        { error: "Employee not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(employee, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching employee:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params;
+    if (!id) {
+      return NextResponse.json(
+        { error: "Employee ID is required" },
+        { status: 400 }
+      );
     }
 
     const body = await req.json();
@@ -42,7 +60,10 @@ export async function PATCH(req: NextRequest, context: { params: { id: string } 
     return NextResponse.json(updatedEmployee, { status: 200 });
   } catch (error) {
     console.error("❌ Error updating employee:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -54,7 +75,10 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
   if (!body) {
-    return NextResponse.json({ error: "Missing request body" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing request body" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -62,19 +86,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(newEmployee, { status: 201 });
   } catch (error) {
     console.error("❌ Error creating employee:", error);
-    return NextResponse.json({ error: "Failed to create employee" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create employee" },
+      { status: 500 }
+    );
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const session = await getServerSession(authOptions);
   if (!session || session.user.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { id } = params;
+  const { id } = await params;
   if (!id) {
-    return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Employee ID is required" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -82,6 +115,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ message: "Employee deleted successfully" });
   } catch (error) {
     console.error("❌ Error deleting employee:", error);
-    return NextResponse.json({ error: "Failed to delete employee" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete employee" },
+      { status: 500 }
+    );
   }
 }

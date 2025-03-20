@@ -9,7 +9,7 @@ import {
 import { RootState, AppDispatch } from "../../redux/store";
 import { Employee } from "@/types/types";
 import toast from "react-hot-toast";
-import { fetchAttendanceRecords } from "@/redux/slice/attandanceSlice";
+import { fetchAttendanceById } from "@/redux/slice/attandanceSlice";
 
 export function useEmployeeDetails(id: string) {
   const dispatch = useDispatch<AppDispatch>();
@@ -146,7 +146,7 @@ const [pdfPreview, setPdfPreview] = useState<string | null>(null);
   useEffect(() => {
     if (id) {
       dispatch(fetchEmployeeById(id));
-      dispatch(fetchAttendanceRecords(id));
+      dispatch(fetchAttendanceById(id));
     }
   }, [id, dispatch]);
   

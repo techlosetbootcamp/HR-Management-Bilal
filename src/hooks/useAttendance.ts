@@ -1,46 +1,20 @@
-import { useState, useEffect } from "react";
-
-interface Employee {
-  id: number;
-  firstName: string;
-  lastName: string;
-  photoURL: string;
-  designation: string;
-  employmentType: string;
-}
-
-interface AttendanceRecord {
-  id: number;
-  employee: Employee;
-  checkIn: string;
-  status: string;
-}
+import { fetchAttendance } from "@/redux/slice/attandanceSlice";
+import { RootState } from "@/redux/store";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "@/redux/store";
 
 const useAttendance = () => {
-  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { attendanceRecords, loading, error } = useSelector(
+    (state: RootState) => state.attandance
+  );
 
   useEffect(() => {
-    const fetchAttendance = async () => {
-      try {
-        const response = await fetch("/api/attendance");
-        if (!response.ok) {
-          throw new Error("Failed to fetch attendance records");
-        }
-        const data = await response.json();
-        setAttendanceRecords(data);
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    };
+    dispatch(fetchAttendance());
+  }, [dispatch]);
 
-    fetchAttendance();
-  }, []);
-
-  return { attendanceRecords, loading, error };
+  return { attendance: attendanceRecords, loading, error };
 };
 
 export default useAttendance;

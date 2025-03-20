@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { Readable } from "stream";
 
-// ✅ Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -21,12 +20,10 @@ export async function POST(req: NextRequest) {
 
     console.log("📂 Uploading file:", file.name);
 
-    // ✅ Convert file to Buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const stream = Readable.from(buffer);
 
-    // ✅ Upload to Cloudinary
     interface UploadResult {
       secure_url: string;
     }

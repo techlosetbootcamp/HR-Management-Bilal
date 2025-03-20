@@ -46,9 +46,15 @@ export const submitAttendance = createAsyncThunk(
     return response.data;
   }
 );
-
-export const fetchAttendanceRecords = createAsyncThunk(
-  "attendance/fetchAttendanceRecords",
+export const fetchAttendance = createAsyncThunk(
+  "attendance/fetchAttendance",
+  async () => {
+    const response = await axios.get("/api/attendance");
+    return response.data;
+  }
+);
+export const fetchAttendanceById = createAsyncThunk(
+  "attendance/fetchAttendanceById",
   async (employeeId: string) => {
     const response = await axios.get(`/api/attendance`, {
       params: { employeeId }
@@ -106,15 +112,30 @@ const attendanceSlice = createSlice({
         state.attendanceState.loading = false;
         state.error = action.error.message ?? "Failed to submit attendance";
       })
-      // Add these new cases
-      .addCase(fetchAttendanceRecords.pending, (state) => {
+
+      
+      // Fetch Attendance (all records)
+      .addCase(fetchAttendance.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchAttendanceRecords.fulfilled, (state, action) => {
+      .addCase(fetchAttendance.fulfilled, (state, action) => {
         state.loading = false;
         state.attendanceRecords = action.payload;
       })
-      .addCase(fetchAttendanceRecords.rejected, (state, action) => {
+      .addCase(fetchAttendance.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? "Failed to fetch attendance records";
+      })
+      
+      // Add these new cases
+      .addCase(fetchAttendanceById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAttendanceById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.attendanceRecords = action.payload;
+      })
+      .addCase(fetchAttendanceById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? "Failed to fetch attendance records";
       })
