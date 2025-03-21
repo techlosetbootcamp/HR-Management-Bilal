@@ -1,6 +1,7 @@
 "use client";
 import { Users, CalendarCheck, Briefcase, FileText } from "lucide-react";
 import { useAnalyticsData } from "./useAnalytics";
+import Loader from "../Loader/Loader";
 
 const Analytics = () => {
   const {
@@ -9,7 +10,16 @@ const Analytics = () => {
     attendanceCount,
     projectCount,
     updateDates,
+    loading,
   } = useAnalyticsData();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader/>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -77,7 +87,9 @@ const StatCard = ({
             percentage >= 0 ? "bg-green-500" : "bg-red-500"
           } text-white`}
         >
-          {percentage >= 0 ? `▲ ${percentage}%` : `▼ ${Math.abs(percentage)}%`}
+          {percentage >= 0
+            ? `▲ ${percentage}%`
+            : `▼ ${Math.abs(percentage)}%`}
         </div>
       </div>
     </div>

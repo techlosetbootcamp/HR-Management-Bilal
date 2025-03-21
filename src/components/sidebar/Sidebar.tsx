@@ -8,9 +8,22 @@ import { navebarLogo } from "@/constants/images";
 import { SIDE_BAR_LINKS } from "@/constants/sidebarLinks";
 import { X } from "lucide-react";
 import { SidebarProps } from "@/types/types";
+import { useSession } from "next-auth/react";
 
 export default function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const userRole = session?.user?.role; // Assuming role is stored in session
+
+  const isAdmin = userRole === "ADMIN";
+
+  const allowedPathsForEmployees = ["/", "/employees", "/settings","/attandance"];
+
+  const filteredLinks = isAdmin
+    ? SIDE_BAR_LINKS
+    : SIDE_BAR_LINKS.filter(({ path }) =>
+        allowedPathsForEmployees.includes(path)
+      );
 
   const isEmployeeSection = pathname?.startsWith("/employees") ?? false;
   const isAttendanceSection = pathname?.startsWith("/attandance") ?? false;
@@ -36,7 +49,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
       </div>
 
       <nav className="mt-4 flex-1">
-        {SIDE_BAR_LINKS.map(({ name, path, icon: Icon }) => {
+        {filteredLinks.map(({ name, path, icon: Icon }) => {
           const isActive =
             (path === "/employees" && isEmployeeSection) ||
             (path === "/attandance" && isAttendanceSection) ||
@@ -58,7 +71,9 @@ export default function Sidebar({ onClose }: SidebarProps) {
 
               <Icon
                 className={`w-6 h-6 mr-3 ${
-                  isActive ? "dark:text-customOrange text-[#131313]" : "dark:text-gray-200"
+                  isActive
+                    ? "dark:text-customOrange text-[#131313]"
+                    : "dark:text-gray-200"
                 }`}
               />
               {name}

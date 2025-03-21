@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users ,CalendarCheck,NotepadText, Settings  } from 'lucide-react';
+import { LayoutDashboard, Users ,CalendarCheck,NotepadText, Settings,  ComputerIcon  } from 'lucide-react';
 
   export const SIDE_BAR_LINKS = [
     {
@@ -24,6 +24,12 @@ import { LayoutDashboard, Users ,CalendarCheck,NotepadText, Settings  } from 'lu
       path: "/leaves",
       icon: NotepadText ,
       alt: "iconNotepad",
+    },
+    {
+      name: "Projects",
+      path: "/projects",
+      icon: ComputerIcon,
+      alt: "iconApps",
     },
     {
       name: "Settings",

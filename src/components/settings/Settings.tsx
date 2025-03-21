@@ -1,13 +1,24 @@
 'use client'
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "@/redux/slice/themeSlice";
+import { RootState } from "@/redux/store";
 
 export default function Settings() {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
   const [mobilePushEnabled, setMobilePushEnabled] = useState(true);
-  const [desktopNotificationEnabled, setDesktopNotificationEnabled] =
-    useState(true);
-  const [emailNotificationEnabled, setEmailNotificationEnabled] =
-    useState(true);
+  const [desktopNotificationEnabled, setDesktopNotificationEnabled] = useState(true);
+  const [emailNotificationEnabled, setEmailNotificationEnabled] = useState(true);
+
+  const dispatch = useDispatch();
+  const theme = useSelector((state: RootState) => state.theme.theme);
+
+  const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedTheme = event.target.value;
+    if (selectedTheme !== theme) {
+      dispatch(toggleTheme());
+    }
+  };
 
   return (
     <div className="bg-black min-h-screen flex items-center justify-center p-4">
@@ -18,24 +29,15 @@ export default function Settings() {
             Customize how your theme looks on your device
           </p>
           <div className="flex justify-between items-center mt-3">
-            <span className="text-sm">Light</span>
-            <button className="bg-gray-800 rounded-lg px-3 py-1 text-sm flex items-center">
-              Light
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
+            <span className="text-sm">Theme</span>
+            <select
+              value={theme}
+              onChange={handleThemeChange}
+              className="bg-gray-800 rounded-lg px-3 py-1 text-sm text-white"
+            >
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
           </div>
         </div>
 

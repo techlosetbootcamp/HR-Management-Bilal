@@ -22,12 +22,14 @@ export const useAnalyticsData = () => {
     (state: RootState) => state.employees.employees.length
   );
 
+
   const [updateDates, setUpdateDates] = useState({
     employees: "",
     leaves: "",
     attendance: "",
     projects: "",
   });
+  const [loading, setLoading] = useState(true);
 
   const getTodayDate = () =>
     new Date().toLocaleDateString("en-US", {
@@ -52,6 +54,8 @@ export const useAnalyticsData = () => {
         setUpdateDates((prev) => ({ ...prev, attendance: getTodayDate() }));
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -64,5 +68,6 @@ export const useAnalyticsData = () => {
     attendanceCount,
     projectCount,
     updateDates,
+    loading,
   };
 };

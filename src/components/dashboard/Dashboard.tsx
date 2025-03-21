@@ -1,84 +1,82 @@
 "use client";
-
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/redux/store";
-import { logout, setUser } from "@/redux/slice/authSlice";
-import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";  
-import AttandanceOverview from "../attandanceOverview/AttandanceOverview";
-import AttendanceChart from "../attandanceChart/AttandanceChart";
+import React from "react";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { iconLoginLogo } from "@/constants/images";
+import AttandanceOverview from "@/components/attandanceOverview/AttandanceOverview";
 import Analytics from "../analytics/Analytics";
-const Dashboard = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
+import AttendanceChart from "../attandanceChart/AttandanceChart";
+
+export default function Dashboard() {
   const { data: session, status } = useSession();
-  const user = useSelector((state: RootState) => state.auth);
 
-  useEffect(() => {
-    if (status === "loading") return;
-
-    if (session?.user) {
-      dispatch(
-        setUser({
-          id: session.user.id ?? "",
-          name: session.user.name ?? "",
-          email: session.user.email ?? "",
-          role: session.user.role ?? "EMPLOYEE"
-        })
-      );
-    } else {
-      dispatch(logout());
-      router.push("/login");
-    }
-  }, [session, status, dispatch, router]);
-
-  const handleLogout = async () => {
-    await signOut();
-    dispatch(logout());
-    router.push("/login");
-  };
-
-  return (
-    <div>
-      {status === "loading" ? (
-        <p>Loading session...</p>
-      ) : user ? (
-        <>
-         <Analytics/>
-         <AttendanceChart/>
-       <AttandanceOverview/> 
-
-          <h1>Welcome, {user.user?.name}</h1>
-          <p>User ID: {user.user?.id}</p>
-          <p>Role: {user.user?.role}</p>
-
-          {user.user?.role === "ADMIN" ? (
-            <div>
-              <h2>Admin Panel</h2>
-              <p>You have admin privileges.</p>
-            </div>
-          ) : (
-            <div>
-              <h2>Employee Dashboard</h2>
-              <p>You are an employee.</p>
-            </div>
-          )}
-
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <p>Redirecting to login...</p>
-      )}
-      <div>
-        <h1 className="text-white">Change Password</h1>
-        <Link href="../changePassword" className="white">
-          Click to Change password
-        </Link>
+  if (status === "loading") {
+    return (
+      <div className="flex h-screen items-center justify-center text-white">
+        Loading...
       </div>
-    </div>
-  );
-};
+    );
+  }
 
-export default Dashboard;
+  // If user is admin, show the attendance records component.
+  if (session?.user.role === "ADMIN") {
+    return (
+      <div className="p-6">
+        <div>
+          <Analytics/>
+        </div>
+        <div>
+          <AttendanceChart/>
+        </div>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          Attandace Overview
+        </h1>
+        <AttandanceOverview showViewAll={true} showPagination={true} />
+      </div>
+    );
+  }
+
+  // Otherwise, show a personalized welcome for non-admin users.
+  return (
+    <>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#131313] animate-glow p-6">
+        <div className="rounded-full shadow-xl">
+          <Image src={iconLoginLogo} alt="Logo" width={250} height={250} />
+        </div>
+        <h1 className="mt-6 text-4xl font-extrabold text-white">
+          Welcome, {session?.user.name}!
+        </h1>
+        <p className="mt-2 text-lg text-gray-300 text-center max-w-md">
+          Enjoy your personalized dashboard. Check your profile for the latest updates.
+        </p>
+        <Link href="/profile">
+          <p className="mt-6 px-6 py-3 bg-customOrange text-white font-semibold rounded-xl shadow-lg hover:bg-[#131313] hover:text-customOrange transition-all duration-300 border border-customOrange">
+            Go to Profile
+          </p>
+        </Link>
+        <div className="mt-10">
+          <p className="text-gray-400 text-sm">
+            This Application is Built By Developer Bilal.
+          </p>
+        </div>
+      </div>
+      <style jsx>{`
+        @keyframes glow {
+          0% {
+            box-shadow: 0 0 5px rgba(255, 165, 0, 0.4);
+          }
+          50% {
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
+          }
+          100% {
+            box-shadow: 0 0 5px rgba(255, 165, 0, 0.4);
+          }
+        }
+        .animate-glow {
+          animation: glow 2s ease-in-out infinite;
+        }
+      `}</style>
+    </>
+  );
+}

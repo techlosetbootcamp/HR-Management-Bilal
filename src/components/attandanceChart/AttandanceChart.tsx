@@ -9,11 +9,19 @@ import {
   Tooltip,
 } from "recharts";
 import { useAttandanceChart } from "./useAttandanceChart";
+import { Loader } from "lucide-react";
 
 const AttendanceChart = () => {
   const { data, loading, error } = useAttandanceChart();
 
-  if (loading) return <p>Loading attendance data...</p>;
+  if (loading)
+    return (
+      <>
+        <div className="flex items-center justify-center">
+          <Loader />
+        </div>
+      </>
+    );
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
@@ -22,11 +30,7 @@ const AttendanceChart = () => {
         Attendance Overview
       </h2>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart 
-          data={data} 
-          barCategoryGap="15%" 
-          barGap={-15}
-        >
+        <BarChart data={data} barCategoryGap="15%" barGap={-15}>
           <XAxis dataKey="day" stroke="#ffffff" />
           <YAxis stroke="#ffffff" />
           <Tooltip />

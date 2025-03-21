@@ -141,9 +141,7 @@ export async function PATCH(req: NextRequest) {
       include: { employee: true }, // Include employee details so we can access employee.email
     });
 
-    // If the leave is approved, notify the employee
     if (status === "APPROVED") {
-      // Fetch the corresponding user record using the employee's email
       const employeeUser = await prisma.user.findUnique({
         where: { email: leave.employee.email },
       });
@@ -164,7 +162,6 @@ export async function PATCH(req: NextRequest) {
         console.log("Notification sent to employee:", employeeUser.id);
       }
     } else if (status === "REJECTED") {
-      // Fetch the corresponding user record using the employee's email
       const employeeUser = await prisma.user.findUnique({
         where: { email: leave.employee.email },
       });
