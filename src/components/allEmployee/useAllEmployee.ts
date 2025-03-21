@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import { deleteEmployee } from "@/redux/slice/employeeSlice";
 import { Employee } from "@/types/empoyee";
 import toast from "react-hot-toast";
-import {  useAppDispatch } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 
 export const useAllEmployee = (employees: Employee[]) => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [employeesPerPage, setEmployeesPerPage] = useState(6);
