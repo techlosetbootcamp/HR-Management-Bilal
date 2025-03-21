@@ -1,78 +1,34 @@
 "use client";
-
-import { useEffect, useState } from "react";
 import { Users, CalendarCheck, Briefcase, FileText } from "lucide-react";
+import { useAnalyticsData } from "./useAnalytics";
 
 const Analytics = () => {
-  const [employeeCount, setEmployeeCount] = useState(0);
-  const [applicantCount, setApplicantCount] = useState(0);
-  const [attendanceCount, setAttendanceCount] = useState(0);
-  const [projectCount, setProjectCount] = useState(0);
-  const [updateDates, setUpdateDates] = useState({
-    employees: "",
-    applicants: "",
-    attendance: "",
-    projects: "",
-  });
-
-  useEffect(() => {
-    // ✅ Fetch Employees Count
-    fetch("/api/employee")
-  .then((res) => res.json())
-  .then((data) => {
-    console.log("Employees API Response:", data); // ✅ Debugging log
-    setEmployeeCount(data.length || 0);
-    setUpdateDates((prev) => ({ ...prev, employees: "July 16, 2023" })); // Replace with actual date
-  })
-
-    // ✅ Fetch Attendance Records for Today
-    fetch("/api/attendance")
-      .then((res) => res.json())
-      .then((data) => {
-        const today = new Date().toISOString().split("T")[0];
-        const todayAttendance = data.filter((a: { date: string }) => a.date.startsWith(today)).length;
-        setAttendanceCount(todayAttendance);
-        setUpdateDates((prev) => ({ ...prev, attendance: "July 14, 2023" })); // Replace with actual date
-      });
-
-    // ✅ Fetch Applicants
-    fetch("/api/applicants")
-      .then((res) => res.json())
-      .then((data) => {
-        setApplicantCount(data.length);
-        setUpdateDates((prev) => ({ ...prev, applicants: "July 14, 2023" })); // Replace with actual date
-      });
-
-    // ✅ Fetch Projects
-    fetch("/api/projects")
-      .then((res) => res.json())
-      .then((data) => {
-        setProjectCount(data.length);
-        setUpdateDates((prev) => ({ ...prev, projects: "July 10, 2023" })); // Replace with actual date
-      });
-  }, []);
+  const {
+    employeeCount,
+    leaveCount,
+    attendanceCount,
+    projectCount,
+    updateDates,
+  } = useAnalyticsData();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Total Employees */}
       <StatCard
         icon={<Users size={25} className="text-orange-500" />}
-        title="Total Employee"
+        title="Total Employees"
         count={employeeCount}
         updateDate={updateDates.employees}
         percentage={12}
       />
 
-      {/* Total Applicants */}
       <StatCard
         icon={<Briefcase size={25} className="text-orange-500" />}
-        title="Total Applicant"
-        count={applicantCount}
-        updateDate={updateDates.applicants}
+        title="Total Leaves"
+        count={leaveCount}
+        updateDate={updateDates.leaves}
         percentage={5}
       />
 
-      {/* Today Attendance */}
       <StatCard
         icon={<CalendarCheck size={25} className="text-orange-500" />}
         title="Today Attendance"
@@ -81,7 +37,6 @@ const Analytics = () => {
         percentage={-8}
       />
 
-      {/* Total Projects */}
       <StatCard
         icon={<FileText size={25} className="text-orange-500" />}
         title="Total Projects"
@@ -101,7 +56,13 @@ interface StatCardProps {
   percentage: number;
 }
 
-const StatCard = ({ icon, title, count, updateDate, percentage }: StatCardProps) => {
+const StatCard = ({
+  icon,
+  title,
+  count,
+  updateDate,
+  percentage,
+}: StatCardProps) => {
   return (
     <div className="bg-gray-900 p-4 rounded-lg shadow-md flex flex-col justify-between">
       <div className="flex items-center space-x-3">

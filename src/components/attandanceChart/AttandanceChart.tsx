@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import React from "react";
 import {
   ResponsiveContainer,
   BarChart,
@@ -9,44 +8,13 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-
-interface AttendanceData {
-  day: string;
-  onTime: number;
-  late: number;
-  absent: number;
-}
+import { useAttandanceChart } from "./useAttandanceChart";
 
 const AttendanceChart = () => {
-  const [data, setData] = useState<AttendanceData[]>([]);
+  const { data, loading, error } = useAttandanceChart();
 
-  useEffect(() => {
-    fetch("/api/attendance")
-      .then((res) => res.json())
-      .then((attendanceRecords) => {
-        // Transform data for Recharts
-        const groupedData: { [key: string]: AttendanceData } = {};
-
-        attendanceRecords.forEach((record: { date: string; status: string }) => {
-          const day = new Date(record.date).toLocaleDateString("en-US", {
-            weekday: "short",
-          });
-
-          if (!groupedData[day]) {
-            groupedData[day] = { day, onTime: 0, late: 0, absent: 0 };
-          }
-
-          if (record.status === "ON_TIME") groupedData[day].onTime++;
-          if (record.status === "LATE") groupedData[day].late++;
-          if (record.status === "ABSENT") groupedData[day].absent++;
-        });
-
-        setData(Object.values(groupedData));
-      })
-      .catch((error) =>
-        console.error("Error fetching attendance data:", error)
-      );
-  }, []);
+  if (loading) return <p>Loading attendance data...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="w-full h-96 p-4 bg-gray-900 rounded-lg">
@@ -56,8 +24,8 @@ const AttendanceChart = () => {
       <ResponsiveContainer width="100%" height="100%">
         <BarChart 
           data={data} 
-          barCategoryGap="15%" // Increase space between bars
-          barGap={-15} // Makes stacked bars look like separate segments
+          barCategoryGap="15%" 
+          barGap={-15}
         >
           <XAxis dataKey="day" stroke="#ffffff" />
           <YAxis stroke="#ffffff" />

@@ -14,15 +14,15 @@ datasource db {
 }
 
 model User {
-  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
   name           String
-  email          String          @unique
+  email          String         @unique
   Password       String
-  role           Role            @default(EMPLOYEE)
+  role           Role           @default(EMPLOYEE)
   profilePicture String?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  notifications  Notification[]  @relation("UserNotifications")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  notifications  Notification[] @relation("UserNotifications")
 }
 
 enum Role {
@@ -63,6 +63,7 @@ model Employee {
   dateOfBirth       String?
   attendances       Attendance[]
   leaves            Leave[]
+  projects          Project[]
   type              String?
   status            String?
   photoPublicId     String?
@@ -96,16 +97,17 @@ enum Status {
 }
 
 model Leave {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
-  employeeId    String     @db.ObjectId
-  employee      Employee   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  startDate     DateTime
-  endDate       DateTime
-  reason        String?
-  status        LeaveStatus @default(PENDING) // Pending, Approved, Rejected
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  employeeId String      @db.ObjectId
+  employee   Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  startDate  DateTime
+  endDate    DateTime
+  reason     String?
+  status     LeaveStatus @default(PENDING) // Pending, Approved, Rejected
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
+
 enum LeaveStatus {
   PENDING
   APPROVED
@@ -120,4 +122,24 @@ model Notification {
   isRead    Boolean  @default(false)
   user      User     @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
   // user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Project {
+  id                 String        @id @default(auto()) @map("_id") @db.ObjectId
+  title              String
+  description        String?
+  assignedEmployeeId String        @db.ObjectId
+  assignedEmployee   Employee      @relation(fields: [assignedEmployeeId], references: [id], onDelete: Cascade)
+  status             ProjectStatus @default(IN_PROGRESS)
+  startDate          DateTime?
+  endDate            DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+
+// Enum for project status
+enum ProjectStatus {
+  IN_PROGRESS
+  COMPLETED
 }

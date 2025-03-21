@@ -1,7 +1,7 @@
 "use client";
-
-// import { useState, useEffect } from "react";
 import { useLeaveManagement } from "@/hooks/useLeaveManagement";
+import EmployeeInput from "../employeeInput/EmployeeInput";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface Leave {
   id: string;
@@ -12,7 +12,11 @@ export interface Leave {
   employeeId: string;
 }
 
-export default function LeaveRequestWithModal({ employeeId }: { employeeId: string }) {
+export default function LeaveRequestWithModal({
+  employeeId,
+}: {
+  employeeId: string;
+}) {
   const {
     showModal,
     startDate,
@@ -24,7 +28,7 @@ export default function LeaveRequestWithModal({ employeeId }: { employeeId: stri
     setStartDate,
     setEndDate,
     setReason,
-    handleSubmit
+    handleSubmit,
   } = useLeaveManagement(employeeId);
 
   return (
@@ -38,64 +42,78 @@ export default function LeaveRequestWithModal({ employeeId }: { employeeId: stri
         Request Leave
       </button>
 
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-            <h3 className="text-xl font-semibold mb-4">Request Leave</h3>
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white dark:bg-[#131313] p-8 rounded-lg shadow-lg max-w-md w-full"
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <button
+                className="absolute top-2 right-2 text-gray-600 hover:text-red-600 dark:bg-[#131313] w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 dark:border-gray-700 shadow-md"
+                onClick={() => setShowModal(false)}
+              >
+                X
+              </button>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block font-medium mb-1">Start Date:</label>
-                <input
+              <h3 className="text-xl font-semibold mb-4">Request Leave</h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <EmployeeInput
+                  label="Start Date"
                   type="date"
+                  name="startDate"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   required
-                  className="w-full p-2 border rounded-lg"
                 />
-              </div>
 
-              <div>
-                <label className="block font-medium mb-1">End Date:</label>
-                <input
+                <EmployeeInput
+                  label="End Date"
                   type="date"
+                  name="endDate"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   required
-                  className="w-full p-2 border rounded-lg"
                 />
-              </div>
 
-              <div>
-                <label className="block font-medium mb-1">Reason:</label>
-                <textarea
+                <EmployeeInput
+                  label="Reason"
+                  type="text"
+                  name="reason"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   required
-                  className="w-full p-2 border rounded-lg"
                 />
-              </div>
 
-              <div className="flex justify-end space-x-4 mt-4">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-                >
-                  {loading ? "Submitting..." : "Submit"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                <div className="flex justify-end space-x-4 mt-4">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                  >
+                    {loading ? "Submitting..." : "Submit"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Leave Status Display */}
       <div className="mt-8">
@@ -107,14 +125,16 @@ export default function LeaveRequestWithModal({ employeeId }: { employeeId: stri
             {leaves.map((leave) => (
               <div
                 key={leave.id}
-                className="border rounded-lg p-4 shadow-sm bg-white"
+                className="border rounded-lg p-4 shadow-sm bg-white dark:bg-[#131313]"
               >
                 <p>
                   📅 <strong>From:</strong>{" "}
                   {new Date(leave.startDate).toLocaleDateString()} -{" "}
                   {new Date(leave.endDate).toLocaleDateString()}
                 </p>
-                <p>📝 <strong>Reason:</strong> {leave.reason}</p>
+                <p>
+                  📝 <strong>Reason:</strong> {leave.reason}
+                </p>
                 <p>
                   📊 <strong>Status:</strong>{" "}
                   <span

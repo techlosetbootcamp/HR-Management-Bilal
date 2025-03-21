@@ -7,9 +7,9 @@ import { logout, setUser } from "@/redux/slice/authSlice";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";  
-// import AttandanceOverview from "../attandanceOverview/AttandanceOverview";
-// import AttendanceChart from "../attandanceChart/AttandanceChart";
-// import Analytics from "../analytics/Analytics";
+import AttandanceOverview from "../attandanceOverview/AttandanceOverview";
+import AttendanceChart from "../attandanceChart/AttandanceChart";
+import Analytics from "../analytics/Analytics";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -46,9 +46,9 @@ const Dashboard = () => {
         <p>Loading session...</p>
       ) : user ? (
         <>
-        {/* <Analytics/>
-        <AttendanceChart/>
-      <AttandanceOverview/> */}
+         <Analytics/>
+         <AttendanceChart/>
+       <AttandanceOverview/> 
 
           <h1>Welcome, {user.user?.name}</h1>
           <p>User ID: {user.user?.id}</p>

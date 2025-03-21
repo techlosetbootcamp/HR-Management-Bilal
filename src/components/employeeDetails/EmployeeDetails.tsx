@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useEmployeeDetails } from "@/components/employeeDetails/useEmployeeDetails";
 import {
   BriefcaseBusiness,
@@ -22,8 +22,8 @@ import EmployeeInput from "../employeeInput/EmployeeInput";
 import AttendanceRecords from "../attendanceRecords/AttendanceRecords";
 import { EmployeeDetailsProps, InputFieldType } from "@/types/empoyee";
 import LeaveRequest from "../leaveRequest/LeaveRequest";
-
-
+import EmployeeProjectsTable from "../projects/Projects";
+// import { Project } from "@/app/(root)/projects/page";
 
 const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   id,
@@ -48,6 +48,38 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     handleImageChange,
   } = useEmployeeDetails(id);
   const [activeTab, setActiveTab] = useState("profile");
+  // const [projects, setProjects] = useState<Project[]>([]);
+
+  // useEffect(() => {
+  //   if (employee && employee.id) {
+  //     console.log("Fetching projects for employeeId:", employee.id);
+  //     fetch(`/api/projects?employeeId=${employee.id}`)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log("Fetched projects:", data);
+  //         setProjects(data);
+  //       })
+  //       .catch((err) => console.error(err));
+  //   }
+  // }, [employee]);
+  // const markCompleted = async (projectId: string) => {
+  //   try {
+  //     const res = await fetch(`/api/projects?id=${projectId}&action=complete`, {
+  //       method: "PATCH",
+  //     });
+  //     if (res.ok) {
+  //       const updatedProject = await res.json();
+  //       setProjects((prevProjects) =>
+  //         prevProjects.map((p) => (p.id === projectId ? updatedProject : p))
+  //       );
+  //     } else {
+  //       console.error("Failed to mark project as completed:", await res.text());
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   const fields: Extract<keyof Employee, string>[] = [
     "appointmentLetter",
     "salarySlip",
@@ -314,11 +346,28 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             formatTime={formatTime}
           />
         )}
-        {activeTab === "projects" && (
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Projects</h3>
-            <p>Project details will be shown here.</p>
-          </div>
+        {activeTab === "projects" && employee && (
+          // <div>
+          //   <h3 className="text-lg font-semibold mb-2">Projects</h3>
+          //   <div>
+          //     <h1>My Projects</h1>
+          //     <ul>
+          //       {projects.map((project) => (
+          //         <li key={project.id}>
+          //           {project.title} - {project.status}{" "}
+          //           {project.status !== "COMPLETED" && (
+          //             <button onClick={() => markCompleted(project.id)}>
+          //               Mark as Completed
+          //             </button>
+          //           )}
+          //         </li>
+          //       ))}
+          //     </ul>
+          //   </div>
+          // </div>
+          <>
+          <EmployeeProjectsTable employee={employee}/>
+          </>
         )}
         {activeTab === "leave" && (
           <div>

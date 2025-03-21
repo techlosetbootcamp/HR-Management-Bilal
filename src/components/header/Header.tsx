@@ -1,17 +1,18 @@
+// components/header/Header.tsx
 "use client";
-
 import React from "react";
 import { Bell, Menu } from "lucide-react";
 import Link from "next/link";
 import SearchBar from "../searchbar/Searchbar";
 import DropDown from "../dropdown/Dropdown";
-import useHeader from "./useHeader";
+import useHeader from "./useHeader";  
 import { HeaderProps } from "@/types/types";
-
+import { useSearch } from "../../../provider/SearchContext";
 
 const Header = ({ onMenuClick }: HeaderProps) => {
-  const { userName, currentPage, searchTerm, setSearchTerm, firstVisit } =
-    useHeader();
+  const { searchTerm, setSearchTerm } = useSearch();
+
+  const { userName, currentPage, firstVisit } = useHeader();
 
   return (
     <div className="h-[82px] pb-[10px] my-[15px] sticky top-0 z-[99] flex items-center justify-between px-4 lg:px-[50px] dark:bg-[#131313] bg-white">
@@ -22,7 +23,6 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         >
           <Menu className="w-6 h-6" />
         </button>
-
         <div className="flex flex-col ml-2 lg:ml-6">
           {firstVisit ? (
             <>
@@ -53,7 +53,6 @@ const Header = ({ onMenuClick }: HeaderProps) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
         <Link
           href="/notification"
           className="bg-lightGreyShade w-[40px] h-[40px] lg:w-[50px] lg:h-[50px] flex items-center justify-center rounded-[10px]"
@@ -61,7 +60,6 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         >
           <Bell className="h-5 w-5 lg:h-6 lg:w-6" />
         </Link>
-
         <div className="w-[120px] lg:w-[184px] flex justify-end items-end">
           <DropDown />
         </div>

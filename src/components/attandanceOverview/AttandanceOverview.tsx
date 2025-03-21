@@ -36,7 +36,6 @@ const AttendanceOverview: React.FC = () => {
         }
         const data = await response.json();
 
-        // ✅ Limit the records to the latest 5
         setAttendanceRecords(data.slice(0, 5));
       } catch (error) {
         setError(error instanceof Error ? error.message : "Unknown error");

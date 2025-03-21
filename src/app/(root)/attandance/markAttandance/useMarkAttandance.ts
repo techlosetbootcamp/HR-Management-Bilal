@@ -9,7 +9,7 @@ import { RootState, AppDispatch } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import { Employee } from "@/types/attandance";
 
-export function useAttendanceForm() {
+export function useMarkAttandance() {
   const dispatch = useDispatch<AppDispatch>();
   const employees = useSelector(
     (state: RootState) => state.attandance.employees

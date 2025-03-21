@@ -44,13 +44,22 @@ export const authOptions: AuthOptions = {
           throw new Error("Invalid credentials");
         }
 
-        const correctPassword = await bcrypt.compare(credentials.password, user.Password);
+        const correctPassword = await bcrypt.compare(
+          credentials.password,
+          user.Password
+        );
 
         if (!correctPassword) {
           throw new Error("Invalid credentials");
         }
 
-        return { id: user.id, name: user.name, email: user.email, role: user.role, image: user.profilePicture };
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          image: user.profilePicture,
+        };
       },
     }),
   ],
@@ -68,7 +77,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
-        token.picture= user.image 
+        token.picture = user.image;
         token.name = user.name;
         token.email = user.email;
       }
@@ -77,8 +86,8 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
-        session.user.role = token.role as "ADMIN" | "EMPLOYEE"; 
-        session.user.image= token.picture;
+        session.user.role = token.role as "ADMIN" | "EMPLOYEE";
+        session.user.image = token.picture;
         session.user.name = token.name as string;
         session.user.email = token.email as string;
       }

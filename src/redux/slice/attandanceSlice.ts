@@ -64,7 +64,6 @@ export const fetchAttendanceById = createAsyncThunk(
     );
   }
 );
-// Attendance slice
 const attendanceSlice = createSlice({
   name: "attendance",
   initialState,

@@ -50,7 +50,7 @@ export interface TabBarProps {
 
 export interface InputFieldProps {
   label?: string; // New prop to control label display
-  type?: "text" | "email" | "password" | "date" | "number" | "select";
+  type?: "text" | "email" | "password" | "date" | "number" | "select" | "time";
   name: string;
   value?: string;
   placeholder?: string;

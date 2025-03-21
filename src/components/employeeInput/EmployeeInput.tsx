@@ -1,8 +1,7 @@
+"use client";
 import React, { useRef } from "react";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Clock } from "lucide-react";
 import { InputFieldProps } from "@/types/types";
-
-
 
 const EmployeeInput: React.FC<InputFieldProps> = ({
   label,
@@ -14,10 +13,9 @@ const EmployeeInput: React.FC<InputFieldProps> = ({
   options,
   isEditMode = true,
   onChange,
-  showLabel = true, // Default is true
+  showLabel = true,
   className,
   disabled = false,
-
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +27,9 @@ const EmployeeInput: React.FC<InputFieldProps> = ({
 
   return (
     <div className="flex flex-col">
-            {showLabel && label && <label className="text-sm text-gray-400 mb-1">{label}</label>}
+      {showLabel && label && (
+        <label className="text-sm text-gray-400 mb-1">{label}</label>
+      )}
 
       {isEditMode ? (
         type === "select" ? (
@@ -40,9 +40,13 @@ const EmployeeInput: React.FC<InputFieldProps> = ({
             required={required}
             className="border p-2 rounded-xl w-full dark:bg-[#131313] text-white border-gray-700 h-[56px]"
           >
-            <option value="" disabled>{placeholder || "Select an option"}</option>
+            <option value="" disabled>
+              {placeholder || "Select an option"}
+            </option>
             {options?.map((option, index) => (
-              <option key={index} value={option}>{option}</option>
+              <option key={index} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         ) : (
@@ -56,7 +60,7 @@ const EmployeeInput: React.FC<InputFieldProps> = ({
               placeholder={placeholder || label}
               onChange={onChange}
               required={required}
-              className={`bg-transparent outline-none w-full h-[56px] pl-3 pr-10 text-white` + className}
+              className={`bg-transparent outline-none w-full h-[56px] pl-3 pr-10 text-white ${className}`}
             />
             {type === "date" && (
               <button
@@ -64,7 +68,16 @@ const EmployeeInput: React.FC<InputFieldProps> = ({
                 onClick={handleIconClick}
                 className="absolute right-3 cursor-pointer"
               >
-                <CalendarDays  size={24} />
+                <CalendarDays size={24} />
+              </button>
+            )}
+            {type === "time" && (
+              <button
+                type="button"
+                onClick={handleIconClick}
+                className="absolute right-3 cursor-pointer"
+              >
+                <Clock size={24} className="dark:text-white text-black" />
               </button>
             )}
           </div>

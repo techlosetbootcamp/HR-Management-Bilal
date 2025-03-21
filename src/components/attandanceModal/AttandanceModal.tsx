@@ -3,6 +3,7 @@
 import { AttendanceModalFormProps } from "@/types/attandance";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import EmployeeInput from "../employeeInput/EmployeeInput"; // Import EmployeeInput
 
 export default function AttendanceModalForm({
   selectedEmployee,
@@ -41,70 +42,66 @@ export default function AttendanceModalForm({
               {selectedEmployee.lastName}
             </h2>
             <form onSubmit={onSubmit} className="space-y-3">
-              <label className="block">Date:</label>
-              <input
+              <EmployeeInput
+                label="Date"
                 type="date"
+                name="date"
                 value={attendanceState.date}
                 onChange={(e) => updateAttendanceState("date", e.target.value)}
-                className="w-full border p-2 rounded dark:text-white dark:bg-[#131313] dark:appearance-none dark:[color-scheme:dark] dark:[&::-webkit-calendar-picker-indicator]:invert"
               />
 
-              <label className="block">Check In:</label>
-              <input
+              <EmployeeInput
+                label="Check In"
                 type="time"
+                name="checkIn"
                 value={attendanceState.checkIn}
                 onChange={(e) =>
                   updateAttendanceState("checkIn", e.target.value)
                 }
-                className="w-full border p-2 rounded dark:text-white dark:bg-[#131313] dark:appearance-none dark:[color-scheme:dark] dark:[&::-webkit-calendar-picker-indicator]:invert"
               />
 
-              <label className="block">Check Out:</label>
-              <input
+              <EmployeeInput
+                label="Check Out"
                 type="time"
+                name="checkOut"
                 value={attendanceState.checkOut}
                 onChange={(e) =>
                   updateAttendanceState("checkOut", e.target.value)
                 }
-                className="w-full border p-2 rounded dark:text-white dark:bg-[#131313] dark:appearance-none dark:[color-scheme:dark] dark:[&::-webkit-calendar-picker-indicator]:invert"
               />
 
-              <label className="block">Break Time (HH:MM):</label>
-              <input
+              <EmployeeInput
+                label="Break Time (HH:MM)"
                 type="text"
+                name="breakTime"
                 value={attendanceState.breakTime}
                 onChange={(e) =>
                   updateAttendanceState("breakTime", e.target.value)
                 }
-                className="w-full border p-2 rounded dark:text-white dark:bg-[#131313]"
                 placeholder="e.g., 01:30"
               />
 
-              <label className="block">Working Hours (HH:MM):</label>
-              <input
+              <EmployeeInput
+                label="Working Hours (HH:MM)"
                 type="text"
+                name="manualWorkingHours"
                 value={attendanceState.manualWorkingHours}
                 onChange={(e) =>
                   updateAttendanceState("manualWorkingHours", e.target.value)
                 }
-                className="w-full border p-2 rounded dark:text-white dark:bg-[#131313]"
                 placeholder="e.g., 07:30"
               />
 
-              <label className="block">Status:</label>
-              <select
+              <EmployeeInput
+                label="Status"
+                type="select"
+                name="status"
                 value={attendanceState.status}
                 onChange={(e) =>
                   updateAttendanceState("status", e.target.value)
                 }
-                className="w-full border p-2 rounded dark:text-white dark:bg-[#131313]"
-              >
-                <option value="">Select Status</option>
-                <option value="ON_TIME">On Time</option>
-                <option value="LATE">Late</option>
-                <option value="ABSENT">Absent</option>
-                <option value="LEAVE">Leave</option>
-              </select>
+                options={["", "ON_TIME", "LATE", "ABSENT"]}
+              />
 
               <button
                 type="submit"

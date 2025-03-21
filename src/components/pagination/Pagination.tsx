@@ -1,8 +1,6 @@
 import { PaginationProps } from "@/types/types";
 import { useState, useEffect } from "react";
 
-
-
 export default function Pagination({
   totalItems,
   itemsPerPage,
@@ -16,7 +14,7 @@ export default function Pagination({
   useEffect(() => {
     const lastItem = currentPage * itemsPerPage;
     const firstItem = lastItem - itemsPerPage;
-    
+
     setIndexOfFirstItem(firstItem);
     setIndexOfLastItem(lastItem);
   }, [currentPage, itemsPerPage]);
@@ -41,7 +39,8 @@ export default function Pagination({
       </div>
 
       <div className="dark:text-white">
-        Showing {totalItems > 0 ? indexOfFirstItem + 1 : 0} to {Math.min(indexOfLastItem, totalItems)} out of {totalItems} records
+        Showing {totalItems > 0 ? indexOfFirstItem + 1 : 0} to{" "}
+        {Math.min(indexOfLastItem, totalItems)} out of {totalItems} records
       </div>
 
       <div className="flex items-center gap-2">
@@ -53,19 +52,28 @@ export default function Pagination({
           {"<"}
         </button>
 
-        {[...Array(Math.ceil(totalItems / itemsPerPage)).keys()].map((number) => (
-          <button
-            key={number + 1}
-            onClick={() => onPageChange(number + 1)}
-            className={`px-3 py-1 rounded-md border ${currentPage === number + 1 ? "border-customOrange text-customOrange" : "border-gray-500 dark:text-white"}`}
-          >
-            {number + 1}
-          </button>
-        ))}
+        {[...Array(Math.ceil(totalItems / itemsPerPage)).keys()].map(
+          (number) => (
+            <button
+              key={number + 1}
+              onClick={() => onPageChange(number + 1)}
+              className={`px-3 py-1 rounded-md border ${
+                currentPage === number + 1
+                  ? "border-customOrange text-customOrange"
+                  : "border-gray-500 dark:text-white"
+              }`}
+            >
+              {number + 1}
+            </button>
+          )
+        )}
 
         <button
           onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === Math.ceil(totalItems / itemsPerPage) || totalItems === 0}
+          disabled={
+            currentPage === Math.ceil(totalItems / itemsPerPage) ||
+            totalItems === 0
+          }
           className="rounded-md text-white disabled:opacity-50"
         >
           {">"}

@@ -1,8 +1,8 @@
 'use client'
-import { useAttendanceForm } from "./useAttandance";
 import AllEmployee from "@/components/allEmployee/AllEmployee";
 import AttendanceModalForm from "@/components/attandanceModal/AttandanceModal";
 import SearchBar from "@/components/searchbar/Searchbar";
+import { useMarkAttandance } from "./useMarkAttandance";
 
 export default function AttendanceForm() {
   const {
@@ -29,7 +29,7 @@ export default function AttendanceForm() {
     resetForm,
     searchTerm,
     handleSearchChange,
-  } = useAttendanceForm();
+  } = useMarkAttandance();
 
   return (
     <div className="border p-4 dark:border-gray-700 dark:bg-[#131313] dark:text-white rounded-[15px]">

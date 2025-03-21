@@ -1,0 +1,59 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { fetchAttendance } from "../../redux/slice/attandanceSlice";
+
+export interface AttendanceData {
+  day: string;
+  onTime: number;
+  late: number;
+  absent: number;
+}
+
+export const useAttandanceChart = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const attendanceRecords = useSelector(
+    (state: RootState) => state.attandance.attendanceRecords
+  );
+  const [data, setData] = useState<AttendanceData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAttendanceData = async () => {
+      try {
+        await dispatch(fetchAttendance());
+      } catch (err) {
+        console.error("Error fetching attendance data:", err);
+        setError("Error fetching attendance data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAttendanceData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const groupedData: { [key: string]: AttendanceData } = {};
+
+    attendanceRecords.forEach((record: { date: string; status: string }) => {
+      const day = new Date(record.date).toLocaleDateString("en-US", {
+        weekday: "short",
+      });
+
+      if (!groupedData[day]) {
+        groupedData[day] = { day, onTime: 0, late: 0, absent: 0 };
+      }
+
+      if (record.status === "ON_TIME") groupedData[day].onTime++;
+      if (record.status === "LATE") groupedData[day].late++;
+      if (record.status === "ABSENT") groupedData[day].absent++;
+    });
+
+    setData(Object.values(groupedData));
+  }, [attendanceRecords]);
+
+  return { data, loading, error };
+};

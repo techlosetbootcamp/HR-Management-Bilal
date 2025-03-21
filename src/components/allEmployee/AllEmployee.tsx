@@ -1,11 +1,12 @@
+// components/AllEmployee.tsx
 "use client";
+import React from "react";
 import { Trash, Eye, PencilLine, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import Pagination from "@/components/pagination/Pagination";
 import { useAllEmployee } from "./useAllEmployee";
 import { AllEmployeeProps } from "@/types/empoyee";
-
-
+import { useSearch } from "../../../provider/SearchContext";
 
 export default function AllEmployee({
   employees,
@@ -13,6 +14,12 @@ export default function AllEmployee({
   isAttendancePage = false,
   handleMarkAttendance,
 }: AllEmployeeProps) {
+  const { searchTerm } = useSearch();
+  
+  const filteredEmployees = employees.filter((emp) =>
+    `${emp.firstName} ${emp.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const {
     currentEmployees,
     currentPage,
@@ -22,7 +29,7 @@ export default function AllEmployee({
     handleViewEmployee,
     paginate,
     handleItemsPerPageChange,
-  } = useAllEmployee(employees);
+  } = useAllEmployee(filteredEmployees);
 
   return (
     <div className="dark:bg-[#131313] dark:text-white rounded-b-lg">
@@ -67,7 +74,6 @@ export default function AllEmployee({
                 {emp.status}
               </span>
             </div>
-
             <div className="flex justify-center gap-2">
               {isAttendancePage ? (
                 isAdmin ? (
@@ -112,7 +118,7 @@ export default function AllEmployee({
       )}
 
       <Pagination
-        totalItems={employees.length}
+        totalItems={filteredEmployees.length}
         itemsPerPage={employeesPerPage}
         currentPage={currentPage}
         onPageChange={paginate}

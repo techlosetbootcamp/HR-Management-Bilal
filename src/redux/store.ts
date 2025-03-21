@@ -4,6 +4,7 @@ import themeReducer from "./slice/themeSlice";
 import employeeReducer from "./slice/employeeSlice";
 import leaveReducer from './slice/leaveSlice';
 import attendanceReducer from "./slice/attandanceSlice";
+import projectReducer from "./slice/projectSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -11,6 +12,7 @@ export const store = configureStore({
     employees: employeeReducer,
     attandance: attendanceReducer,
     leave: leaveReducer,
+    projects: projectReducer
   },
 });
 
