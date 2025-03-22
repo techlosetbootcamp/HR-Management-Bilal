@@ -1,14 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import {  AppDispatch, RootState } from "@/redux/store";
+import {  RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { fetchEmployees } from "@/redux/slice/employeeSlice";
 import { useSession } from "next-auth/react";
-import { useDispatch, useSelector } from "react-redux";
 
 export const useEmployee = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { employees, loading, error, filters } = useSelector(
+  const { employees, loading, error, filters } = useAppSelector(
     (state: RootState) => state.employees
   );
   const { data: session } = useSession();
