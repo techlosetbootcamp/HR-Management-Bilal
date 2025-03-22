@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    console.log("📂 Uploading file:", file.name);
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -37,7 +36,6 @@ export async function POST(req: NextRequest) {
       stream.pipe(uploadStream);
     });
 
-    console.log(" Cloudinary upload successful:", uploadResult);
     return NextResponse.json(
       { imageUrl: uploadResult.secure_url },
       { status: 200 }

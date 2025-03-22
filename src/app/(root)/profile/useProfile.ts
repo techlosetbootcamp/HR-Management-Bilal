@@ -5,14 +5,15 @@ import {
   updateProfile,
   uploadProfileImage,
 } from "@/redux/slice/authSlice";
-import { RootState,  useAppDispatch, useAppSelector } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 export function useProfile() {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { data: session, status, update } = useSession();
 
-  const { user, loading, error, successMessage } = useAppSelector(
+  const { user, loading, error, successMessage } = useSelector(
     (state: RootState) => state.auth
   );
 
