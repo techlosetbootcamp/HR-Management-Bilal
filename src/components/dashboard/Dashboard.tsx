@@ -19,7 +19,6 @@ export default function Dashboard() {
     );
   }
 
-  // If user is admin, show the attendance records component.
   if (session?.user.role === "ADMIN") {
     return (
       <div className="p-6">
@@ -32,12 +31,11 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
           Attandace Overview
         </h1>
-        <AttandanceOverview showViewAll={true} showPagination={true} />
+        <AttandanceOverview showViewAll={true} showPagination={false} />
       </div>
     );
   }
 
-  // Otherwise, show a personalized welcome for non-admin users.
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#131313] animate-glow p-6">
@@ -57,26 +55,11 @@ export default function Dashboard() {
         </Link>
         <div className="mt-10">
           <p className="text-gray-400 text-sm">
-            This Application is Built By Developer Bilal.
+            This Application is Build By Developer Bilal.
           </p>
         </div>
       </div>
-      <style jsx>{`
-        @keyframes glow {
-          0% {
-            box-shadow: 0 0 5px rgba(255, 165, 0, 0.4);
-          }
-          50% {
-            box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
-          }
-          100% {
-            box-shadow: 0 0 5px rgba(255, 165, 0, 0.4);
-          }
-        }
-        .animate-glow {
-          animation: glow 2s ease-in-out infinite;
-        }
-      `}</style>
+      {/* Removed the keyframe animation style block */}
     </>
   );
 }

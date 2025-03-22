@@ -1,22 +1,34 @@
 // pages/attandance/index.tsx (or similar)
 "use client";
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import AttandanceOverview from "@/components/attandanceOverview/AttandanceOverview";
 import Button from "@/components/button/Button";
+import SearchBar from "@/components/searchbar/Searchbar";
 
 export default function AttendancePage() {
   const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between">
-        <h1>All Attandance</h1>
-        <Button onClick={() => {
-          router.push("/attandance/markAttandance");
-        }} className="w-[200px]">Mark Attandance</Button>
+    <div className="border dark:border-gray-700 rounded-xl">
+      <div className="flex justify-between items-center p-6">
+        <SearchBar value={searchTerm} onChange={handleSearchChange} />
+        <div className="w-[200px]">
+          <Button onClick={() => router.push("/attandance/markAttandance")}>
+            Mark Attandance
+          </Button>
+        </div>
       </div>
-      <AttandanceOverview showViewAll={false} showPagination={true}/> {/* No limit prop passed, so all records are shown */}
+      <AttandanceOverview
+        searchTerm={searchTerm}
+        showViewAll={false}
+        showPagination={true}
+      />
     </div>
   );
 }

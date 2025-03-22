@@ -2,35 +2,50 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest) {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    const protectedRoutes = ["/", "/profile", "/settings"];
-    const adminRoutes = ["/employees/addEmployee", ""]; // 🔒 Restrict access
+  const protectedRoutes = ["/", "/profile", "/settings"];
+  const adminRoutes = [
+    "/employees/addEmployee",
+    "/leaves",
+    "/projects",
+    "/attandance",
+  ]; 
 
-    const url = req.nextUrl.clone();
-    const { pathname } = req.nextUrl;
+  const url = req.nextUrl.clone();
+  const { pathname } = req.nextUrl;
 
-    // 🔑 Redirect authenticated users away from login/register
-    if (token && ["/login", "/register"].includes(pathname)) {
-        url.pathname = "/";
-        return NextResponse.redirect(url);
+  if (token && ["/login", "/register"].includes(pathname)) {
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+
+  if (!token && protectedRoutes.includes(pathname)) {
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  if (token && adminRoutes.includes(pathname)) {
+    const userRole = token.role;
+    if (!userRole || userRole !== "ADMIN") {
+      url.pathname = "/";
+      return NextResponse.redirect(url);
     }
+  }
 
-    // 🔐 Protect pages that require authentication
-    if (!token && protectedRoutes.includes(pathname)) {
-        url.pathname = "/login";
-        return NextResponse.redirect(url);
-    }
-
-    // 🔒 Restrict access to admin routes & API
-    if (token && adminRoutes.includes(pathname)) {
-        const userRole = token.role;
-        if (!userRole || userRole !== "ADMIN") {
-            return new NextResponse("Forbidden", { status: 403 });
-        }
-    }
-
-    return NextResponse.next();
+  return NextResponse.next();
 }
 
-export const config = { matcher: ["/", "/login", "/register", "/profile", "/settings", "/employees/addEmployee"] };
+export const config = {
+  matcher: [
+    "/",
+    "/login",
+    "/register",
+    "/profile",
+    "/settings",
+    "/employees/addEmployee",
+    "/projects",
+    "/leaves",
+    "/attandance",
+  ],
+};

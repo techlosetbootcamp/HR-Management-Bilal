@@ -142,7 +142,6 @@ export const uploadImage = createAsyncThunk(
         process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "default_preset"
       );
 
-      // Determine resource type based on file type
       const isPDF = file.type === "application/pdf";
       const resourceType = isPDF ? "raw" : "image";
 

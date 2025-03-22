@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 interface Employee {
-  id: string;  // Add id to Employee interface
+  id: string;  
   firstName: string;
   lastName: string;
   photoURL: string;

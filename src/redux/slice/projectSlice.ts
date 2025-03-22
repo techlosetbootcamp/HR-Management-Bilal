@@ -69,7 +69,6 @@ export const fetchEmployeeProjects = createAsyncThunk<
 );
 
 
-// Async thunk to mark a project as complete
 export const completeProject = createAsyncThunk<
   Project,
   string, // project id

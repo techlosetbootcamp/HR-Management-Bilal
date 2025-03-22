@@ -23,7 +23,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         >
           <Menu className="w-6 h-6" />
         </button>
-        <div className="flex flex-col ml-2 lg:ml-6">
+        <div className="flex flex-col">
           {firstVisit ? (
             <>
               <h2 className="text-[18px] lg:text-[20px] font-semibold">

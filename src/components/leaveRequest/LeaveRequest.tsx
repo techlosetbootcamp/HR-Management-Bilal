@@ -2,6 +2,8 @@
 import { useLeaveManagement } from "@/hooks/useLeaveManagement";
 import EmployeeInput from "../employeeInput/EmployeeInput";
 import { motion, AnimatePresence } from "framer-motion";
+import LeaveRecord from "@/components/leaveRecord/LeaveRecord"; // Import LeaveRecord
+import Button from "../button/Button";
 
 export interface Leave {
   id: string;
@@ -35,12 +37,9 @@ export default function LeaveRequestWithModal({
     <div className="max-w-3xl mx-auto p-6">
       <h2 className="text-3xl font-bold mb-6 text-center">Leave Management</h2>
 
-      <button
-        onClick={() => setShowModal(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-      >
-        Request Leave
-      </button>
+      <div className="w-[200px]">
+        <Button onClick={() => setShowModal(true)}>Request Leave</Button>
+      </div>
 
       <AnimatePresence>
         {showModal && (
@@ -97,7 +96,7 @@ export default function LeaveRequestWithModal({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                    className="bg-customOrange text-white px-4 py-2 rounded-lg dark:hover:bg-[#131313] hover:bg-white hover:text-customOrange border border-customOrange transition-all duration-300"
                   >
                     {loading ? "Submitting..." : "Submit"}
                   </button>
@@ -115,44 +114,14 @@ export default function LeaveRequestWithModal({
         )}
       </AnimatePresence>
 
-      {/* Leave Status Display */}
       <div className="mt-8">
         <h3 className="text-2xl font-semibold mb-4">Your Leave Requests:</h3>
-        {leaves.length === 0 ? (
-          <p>No leave requests found.</p>
-        ) : (
-          <div className="space-y-4">
-            {leaves.map((leave) => (
-              <div
-                key={leave.id}
-                className="border rounded-lg p-4 shadow-sm bg-white dark:bg-[#131313]"
-              >
-                <p>
-                  📅 <strong>From:</strong>{" "}
-                  {new Date(leave.startDate).toLocaleDateString()} -{" "}
-                  {new Date(leave.endDate).toLocaleDateString()}
-                </p>
-                <p>
-                  📝 <strong>Reason:</strong> {leave.reason}
-                </p>
-                <p>
-                  📊 <strong>Status:</strong>{" "}
-                  <span
-                    className={`font-bold ${
-                      leave.status === "PENDING"
-                        ? "text-yellow-500"
-                        : leave.status === "APPROVED"
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }`}
-                  >
-                    {leave.status}
-                  </span>
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+        <LeaveRecord
+          leaves={leaves}
+          loading={loading}
+          isAdmin={false}
+          showEmployeeDetails={false} // Hide employee details
+        />
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
 
   const isAdmin = userRole === "ADMIN";
 
-  const allowedPathsForEmployees = ["/", "/employees", "/settings","/attandance"];
+  const allowedPathsForEmployees = ["/", "/employees", "/settings"];
 
   const filteredLinks = isAdmin
     ? SIDE_BAR_LINKS
@@ -39,7 +39,6 @@ export default function Sidebar({ onClose }: SidebarProps) {
           />
           <span className="font-[600] mt-4 text-[14px]">HR SEARCH</span>
         </div>
-
         <button
           onClick={onClose}
           className="lg:hidden p-2 hover:bg-gray-700 rounded-full"
@@ -47,14 +46,14 @@ export default function Sidebar({ onClose }: SidebarProps) {
           <X className="w-6 h-6" />
         </button>
       </div>
-
-      <nav className="mt-4 flex-1">
+  
+      <nav className="mt-4">
         {filteredLinks.map(({ name, path, icon: Icon }) => {
           const isActive =
             (path === "/employees" && isEmployeeSection) ||
             (path === "/attandance" && isAttendanceSection) ||
             pathname === path;
-
+  
           return (
             <Link
               key={name}
@@ -68,7 +67,6 @@ export default function Sidebar({ onClose }: SidebarProps) {
               {isActive && (
                 <span className="absolute left-0 top-0 h-full w-1 bg-orange-500 rounded-r-lg"></span>
               )}
-
               <Icon
                 className={`w-6 h-6 mr-3 ${
                   isActive
@@ -80,10 +78,14 @@ export default function Sidebar({ onClose }: SidebarProps) {
             </Link>
           );
         })}
-        <div className="mt-[300px]">
+        {/* Place ModeChanger directly below the links */}
+       
+      </nav>
+      <div className="mt-auto">
           <ModeChanger />
         </div>
-      </nav>
     </div>
   );
+  
+  
 }

@@ -23,7 +23,6 @@ const initialState: AuthState = {
   successMessage: null,
 };
 
-// ✅ Change Password
 export const changePassword = createAsyncThunk(
   "password/change",
   async ({ email, newPassword }: { email: string; newPassword: string }, { rejectWithValue }) => {
@@ -41,7 +40,6 @@ export const changePassword = createAsyncThunk(
 );
 
 
-// ✅ Get Profile by Email
 export const getProfileByEmail = createAsyncThunk<User, string>(
   "auth/getProfileByEmail",
   async (email, { rejectWithValue }) => {
@@ -70,7 +68,6 @@ export const getProfile = createAsyncThunk<User, string>(
   }
 );
 
-// ✅ Register User
 export const registerUser = createAsyncThunk<
   void,
   { name: string; email: string; password: string; role: "ADMIN" | "EMPLOYEE" },
@@ -89,7 +86,6 @@ export const registerUser = createAsyncThunk<
   }
 });
 
-// ✅ Upload Profile Image
 export const uploadProfileImage = createAsyncThunk<
   string,
   File,
@@ -110,7 +106,6 @@ export const uploadProfileImage = createAsyncThunk<
   }
 });
 
-// ✅ Update Profile (Name & Profile Picture)
 export const updateProfile = createAsyncThunk<
   User,
   { name: string; email: string; profilePicture: string },
@@ -135,14 +130,12 @@ export const updateProfile = createAsyncThunk<
   }
 );
 
-// Add this interface for employee data
 interface Employee {
   id: string;
   email: string;
-  [key: string]: unknown; // For other employee properties
+  [key: string]: unknown; 
 }
 
-// ✅ Get Employee by Email
 export const getEmployeeByEmail = createAsyncThunk<
   Employee,
   string,
@@ -180,7 +173,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // ✅ Change Password Handlers
       .addCase(changePassword.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -195,7 +187,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // ✅ Get Profile By Email Handlers
       .addCase(getProfileByEmail.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -209,7 +200,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // ✅ Get Profile Handlers
       .addCase(getProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -223,7 +213,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // ✅ Register User Handlers
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -238,7 +227,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // ✅ Upload Profile Image Handlers
       .addCase(uploadProfileImage.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -251,7 +239,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // ✅ Update Profile Handlers
       .addCase(updateProfile.pending, (state) => {
         state.loading = true;
         state.error = null;

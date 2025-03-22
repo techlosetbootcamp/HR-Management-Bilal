@@ -10,6 +10,7 @@ import { RootState, AppDispatch } from "../../redux/store";
 import { Employee } from "@/types/types";
 import toast from "react-hot-toast";
 import { fetchAttendanceById } from "@/redux/slice/attandanceSlice";
+import { completeProject, fetchEmployeeProjects } from "@/redux/slice/projectSlice";
 
 export function useEmployeeDetails(id: string) {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +19,12 @@ export function useEmployeeDetails(id: string) {
   const { employee, loading, error } = useSelector(
     (state: RootState) => state.employees
   );
+
+  const { projects} = useSelector(
+    (state: RootState) => state.projects
+  );
+  const employeeData: Employee | null = employee;
+
   const [updatedFields, setUpdatedFields] = useState<Partial<Employee>>({});
   const [updatedImage, setUpdatedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -41,7 +48,7 @@ export function useEmployeeDetails(id: string) {
 
   const saveChanges = async () => {
     try {
-      if (!employee) return;
+      if (!employeeData) return; // Use employeeData
 
       let updatePayload: Partial<Employee> = { ...updatedFields };
 
@@ -50,7 +57,7 @@ export function useEmployeeDetails(id: string) {
         const uploadResult = await dispatch(
           uploadImage({
             file: selectedFile,
-            fieldName: employee.photoPublicId || "",
+            fieldName: employeeData.photoPublicId || "", // Use employeeData
           })
         ).unwrap();
         
@@ -70,7 +77,7 @@ export function useEmployeeDetails(id: string) {
         console.log("Sending update request:", updatePayload);
         const updateResponse = await dispatch(
           updateEmployeeDetails({
-            id: employee.id,
+            id: employeeData.id, // Use employeeData
             updates: updatePayload
           })
         ).unwrap();
@@ -147,8 +154,14 @@ const [pdfPreview, setPdfPreview] = useState<string | null>(null);
     if (id) {
       dispatch(fetchEmployeeById(id));
       dispatch(fetchAttendanceById(id));
+      dispatch(fetchEmployeeProjects(id))
     }
   }, [id, dispatch]);
+  
+  const handleComplete = (projectId: string) => {
+      dispatch(completeProject(projectId));
+
+    };
   
   return {
     isEditing,
@@ -160,8 +173,10 @@ const [pdfPreview, setPdfPreview] = useState<string | null>(null);
     openPdfPreview,
     closePdfPreview,
     getPdfUrl,
-    employee,
+    employee: employeeData, // Return employeeData
     loading,
+    handleComplete,
+    projects,
     error,
     handleUpdate,
     updatedFields,

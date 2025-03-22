@@ -23,7 +23,6 @@ export function useProjects() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [employeeId, setEmployeeId] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProjects());
@@ -46,11 +45,13 @@ export function useProjects() {
     setStartDate("");
     setEndDate("");
     setEmployeeId("");
-    setIsModalOpen(false);
   };
+
+  // Sort projects by startDate (newest first)
   const sortedProjects = [...projects].sort((a, b) => {
     return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
   });
+
   return {
     projects: sortedProjects,
     projectLoading,
@@ -66,8 +67,6 @@ export function useProjects() {
     setEndDate,
     employeeId,
     setEmployeeId,
-    isModalOpen,
-    setIsModalOpen,
     handleSubmit,
   };
 }

@@ -3,9 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../..//lib/auth";
 import prisma from "../../../../lib/prisma";
 
-// Create Leave Request (POST)
 
-// Create Leave Request (POST)
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session)
@@ -14,7 +12,6 @@ export async function POST(req: NextRequest) {
   try {
     const { startDate, endDate, reason } = await req.json();
 
-    // Find the corresponding Employee using User's email
     const employee = await prisma.employee.findUnique({
       where: { email: session.user.email ?? "" },
     });
@@ -26,7 +23,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create the leave with the correct employeeId
     const leave = await prisma.leave.create({
       data: {
         employeeId: employee.id,
@@ -36,7 +32,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Notify Admins about the new leave request
     const admins = await prisma.user.findMany({
       where: { role: "ADMIN" },
     });
@@ -52,9 +47,6 @@ export async function POST(req: NextRequest) {
 
     console.log("Admin notifications created:", adminNotifications);
 
-    // Notify the Employee that their leave request was submitted.
-    // Since the Employee model does not have a userId field,
-    // we fetch the corresponding user record using the email.
     const employeeUser = await prisma.user.findUnique({
       where: { email: session.user.email ?? "" },
     });
@@ -91,14 +83,12 @@ export async function POST(req: NextRequest) {
 }
 
 
-// Get Leave Status (GET)
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    // If admin, fetch all leaves with employee details
     if (session) {
       const leaves = await prisma.leave.findMany({
         include:{employee:true}
@@ -107,7 +97,6 @@ export async function GET() {
       return NextResponse.json({ leaves }, { status: 200 });
     }
 
-    // If employee, fetch only their leaves
     const leaves = await prisma.leave.findMany({
       where: { employeeId: session },
       orderBy: { createdAt: "desc" }
@@ -123,7 +112,6 @@ export async function GET() {
   }
 }
 
-// Approve/Reject Leave (PATCH)
 export async function PATCH(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session)
@@ -138,7 +126,7 @@ export async function PATCH(req: NextRequest) {
     const leave = await prisma.leave.update({
       where: { id: leaveId },
       data: { status },
-      include: { employee: true }, // Include employee details so we can access employee.email
+      include: { employee: true },
     });
 
     if (status === "APPROVED") {

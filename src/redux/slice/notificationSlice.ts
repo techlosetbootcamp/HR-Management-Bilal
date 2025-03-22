@@ -14,13 +14,11 @@ const initialState: NotificationsState = {
   error: undefined,
 };
 
-// Async thunk to fetch notifications
 export const fetchNotifications = createAsyncThunk<Notification[]>(
   "notifications/fetchNotifications",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("/api/notifications");
-      // Assuming your API returns { notifications: Notification[] }
       return response.data.notifications;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -31,7 +29,6 @@ export const fetchNotifications = createAsyncThunk<Notification[]>(
   }
 );
 
-// Async thunk to handle notification actions (read or delete)
 interface NotificationActionPayload {
   id: string;
   action: "read" | "delete";
@@ -45,7 +42,6 @@ export const updateNotificationAction = createAsyncThunk<
   async (payload, { rejectWithValue }) => {
     try {
       await axios.post("/api/notifications", payload);
-      // We don't need the response payload here as we update the state directly.
       return payload;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -60,10 +56,8 @@ const notificationsSlice = createSlice({
   name: "notifications",
   initialState,
   reducers: {
-    // (Optional) add reducers for local changes if needed.
   },
   extraReducers: (builder) => {
-    // Fetch notifications
     builder.addCase(fetchNotifications.pending, (state) => {
       state.loading = true;
       state.error = undefined;
@@ -79,7 +73,6 @@ const notificationsSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
-    // Handle notification actions (read or delete)
     builder.addCase(
       updateNotificationAction.fulfilled,
       (state, action: PayloadAction<NotificationActionPayload>) => {

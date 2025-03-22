@@ -1,17 +1,23 @@
 "use client";
 
 import { CheckCircle, Trash2 } from "lucide-react";
-import { useNotifications } from "./useNotification"; // adjust the path as needed
+import { useNotifications } from "./useNotification";
+import LottieAnimation from "@/components/lottieAnimation/LottieAnimation";
 
 export default function NotificationsPage() {
-  const { notifications, handleNotificationAction } = useNotifications();
+  const { notifications, handleNotificationAction, loading } =
+    useNotifications(); // Destructure loading
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
         Your Notifications
       </h1>
-      {notifications.length === 0 ? (
+      {loading ? ( // Check loading state
+        <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
+          <LottieAnimation />
+        </div>
+      ) : notifications.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">No notifications available.</p>
         </div>

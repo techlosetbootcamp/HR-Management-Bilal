@@ -20,25 +20,25 @@ export default function ProfilePage() {
 
   if (isSessionLoading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-[#131313]">
+      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
         <LottieAnimation />
       </div>
     );
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-black rounded-lg shadow-md">
-      <div className="flex items-center justify-center">
-        <h2 className="text-2xl font-bold mb-4">Welcome: {name}</h2>
+    <div className="max-w-md mx-auto p-6 dark:bg-[#29272761] bg-gray-100 rounded-xl shadow-xl animate-glow">
+      <div className="flex items-center justify-center mb-6">
+        <h2 className="text-3xl font-bold dark:text-white">Welcome: {name}</h2>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4 bg-black">
-        <div className="relative w-36 h-36 mx-auto">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="relative w-36 h-36 mx-auto mb-4">
           <Image
             src={previewImage}
             width={100}
             height={100}
             alt="Profile Picture"
-            className="w-36 h-36 rounded-full border border-gray-300 object-cover"
+            className="w-36 h-36 rounded-full border-4 border-customOrange object-cover"
           />
 
           <input
@@ -51,7 +51,7 @@ export default function ProfilePage() {
 
           <label
             htmlFor="fileInput"
-            className="absolute bottom-0 right-0 bg-black p-1 rounded-full cursor-pointer"
+            className="absolute bottom-0 right-0 bg-customOrange p-2 rounded-full cursor-pointer"
           >
             <Edit className="w-5 h-5 text-white" />
           </label>
@@ -63,7 +63,7 @@ export default function ProfilePage() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border rounded-xl border-gray-700"
+            className="w-full p-3 border-2 rounded-xl border-customOrange bg-gray-800 text-white"
           />
         </div>
 
@@ -74,7 +74,7 @@ export default function ProfilePage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border cursor-not-allowed bg-gray-600 border-gray-700 rounded-xl"
+            className="w-full p-3 border-2 cursor-not-allowed bg-gray-700 border-customOrange rounded-xl text-gray-400"
             disabled
           />
         </div>

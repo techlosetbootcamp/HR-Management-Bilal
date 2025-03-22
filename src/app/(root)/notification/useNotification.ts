@@ -9,6 +9,7 @@ export interface Notification {
 
 export function useNotifications() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Add loading state
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -21,6 +22,8 @@ export function useNotifications() {
         }
       } catch (error) {
         console.error("Failed to fetch notifications:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
@@ -52,5 +55,5 @@ export function useNotifications() {
     }
   };
 
-  return { notifications, handleNotificationAction };
+  return { notifications, handleNotificationAction, loading }; // Return loading state
 }

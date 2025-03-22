@@ -20,7 +20,6 @@ const initialState: AttendanceState = {
   error: null,
 };
 
-// Async thunk to fetch employees
 export const fetchEmployees = createAsyncThunk(
   "attendance/fetchEmployees",
   async () => {
@@ -78,13 +77,10 @@ const attendanceSlice = createSlice({
       state.attendanceState = initialState.attendanceState;
     },
   },
-  // Add new async thunk
   
   
-  // Add these cases to extraReducers
   extraReducers: (builder) => {
     builder
-      // Fetch Employees
       .addCase(fetchEmployees.pending, (state) => {
         state.loading = true;
       })
@@ -99,7 +95,6 @@ const attendanceSlice = createSlice({
 
       
 
-      // Submit Attendance
       .addCase(submitAttendance.pending, (state) => {
         state.attendanceState.loading = true;
       })
@@ -113,7 +108,6 @@ const attendanceSlice = createSlice({
       })
 
       
-      // Fetch Attendance (all records)
       .addCase(fetchAttendance.pending, (state) => {
         state.loading = true;
       })
@@ -126,7 +120,6 @@ const attendanceSlice = createSlice({
         state.error = action.error.message ?? "Failed to fetch attendance records";
       })
       
-      // Add these new cases
       .addCase(fetchAttendanceById.pending, (state) => {
         state.loading = true;
       })

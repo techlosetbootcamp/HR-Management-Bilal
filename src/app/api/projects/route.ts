@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../..//lib/auth";
 import prisma from "../../../../lib/prisma";
 
-// GET endpoint remains the same.
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const employeeId = searchParams.get("employeeId");
@@ -15,11 +14,11 @@ export async function GET(request: Request) {
         })
       : await prisma.project.findMany();
 
-    console.log("Projects fetched:", projects);
+    // console.log("Projects fetched:", projects);
     return NextResponse.json(projects);
   } catch (error: unknown) {
     const err = error as Error;
-    console.error("Error in GET /api/projects:", err.message);
+    // console.error("Error in GET /api/projects:", err.message);
     return NextResponse.json(
       { message: "Error fetching projects", error: err.message },
       { status: 500 }
@@ -27,7 +26,6 @@ export async function GET(request: Request) {
   }
 }
 
-// POST: Create a new project (assignment) and send notification to the employee.
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session)
@@ -38,7 +36,6 @@ export async function POST(request: Request) {
 
     const { title, description, assignedEmployeeId, startDate, endDate } = body;
 
-    // Create the project.
     const project = await prisma.project.create({
       data: {
         title,
@@ -49,14 +46,11 @@ export async function POST(request: Request) {
       },
     });
 
-    // Notify the assigned employee.
-    // Find the employee record by ID.
     const employee = await prisma.employee.findUnique({
       where: { id: assignedEmployeeId },
     });
 
     if (employee && employee.email) {
-      // Now, find the corresponding user record (assumes User.email exists).
       const employeeUser = await prisma.user.findUnique({
         where: { email: employee.email },
       });
@@ -85,7 +79,6 @@ export async function POST(request: Request) {
   }
 }
 
-// PATCH: Mark project as completed and notify admins.
 
 export async function PATCH(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -98,13 +91,11 @@ export async function PATCH(request: NextRequest) {
 
   if (action === "complete" && id) {
     try {
-      // Update project status to COMPLETED.
       const updatedProject = await prisma.project.update({
         where: { id },
         data: { status: "COMPLETED" },
       });
 
-      // Notify all admins that the project is completed by the current user.
       const admins = await prisma.user.findMany({
         where: { role: "ADMIN" },
       });
