@@ -1,7 +1,7 @@
 "use client";
 import { Users, CalendarCheck, Briefcase, FileText } from "lucide-react";
 import { useAnalyticsData } from "./useAnalytics";
-import Loader from "../Loader/Loader";
+import LottieAnimation from "../lottieAnimation/LottieAnimation";
 
 const Analytics = () => {
   const {
@@ -15,9 +15,9 @@ const Analytics = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader/>
-      </div>
+      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
+      <LottieAnimation />
+    </div>
     );
   }
 
@@ -74,22 +74,22 @@ const StatCard = ({
   percentage,
 }: StatCardProps) => {
   return (
-    <div className="bg-gray-900 p-4 rounded-lg shadow-md flex flex-col justify-between">
+    <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 shadow-md flex flex-col justify-between">
       <div className="flex items-center space-x-3">
-        <div className="p-2 bg-gray-800 rounded-md">{icon}</div>
-        <h3 className="text-white text-lg font-semibold">{title}</h3>
+        <div className="p-2 rounded-md">{icon}</div>
+        <h3 className="dark:text-white text-lg font-semibold">{title}</h3>
       </div>
-      <p className="text-4xl font-bold text-white mt-3">{count}</p>
-      <div className="flex justify-between items-center mt-3">
-        <p className="text-gray-400 text-sm">Update: {updateDate}</p>
+      <p className="text-4xl font-bold dark:text-white mt-3 border-b border-gray-300 dark:border-gray-700">
+        {count}
+      </p>
+      <div className="flex justify-between items-center mt-4 ">
+        <p className="dark:text-gray-400 text-sm">Update: {updateDate}</p>
         <div
           className={`text-sm px-2 py-1 rounded-md ${
             percentage >= 0 ? "bg-green-500" : "bg-red-500"
-          } text-white`}
+          } dark:text-white`}
         >
-          {percentage >= 0
-            ? `▲ ${percentage}%`
-            : `▼ ${Math.abs(percentage)}%`}
+          {percentage >= 0 ? `▲ ${percentage}%` : `▼ ${Math.abs(percentage)}%`}
         </div>
       </div>
     </div>

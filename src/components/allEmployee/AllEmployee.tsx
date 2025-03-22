@@ -68,7 +68,7 @@ export default function AllEmployee({
             <div>
               <span
                 className={`text-xs ${
-                  emp.status === "Permanent" ? "text-customOrange" : "bg-blue-600"
+                  emp.status === "Permanent" ? "text-customOrange" : "text-blue-600"
                 }`}
               >
                 {emp.status}

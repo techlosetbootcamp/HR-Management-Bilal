@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 
 export const useEmployee = () => {
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const { employees, loading, error, filters } = useSelector(
     (state: RootState) => state.employees
   );
@@ -45,6 +45,6 @@ export const useEmployee = () => {
     searchTerm,
     showFilter,
     setShowFilter,
-    handleSearchChange
+    handleSearchChange,
   };
 };

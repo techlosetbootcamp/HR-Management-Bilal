@@ -60,7 +60,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
   const [subTab, setSubTab] = useState("personal");
 
-  // const {  loading: projectsLoading, handleComplete } = useProjectsRecord(id); // Use handleComplete
 
   if (loading) {
     return (
@@ -323,10 +322,10 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
         {activeTab === "projects" && (
           <ProjectList
             projects={projects}
-            employees={employee ? [employee] : []} // Pass the current employee if not null
-            onCompleteProject={handleComplete} // Pass the handleComplete function
-            showEmployeeName={false} // Hide employee name
-            showActionButton={true} // Show action button
+            employees={employee ? [employee] : []}
+            onCompleteProject={handleComplete}
+            showEmployeeName={false}
+            showActionButton={true} 
           />
         )}
 

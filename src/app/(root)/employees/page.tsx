@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import FilterDepatment from "@/components/filterdepartment/FilterDepartment";
 import LottieAnimation from "@/components/lottieAnimation/LottieAnimation";
 import EmployeeHeader from "@/components/employeeHeader/EmployeeHeader";
@@ -14,7 +14,7 @@ export default function EmployeePage() {
     searchTerm,
     showFilter,
     setShowFilter,
-    handleSearchChange
+    handleSearchChange,
   } = useEmployee();
 
   if (loading) {
@@ -28,7 +28,7 @@ export default function EmployeePage() {
   return (
     <div className="dark:bg-[#131313]">
       <div className="border-[1px] border-gray-700 rounded-[15px] p-4">
-        <EmployeeHeader 
+        <EmployeeHeader
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
           showFilter={showFilter}
@@ -42,7 +42,11 @@ export default function EmployeePage() {
           <FilterDepatment employees={filteredEmployees} />
         ) : (
           <>
-            <AllEmployee isAdmin={isAdmin} employees={filteredEmployees} isAttendancePage={false} />
+            <AllEmployee
+              isAdmin={isAdmin}
+              employees={filteredEmployees}
+              isAttendancePage={false}
+            />
           </>
         )}
       </div>

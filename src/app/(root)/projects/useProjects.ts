@@ -1,4 +1,3 @@
-// hooks/useProjects.ts
 "use client";
 import { useState, useEffect, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,7 +46,6 @@ export function useProjects() {
     setEmployeeId("");
   };
 
-  // Sort projects by startDate (newest first)
   const sortedProjects = [...projects].sort((a, b) => {
     return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
   });

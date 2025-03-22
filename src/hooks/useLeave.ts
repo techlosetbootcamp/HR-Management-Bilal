@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
 import { fetchLeaves, updateLeaveStatus } from "@/redux/slice/leaveSlice";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 export const useLeave = () => {
   const dispatch = useDispatch<AppDispatch>();
-  // const { data : session } = useSession();
+  const { data: session } = useSession();
+
+  const isAdmin = session?.user.role === "ADMIN";
   const { leaves, loading } = useSelector((state: RootState) => state.leave);
 
   const handleUpdateStatus = async (
@@ -26,6 +29,7 @@ export const useLeave = () => {
   }, [dispatch]);
 
   return {
+    isAdmin,
     leaves,
     loading,
     updateLeaveStatus: handleUpdateStatus,

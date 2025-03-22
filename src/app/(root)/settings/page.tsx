@@ -1,28 +1,23 @@
-'use client'
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleTheme } from "@/redux/slice/themeSlice";
-import { RootState } from "@/redux/store";
+"use client";
+import { useSettings } from "./useSettings";
 
 export default function Settings() {
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
-  const [mobilePushEnabled, setMobilePushEnabled] = useState(true);
-  const [desktopNotificationEnabled, setDesktopNotificationEnabled] = useState(true);
-  const [emailNotificationEnabled, setEmailNotificationEnabled] = useState(true);
-
-  const dispatch = useDispatch();
-  const theme = useSelector((state: RootState) => state.theme.theme);
-
-  const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedTheme = event.target.value;
-    if (selectedTheme !== theme) {
-      dispatch(toggleTheme());
-    }
-  };
+  const {
+    theme,
+    handleThemeChange,
+    twoFactorEnabled,
+    mobilePushEnabled,
+    desktopNotificationEnabled,
+    setTwoFactorEnabled,
+    setMobilePushEnabled,
+    setEmailNotificationEnabled,
+    setDesktopNotificationEnabled,
+    emailNotificationEnabled,
+  } = useSettings();
 
   return (
-    <div className="bg-black min-h-screen flex items-center justify-center">
-      <div className="w-full bg-[#1A1A1A] rounded-lg p-6 text-white">
+    <div className="dark:bg-[#131313] dark:text-white flex items-center justify-center">
+      <div className="w-full dark:bg-[#1A1A1A] rounded-lg p-6 dark:text-white border border-gray-300 dark:border-gray-700">
         <div className="mb-6">
           <h3 className="text-lg font-medium mb-1">Appearance</h3>
           <p className="text-sm text-gray-400">
@@ -33,7 +28,7 @@ export default function Settings() {
             <select
               value={theme}
               onChange={handleThemeChange}
-              className="bg-gray-800 rounded-lg px-3 py-1 text-sm text-white"
+              className="dark:bg-gray-800 border border-gray-400 dark:border-gray-700 rounded-lg px-4 py-2 text-sm dark:text-white"
             >
               <option value="light">Light</option>
               <option value="dark">Dark</option>
@@ -43,10 +38,10 @@ export default function Settings() {
 
         <div className="mb-6">
           <h3 className="text-lg font-medium mb-1">Language</h3>
-          <p className="text-sm text-gray-400">Select your language</p>
+          <p className="text-sm dark:text-gray-400">Select your language</p>
           <div className="flex justify-between items-center mt-3">
             <span className="text-sm">English</span>
-            <button className="bg-gray-800 rounded-lg px-3 py-1 text-sm flex items-center">
+            <button className="dark:bg-gray-800 rounded-lg px-3 py-1 text-sm flex items-center">
               English
               <svg
                 xmlns="http://www.w3.org/2000/svg"

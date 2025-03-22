@@ -63,7 +63,7 @@ export default function ProfilePage() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 border-2 rounded-xl border-customOrange bg-gray-800 text-white"
+            className="w-full p-3 border-2 rounded-xl border-customOrange dark:bg-gray-800 dark:text-white"
           />
         </div>
 
@@ -81,7 +81,7 @@ export default function ProfilePage() {
 
         <button
           type="submit"
-          className="w-full h-[56px] rounded-xl bg-customOrange border border-customOrange hover:bg-[#131313] text-white p-2 hover:text-customOrange transition-all ease-in-out duration-300"
+          className="w-full h-[56px] rounded-xl bg-customOrange border border-customOrange dark:hover:bg-[#131313] hover:bg-gray-200 p-2 hover:text-customOrange transition-all ease-in-out duration-300"
           disabled={loading}
         >
           {loading ? "Updating..." : "Update Profile"}

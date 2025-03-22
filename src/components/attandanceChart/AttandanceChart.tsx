@@ -16,23 +16,22 @@ const AttendanceChart = () => {
 
   if (loading)
     return (
-      <>
-        <div className="flex items-center justify-center">
-          <Loader />
-        </div>
-      </>
+      <div className="flex items-center justify-center">
+        <Loader />
+      </div>
     );
+
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="w-full h-96 p-4 bg-gray-900 rounded-lg">
-      <h2 className="text-lg font-semibold text-white mb-4">
+    <div className="w-full h-96 py-4 rounded-lg">
+      <h2 className="text-lg font-semibold text-black dark:text-white mb-4">
         Attendance Overview
       </h2>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} barCategoryGap="15%" barGap={-15}>
-          <XAxis dataKey="day" stroke="#ffffff" />
-          <YAxis stroke="#ffffff" />
+          <XAxis dataKey="day" stroke="currentColor" className="text-black dark:text-white" />
+          <YAxis stroke="currentColor" className="text-black dark:text-white" />
           <Tooltip />
           <Bar
             dataKey="onTime"

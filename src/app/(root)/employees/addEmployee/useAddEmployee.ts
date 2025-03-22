@@ -37,12 +37,14 @@ export default function useAddEmployee() {
     experienceLetter: "",
     relivingLetter: "",
     maritalStatus: "",
-    photoURL: "", // ✅ Profile Picture
+    photoURL: "",
     status: "",
-    photoPublicId: "", // ✅ Public ID for Cloudinary
+    photoPublicId: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
@@ -50,7 +52,7 @@ export default function useAddEmployee() {
     }));
   };
 
-  const handleFileUpload = async (file: File,fieldName: string) => {
+  const handleFileUpload = async (file: File, fieldName: string) => {
     try {
       const result = await dispatch(uploadImage({ file, fieldName })).unwrap();
       setForm((prev) => ({
@@ -66,30 +68,46 @@ export default function useAddEmployee() {
   const router = useRouter();
   const validateForm = () => {
     const requiredFields = [
-      'firstName', 'lastName', 'email', 'mobileNumber', 'designation',
-      'department', 'joiningDate', 'employmentType', 'gender', 'dateOfBirth',
-      'address', 'city', 'state', 'zipCode', 'nationality', 'officeLocation',
-      'employeeId', 'workingDays', 'maritalStatus', 'photoURL'
+      "firstName",
+      "lastName",
+      "email",
+      "mobileNumber",
+      "designation",
+      "department",
+      "joiningDate",
+      "employmentType",
+      "gender",
+      "dateOfBirth",
+      "address",
+      "city",
+      "state",
+      "zipCode",
+      "nationality",
+      "officeLocation",
+      "employeeId",
+      "workingDays",
+      "maritalStatus",
+      "photoURL",
     ];
 
     for (const field of requiredFields) {
       if (!form[field as keyof typeof form]) {
-        toast.error(`Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
+        toast.error(
+          `Please fill in the ${field.replace(/([A-Z])/g, " $1").toLowerCase()}`
+        );
         return false;
       }
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
-      toast.error('Please enter a valid email address');
+      toast.error("Please enter a valid email address");
       return false;
     }
 
-    // Validate mobile number format
-    const phoneRegex = /^\d{10}$/;
+    const phoneRegex = /^\d{7}$/;
     if (!phoneRegex.test(form.mobileNumber)) {
-      toast.error('Please enter a valid 10-digit mobile number');
+      toast.error("Please enter a valid 10-digit mobile number");
       return false;
     }
 
@@ -105,13 +123,21 @@ export default function useAddEmployee() {
 
     try {
       await dispatch(addEmployee(form)).unwrap();
-      toast.success('Employee added successfully!');
+      toast.success("Employee added successfully!");
       router.push("/employees");
     } catch (error) {
-      console.error("❌ Error adding employee:", error);
-      toast.error('Failed to add employee. Please try again.');
+      console.error("Error adding employee:", error);
+      toast.error("Failed to add employee. Please try again.");
     }
   };
 
-  return { form, setForm, handleChange, handleSubmit, loading, error, handleFileUpload };
+  return {
+    form,
+    setForm,
+    handleChange,
+    handleSubmit,
+    loading,
+    error,
+    handleFileUpload,
+  };
 }

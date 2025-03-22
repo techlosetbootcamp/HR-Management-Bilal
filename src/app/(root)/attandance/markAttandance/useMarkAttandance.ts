@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,7 +28,7 @@ export function useMarkAttandance() {
   const [status, setStatus] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [manualWorkingHours, setManualWorkingHours] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); // Add search term state
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch(fetchEmployees());
@@ -84,7 +84,7 @@ export function useMarkAttandance() {
   };
 
   return {
-    employees: filteredEmployees, // Use filtered employees
+    employees: filteredEmployees, 
     selectedEmployee,
     setSelectedEmployee,
     date,
@@ -105,7 +105,7 @@ export function useMarkAttandance() {
     setManualWorkingHours,
     handleSubmit,
     resetForm,
-    searchTerm, // Return search term
-    handleSearchChange, // Return search change handler
+    searchTerm,
+    handleSearchChange,
   };
 }

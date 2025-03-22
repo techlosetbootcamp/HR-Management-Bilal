@@ -9,9 +9,11 @@ const useEmployees = (departmentName: string) => {
   const dispatch = useDispatch<AppDispatch>();
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "ADMIN";
-  
+
   const router = useRouter();
-  const { employees, error, loading } = useSelector((state: RootState) => state.employees);
+  const { employees, error, loading } = useSelector(
+    (state: RootState) => state.employees
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -34,18 +36,16 @@ const useEmployees = (departmentName: string) => {
         console.error("Failed to delete employee:", error);
       });
   };
-  
+
   const handleViewEmployee = (id: string) => {
     router.replace(`/employees/${id}`);
   };
   const handleEditEmployee = (id: string) => {
     router.replace(`/employees/${id}?edit=true`);
   };
-  // First filter by department
   const departmentEmployees = employees.filter(
     (emp) => emp.department === departmentName
   );
-  // Then apply additional filters (search and city)
   const filteredEmployees = departmentEmployees.filter(
     (emp) =>
       (`${emp.firstName} ${emp.lastName}`
@@ -54,11 +54,10 @@ const useEmployees = (departmentName: string) => {
         emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase())) &&
       (selectedCity === "" || emp.city === selectedCity)
   );
-  // Get unique cities only from the department employees
   const uniqueCities = departmentEmployees.length
     ? [...new Set(departmentEmployees.map((emp) => emp.city).filter(Boolean))]
     : [];
-    
+
   return {
     employees: filteredEmployees,
     loading,

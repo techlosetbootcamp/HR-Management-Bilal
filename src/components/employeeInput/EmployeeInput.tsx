@@ -38,7 +38,7 @@ const EmployeeInput: React.FC<InputFieldProps> = ({
             value={value}
             onChange={onChange}
             required={required}
-            className="border p-2 rounded-xl w-full dark:bg-[#131313] text-white border-gray-700 h-[56px]"
+            className="border p-2 rounded-xl w-full dark:bg-[#131313] dark:text-white border-gray-700 h-[56px]"
           >
             <option value="" disabled>
               {placeholder || "Select an option"}
@@ -50,7 +50,7 @@ const EmployeeInput: React.FC<InputFieldProps> = ({
             ))}
           </select>
         ) : (
-          <div className="relative flex items-center border border-gray-700 rounded-xl w-full text-white bg-[#131313]">
+          <div className="relative flex items-center border dark:border-gray-700 border-gray-300 rounded-xl w-full dark:text-white dark:bg-[#131313]">
             <input
               disabled={disabled}
               ref={inputRef}
@@ -60,7 +60,7 @@ const EmployeeInput: React.FC<InputFieldProps> = ({
               placeholder={placeholder || label}
               onChange={onChange}
               required={required}
-              className={`bg-transparent outline-none w-full h-[56px] pl-3 pr-10 text-white ${className}`}
+              className={`bg-transparent outline-none w-full h-[56px] pl-3 pr-10 dark:g-[#131313] bg-gray-200 dark:text-white ${className}`}
             />
             {type === "date" && (
               <button

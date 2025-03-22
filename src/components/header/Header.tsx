@@ -5,7 +5,7 @@ import { Bell, Menu } from "lucide-react";
 import Link from "next/link";
 import SearchBar from "../searchbar/Searchbar";
 import DropDown from "../dropdown/Dropdown";
-import useHeader from "./useHeader";  
+import useHeader from "./useHeader";
 import { HeaderProps } from "@/types/types";
 import { useSearch } from "../../../provider/SearchContext";
 

@@ -49,7 +49,7 @@ export interface TabBarProps {
 }
 
 export interface InputFieldProps {
-  label?: string; // New prop to control label display
+  label?: string; 
   type?: "text" | "email" | "password" | "date" | "number" | "select" | "time";
   name: string;
   value?: string;
@@ -58,7 +58,7 @@ export interface InputFieldProps {
   options?: string[];
   isEditMode?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  showLabel?: boolean; // New prop to control label display
+  showLabel?: boolean;
   className?: string;
   disabled?: boolean;
 }

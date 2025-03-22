@@ -11,7 +11,6 @@ export default function DepartmentEmployees() {
     ? decodeURIComponent(params.department as string)
     : "";
 
- 
   const {
     employees,
     loading,
@@ -28,7 +27,7 @@ export default function DepartmentEmployees() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
-        <LottieAnimation /> 
+        <LottieAnimation />
       </div>
     );
   }
@@ -36,8 +35,8 @@ export default function DepartmentEmployees() {
   return (
     <div className="dark:bg-[#131313] dark:text-white rounded-b-lg p-4 border dark:border-gray-700 rounded-[15px]">
       <h1 className="text-2xl font-bold mb-4">{departmentName} Department</h1>
-      
-      <EmployeeHeader 
+
+      <EmployeeHeader
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
         showFilter={isFilterOpen}
@@ -72,8 +71,11 @@ export default function DepartmentEmployees() {
         </div>
       )}
 
-
-      <AllEmployee employees={employees} isAdmin={isAdmin} isAttendancePage={false}/>
+      <AllEmployee
+        employees={employees}
+        isAdmin={isAdmin}
+        isAttendancePage={false}
+      />
     </div>
   );
 }

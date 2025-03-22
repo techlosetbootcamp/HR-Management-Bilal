@@ -22,16 +22,15 @@ export default function Dashboard() {
   if (session?.user.role === "ADMIN") {
     return (
       <div className="p-6">
-        <div>
-          <Analytics/>
+        <div className="border border-gray-300 dark:border-gray-700 rounded-xl p-3">
+          <Analytics />
         </div>
-        <div>
-          <AttendanceChart/>
+        <div className="border border-gray-300 dark:border-gray-700 rounded-xl p-3 my-10">
+          <AttendanceChart />
         </div>
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
-          Attandace Overview
-        </h1>
-        <AttandanceOverview showViewAll={true} showPagination={false} />
+        <div className="border border-gray-300 dark:border-gray-700 rounded-xl p-3">
+          <AttandanceOverview showViewAll={true} showPagination={false} />
+        </div>
       </div>
     );
   }
@@ -46,7 +45,8 @@ export default function Dashboard() {
           Welcome, {session?.user.name}!
         </h1>
         <p className="mt-2 text-lg text-gray-300 text-center max-w-md">
-          Enjoy your personalized dashboard. Check your profile for the latest updates.
+          Enjoy your personalized dashboard. Check your profile for the latest
+          updates.
         </p>
         <Link href="/profile">
           <p className="mt-6 px-6 py-3 bg-customOrange text-white font-semibold rounded-xl shadow-lg hover:bg-[#131313] hover:text-customOrange transition-all duration-300 border border-customOrange">

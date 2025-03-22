@@ -6,17 +6,11 @@ import TabBar from "@/components/tabBar/TabBar";
 import { getAddEmployeeTabs } from "@/utils/addEmployeeTabs";
 
 export default function AddEmployeeForm() {
-  const {
-    form,
-    handleChange,
-    handleSubmit,
-    loading,
-    error,
-    handleFileUpload,
-  } = useAddEmployee();
+  const { form, handleChange, handleSubmit, loading, error, handleFileUpload } =
+    useAddEmployee();
 
   const [activeTab, setActiveTab] = useState(0);
-  
+
   const tabs = getAddEmployeeTabs(form, handleChange, handleFileUpload);
 
   const handleTabChange = (tabKey: string) => {
@@ -25,7 +19,7 @@ export default function AddEmployeeForm() {
 
   return (
     <div className="w-full min-h-screen bg-[#131313] text-white shadow-md rounded-lg">
-      <TabBar 
+      <TabBar
         tabs={tabs}
         activeTab={activeTab.toString()}
         onTabChange={handleTabChange}

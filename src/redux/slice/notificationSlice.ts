@@ -1,93 +1,92 @@
-import { Notification } from "@/types/types";
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface NotificationsState {
+export interface Notification {
+  id: string;
+  message: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+interface NotificationState {
   notifications: Notification[];
   loading: boolean;
-  error?: string;
+  error: string | null;
 }
 
-const initialState: NotificationsState = {
+const initialState: NotificationState = {
   notifications: [],
   loading: false,
-  error: undefined,
+  error: null,
 };
 
-export const fetchNotifications = createAsyncThunk<Notification[]>(
-  "notifications/fetchNotifications",
+// Fetch notifications
+export const fetchNotifications = createAsyncThunk(
+  "notifications/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/api/notifications");
-      return response.data.notifications;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data || "Fetch failed");
-      }
-      return rejectWithValue("Fetch failed");
+      const res = await fetch("/api/notifications");
+      const data = await res.json();
+      return data.notifications;
+    } catch  {
+      return rejectWithValue("Failed to fetch notifications");
     }
   }
 );
 
-interface NotificationActionPayload {
-  id: string;
-  action: "read" | "delete";
-}
-
-export const updateNotificationAction = createAsyncThunk<
-  NotificationActionPayload,
-  NotificationActionPayload
->(
-  "notifications/updateNotificationAction",
-  async (payload, { rejectWithValue }) => {
+// Handle notification actions (read/delete)
+export const handleNotificationAction = createAsyncThunk(
+  "notifications/action",
+  async ({ id, action }: { id: string; action: "read" | "delete" }, { rejectWithValue }) => {
     try {
-      await axios.post("/api/notifications", payload);
-      return payload;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data || "Action failed");
-      }
-      return rejectWithValue("Action failed");
+      const res = await fetch("/api/notifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, action }),
+      });
+
+      if (!res.ok) throw new Error("Action failed");
+
+      return { id, action };
+    } catch  {
+      return rejectWithValue(`Failed to ${action} notification`);
     }
   }
 );
 
-const notificationsSlice = createSlice({
+const notificationSlice = createSlice({
   name: "notifications",
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchNotifications.pending, (state) => {
-      state.loading = true;
-      state.error = undefined;
-    });
-    builder.addCase(
-      fetchNotifications.fulfilled,
-      (state, action: PayloadAction<Notification[]>) => {
-        state.loading = false;
+    builder
+      // Fetch Notifications
+      .addCase(fetchNotifications.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchNotifications.fulfilled, (state, action: PayloadAction<Notification[]>) => {
         state.notifications = action.payload;
-      }
-    );
-    builder.addCase(fetchNotifications.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload as string;
-    });
-    builder.addCase(
-      updateNotificationAction.fulfilled,
-      (state, action: PayloadAction<NotificationActionPayload>) => {
-        const { id, action: act } = action.payload;
-        if (act === "read") {
-          const notif = state.notifications.find((n) => n.id === id);
-          if (notif) {
-            notif.isRead = true;
-          }
-        } else if (act === "delete") {
+        state.loading = false;
+      })
+      .addCase(fetchNotifications.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      // Handle Notification Actions
+      .addCase(handleNotificationAction.fulfilled, (state, action) => {
+        const { id, action: notificationAction } = action.payload;
+        if (notificationAction === "read") {
+          state.notifications = state.notifications.map((n) =>
+            n.id === id ? { ...n, isRead: true } : n
+          );
+        } else if (notificationAction === "delete") {
           state.notifications = state.notifications.filter((n) => n.id !== id);
         }
-      }
-    );
+      })
+      .addCase(handleNotificationAction.rejected, (state, action) => {
+        state.error = action.payload as string;
+      });
   },
 });
 
-export default notificationsSlice.reducer;
+export default notificationSlice.reducer;

@@ -47,8 +47,8 @@ const ProjectList: React.FC<ProjectListProps> = ({
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-gray-50 dark:bg-[#131313] border-collapse">
-        <thead className="bg-gray-200 dark:bg-gray-700 text-left text-xs uppercase tracking-wider">
+      <table className="min-w-full dark:bg-[#131313] border-collapse">
+        <thead className="text-left text-xs uppercase tracking-wider">
           <tr>
             <th className="p-4">Project Title</th>
             {showEmployeeName && <th className="p-4">Employee Name</th>}
@@ -58,7 +58,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
             {showActionButton && <th className="p-4">Actions</th>}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody className="">
           {projects.map((project) => {
             const employee = employees.find(
               (emp) => emp.id === project.assignedEmployeeId
@@ -66,7 +66,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
             return (
               <tr
                 key={project.id}
-                className="hover:bg-gray-100 dark:hover:bg-gray-800"
+                className=""
               >
                 <td className="p-4">{project.title}</td>
                 {showEmployeeName && (
