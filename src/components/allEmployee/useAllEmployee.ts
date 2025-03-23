@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {  useAppDispatch } from "@/redux/store";
+// import {  useAppDispatch } from "@/redux/store";
 import { deleteEmployee } from "@/redux/slice/employeeSlice";
 import { Employee } from "@/types/empoyee";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 
 export const useAllEmployee = (employees: Employee[]) => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [employeesPerPage, setEmployeesPerPage] = useState(6);
@@ -39,7 +42,7 @@ export const useAllEmployee = (employees: Employee[]) => {
     dispatch(deleteEmployee(id))
       .unwrap()
       .then(() => {
-        console.log("Employee deleted successfully");
+        toast.success("Employee deleted successfully");
       })
       .catch((error) => {
         console.error("Failed to delete employee:", error);

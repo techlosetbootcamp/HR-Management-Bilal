@@ -1,12 +1,13 @@
 import { useState } from "react";
-import {  RootState, useAppDispatch, useAppSelector } from "@/redux/store";
-import { addEmployee, uploadImage } from "@/redux/slice/employeeSlice";
+import {  AppDispatch, RootState } from "@/redux/store";
+import { addEmployee, fetchEmployees, uploadImage } from "@/redux/slice/employeeSlice";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function useAddEmployee() {
-  const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector((state: RootState) => state.employees);
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: RootState) => state.employees);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -115,6 +116,7 @@ export default function useAddEmployee() {
 
     try {
       await dispatch(addEmployee(form)).unwrap();
+      dispatch(fetchEmployees())
       toast.success("Employee added successfully!");
       router.push("/employees");
     } catch (error) {

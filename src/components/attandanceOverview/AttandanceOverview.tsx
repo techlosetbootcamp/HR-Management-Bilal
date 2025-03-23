@@ -63,7 +63,7 @@ const AttandanceOverview: React.FC<AttendanceOverviewProps> = ({
         </thead>
         <tbody>
           {attendanceRecords.length > 0 ? (
-            attendanceRecords.map((record) => (
+            attendanceRecords.slice(0,6).map((record) => (
               <tr key={record.id} className="border-b dark:border-gray-800">
                 <td className="py-2 flex items-center gap-2">
                   <Image
