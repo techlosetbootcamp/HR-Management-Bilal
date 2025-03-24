@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import useOtp from "@/hooks/useOtp";
+import useOtp from "@/app/(auth)/otp/useOtp";
 import Button from "@/components/button/Button";
 import { useRouter } from "next/navigation";
 import InputField from "@/components/inputField/InputFeild";
@@ -37,7 +37,11 @@ const OtpPage = () => {
             <Button type="submit">Verify OTP</Button>
           </form>
 
-          <Button type="button" onClick={handleClose} className="bg-gray-500 hover:bg-gray-600 mt-4">
+          <Button
+            type="button"
+            onClick={handleClose}
+            className="bg-gray-500 hover:bg-gray-600 mt-4"
+          >
             Close
           </Button>
         </div>

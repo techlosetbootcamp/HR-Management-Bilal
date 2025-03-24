@@ -5,7 +5,7 @@ import LottieAnimation from "@/components/lottieAnimation/LottieAnimation";
 import EmployeeHeader from "@/components/employeeHeader/EmployeeHeader";
 import AllEmployee from "@/components/allEmployee/AllEmployee";
 
-export default function DepartmentEmployees() {
+export default function Page() {
   const params = useParams();
   const departmentName = params
     ? decodeURIComponent(params.department as string)

@@ -1,10 +1,8 @@
 import React from "react";
-import { LockKeyhole} from "lucide-react";
+import { LockKeyhole } from "lucide-react";
 import Image from "next/image";
 import EmployeeInput from "../employeeInput/EmployeeInput";
 import { PersonalInfoProps } from "@/types/empoyee";
-
-
 
 const PersonalInfo: React.FC<PersonalInfoProps> = ({
   form,
@@ -103,13 +101,13 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       </div>
 
       <div className="mt-4">
-      <EmployeeInput
-        type="text"
-        name="address"
-        value={form.address}
-        placeholder="Address"
-        onChange={handleChange}
-      />
+        <EmployeeInput
+          type="text"
+          name="address"
+          value={form.address}
+          placeholder="Address"
+          onChange={handleChange}
+        />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
         <EmployeeInput

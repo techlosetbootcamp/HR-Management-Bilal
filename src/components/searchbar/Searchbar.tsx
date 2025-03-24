@@ -3,8 +3,6 @@ import { SearchBarProps } from "@/types/types";
 import { Search } from "lucide-react";
 import React from "react";
 
-
-
 const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
   return (
     <div

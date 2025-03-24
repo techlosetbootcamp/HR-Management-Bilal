@@ -1,20 +1,6 @@
+import { AuthState, User } from "@/types/types";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: "ADMIN" | "EMPLOYEE";
-  profilePicture?: string;
-}
-
-interface AuthState {
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-  successMessage: string | null;
-}
 
 const initialState: AuthState = {
   user: null,
@@ -25,9 +11,15 @@ const initialState: AuthState = {
 
 export const changePassword = createAsyncThunk(
   "password/change",
-  async ({ email, newPassword }: { email: string; newPassword: string }, { rejectWithValue }) => {
+  async (
+    { email, newPassword }: { email: string; newPassword: string },
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await axios.put("/api/changePassword", { email, newPassword });
+      const res = await axios.put("/api/changePassword", {
+        email,
+        newPassword,
+      });
       return res.data;
     } catch (error) {
       return rejectWithValue(
@@ -38,7 +30,6 @@ export const changePassword = createAsyncThunk(
     }
   }
 );
-
 
 export const getProfileByEmail = createAsyncThunk<User, string>(
   "auth/getProfileByEmail",
@@ -133,7 +124,7 @@ export const updateProfile = createAsyncThunk<
 interface Employee {
   id: string;
   email: string;
-  [key: string]: unknown; 
+  [key: string]: unknown;
 }
 
 export const getEmployeeByEmail = createAsyncThunk<

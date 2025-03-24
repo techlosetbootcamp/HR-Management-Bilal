@@ -5,7 +5,7 @@ import Button from "@/components/button/Button";
 
 const SuccessPage = () => {
   const router = useRouter();
-  const { data: session } = useSession(); 
+  const { data: session } = useSession();
 
   const handleNavigation = () => {
     if (session) {

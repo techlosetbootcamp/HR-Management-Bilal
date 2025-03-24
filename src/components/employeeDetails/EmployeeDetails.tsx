@@ -21,8 +21,8 @@ import { mainTabs, subTabs } from "@/utils/tabConfigs";
 import EmployeeInput from "../employeeInput/EmployeeInput";
 import AttendanceRecords from "../attendanceRecords/AttendanceRecords";
 import { EmployeeDetailsProps, InputFieldType } from "@/types/empoyee";
-import LeaveRequest from "../leaveRequest/LeaveRequest";
 import ProjectList from "../projectList/ProjectList"; // Import ProjectList
+import LeaveRequestWithModal from "../leaveRequestModal/LeaveRequestModal";
 // import { useProjectsRecord } from "../projects/useProjectsRecord"; // Import useProjectsRecord
 
 const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
@@ -59,7 +59,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   ];
 
   const [subTab, setSubTab] = useState("personal");
-
 
   if (loading) {
     return (
@@ -325,13 +324,13 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             employees={employee ? [employee] : []}
             onCompleteProject={handleComplete}
             showEmployeeName={false}
-            showActionButton={true} 
+            showActionButton={true}
           />
         )}
 
         {activeTab === "leave" && (
           <div>
-            <LeaveRequest employeeId={id} />
+            <LeaveRequestWithModal employeeId={id} />
           </div>
         )}
       </div>

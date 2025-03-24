@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
-import { 
-  getProfileByEmail, 
-  updateProfile, 
-  uploadProfileImage 
+import {
+  getProfileByEmail,
+  updateProfile,
+  uploadProfileImage,
 } from "@/redux/slice/authSlice";
 import { RootState, AppDispatch } from "@/redux/store";
 import toast from "react-hot-toast";
@@ -12,11 +12,11 @@ import toast from "react-hot-toast";
 export function useProfile() {
   const dispatch = useDispatch<AppDispatch>();
   const { data: session, status, update } = useSession();
-  
+
   const { user, loading, error, successMessage } = useSelector(
     (state: RootState) => state.auth
   );
-  
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [profilePicture, setProfilePicture] = useState("/default-avatar.png");
@@ -70,7 +70,7 @@ export function useProfile() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     let uploadedImageUrl = profilePicture;
 
     if (file) {
@@ -100,7 +100,7 @@ export function useProfile() {
           image: result.profilePicture,
         },
       });
-      toast.success("Profile updated successfully!")
+      toast.success("Profile updated successfully!");
     }
   };
 
@@ -117,6 +117,6 @@ export function useProfile() {
     successMessage,
     isSessionLoading,
     handleFileChange,
-    handleSubmit
+    handleSubmit,
   };
 }

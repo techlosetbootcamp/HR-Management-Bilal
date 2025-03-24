@@ -5,12 +5,7 @@ import React from "react";
 import Pagination from "@/components/pagination/Pagination";
 import { useAttendanceOverview } from "./useAttandanceOverview";
 import LottieAnimation from "../lottieAnimation/LottieAnimation";
-
-interface AttendanceOverviewProps {
-  showViewAll?: boolean;
-  showPagination?: boolean;
-  searchTerm?: string;
-}
+import { AttendanceOverviewProps } from "@/types/attandance";
 
 const AttandanceOverview: React.FC<AttendanceOverviewProps> = ({
   showViewAll = true,
@@ -69,10 +64,7 @@ const AttandanceOverview: React.FC<AttendanceOverviewProps> = ({
         <tbody>
           {attendanceRecords.length > 0 ? (
             attendanceRecords.map((record) => (
-              <tr
-                key={record.id}
-                className="border-b dark:border-gray-800"
-              >
+              <tr key={record.id} className="border-b dark:border-gray-800">
                 <td className="py-2 flex items-center gap-2">
                   <Image
                     src={record.employee.photoURL || "/default-profile.png"}

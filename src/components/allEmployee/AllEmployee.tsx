@@ -15,9 +15,11 @@ export default function AllEmployee({
   handleMarkAttendance,
 }: AllEmployeeProps) {
   const { searchTerm } = useSearch();
-  
+
   const filteredEmployees = employees.filter((emp) =>
-    `${emp.firstName} ${emp.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+    `${emp.firstName} ${emp.lastName}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
   const {
@@ -68,7 +70,9 @@ export default function AllEmployee({
             <div>
               <span
                 className={`text-xs ${
-                  emp.status === "Permanent" ? "text-customOrange" : "text-blue-600"
+                  emp.status === "Permanent"
+                    ? "text-customOrange"
+                    : "text-blue-600"
                 }`}
               >
                 {emp.status}

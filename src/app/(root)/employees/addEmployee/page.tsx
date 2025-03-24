@@ -5,7 +5,7 @@ import useAddEmployee from "./useAddEmployee";
 import TabBar from "@/components/tabBar/TabBar";
 import { getAddEmployeeTabs } from "@/utils/addEmployeeTabs";
 
-export default function AddEmployeeForm() {
+export default function Page() {
   const { form, handleChange, handleSubmit, loading, error, handleFileUpload } =
     useAddEmployee();
 

@@ -7,12 +7,18 @@ export async function POST(req: NextRequest) {
     const { name, email, password, role } = await req.json();
 
     if (!name || !email || !password) {
-      return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "All fields are required" },
+        { status: 400 }
+      );
     }
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      return NextResponse.json({ error: "User already exists" }, { status: 400 });
+      return NextResponse.json(
+        { error: "User already exists" },
+        { status: 400 }
+      );
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,10 +30,16 @@ export async function POST(req: NextRequest) {
       data: { name, email, Password: hashedPassword, role: userRole },
     });
 
-    return NextResponse.json({ message: "User registered successfully", user }, { status: 201 });
+    return NextResponse.json(
+      { message: "User registered successfully", user },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error Registering User:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 // src/app/api/register/route.ts
@@ -51,7 +63,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
     console.error("Error fetching user:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -68,9 +83,15 @@ export async function PUT(req: NextRequest) {
       data: { name, profilePicture },
     });
 
-    return NextResponse.json({ message: "Profile updated successfully", user: updatedUser }, { status: 200 });
+    return NextResponse.json(
+      { message: "Profile updated successfully", user: updatedUser },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error updating user:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

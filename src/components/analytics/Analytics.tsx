@@ -2,6 +2,7 @@
 import { Users, CalendarCheck, Briefcase, FileText } from "lucide-react";
 import { useAnalyticsData } from "./useAnalytics";
 import LottieAnimation from "../lottieAnimation/LottieAnimation";
+import { StatCardProps } from "@/types/types";
 
 const Analytics = () => {
   const {
@@ -16,8 +17,8 @@ const Analytics = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
-      <LottieAnimation />
-    </div>
+        <LottieAnimation />
+      </div>
     );
   }
 
@@ -58,13 +59,7 @@ const Analytics = () => {
   );
 };
 
-interface StatCardProps {
-  icon: React.ReactNode;
-  title: string;
-  count: number;
-  updateDate: string;
-  percentage: number;
-}
+
 
 const StatCard = ({
   icon,

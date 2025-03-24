@@ -5,7 +5,7 @@ import EmployeeHeader from "@/components/employeeHeader/EmployeeHeader";
 import AllEmployee from "@/components/allEmployee/AllEmployee";
 import { useEmployee } from "./useEmployee";
 
-export default function EmployeePage() {
+export default function Page() {
   const {
     loading,
     error,

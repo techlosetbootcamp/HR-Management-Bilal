@@ -84,7 +84,7 @@ export function useMarkAttandance() {
   };
 
   return {
-    employees: filteredEmployees, 
+    employees: filteredEmployees,
     selectedEmployee,
     setSelectedEmployee,
     date,

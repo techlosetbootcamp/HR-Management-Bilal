@@ -1,31 +1,32 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { LeaveRecordProps } from "@/types/leaves";
 
-interface Leave {
-  id: string;
-  employee: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    photoURL?: string;
-  };
-  reason: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-}
+// interface Leave {
+//   id: string;
+//   employee: {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     photoURL?: string;
+//   };
+//   reason: string;
+//   startDate: string;
+//   endDate: string;
+//   status: string;
+// }
 
-interface LeaveRecordProps {
-  leaves: Leave[];
-  loading?: boolean;
-  isAdmin?: boolean;
-  showEmployeeDetails?: boolean;
-  updateLeaveStatus?: (
-    leaveId: string,
-    status: "APPROVED" | "REJECTED"
-  ) => Promise<void>;
-}
+// interface LeaveRecordProps {
+//   leaves: Leave[];
+//   loading?: boolean;
+//   isAdmin?: boolean;
+//   showEmployeeDetails?: boolean;
+//   updateLeaveStatus?: (
+//     leaveId: string,
+//     status: "APPROVED" | "REJECTED"
+//   ) => Promise<void>;
+// }
 
 const LeaveRecord: React.FC<LeaveRecordProps> = ({
   leaves,
@@ -49,9 +50,7 @@ const LeaveRecord: React.FC<LeaveRecordProps> = ({
             <th className="p-4">Start Date</th>
             <th className="p-4">End Date</th>
             <th className="px-6 py-2">Status</th>
-            {isAdmin && (
-              <th className="px-4 py-2 text-center">Actions</th>
-            )}
+            {isAdmin && <th className="px-4 py-2 text-center">Actions</th>}
           </tr>
         </thead>
         <tbody className="px-4 py-3">

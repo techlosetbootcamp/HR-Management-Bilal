@@ -30,7 +30,11 @@ const AttendanceChart = () => {
       </h2>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} barCategoryGap="15%" barGap={-15}>
-          <XAxis dataKey="day" stroke="currentColor" className="text-black dark:text-white" />
+          <XAxis
+            dataKey="day"
+            stroke="currentColor"
+            className="text-black dark:text-white"
+          />
           <YAxis stroke="currentColor" className="text-black dark:text-white" />
           <Tooltip />
           <Bar

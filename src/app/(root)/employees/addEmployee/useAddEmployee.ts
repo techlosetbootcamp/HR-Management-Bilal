@@ -71,7 +71,6 @@ export default function useAddEmployee() {
       "firstName",
       "lastName",
       "email",
-      "mobileNumber",
       "designation",
       "department",
       "joiningDate",
@@ -102,12 +101,6 @@ export default function useAddEmployee() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
       toast.error("Please enter a valid email address");
-      return false;
-    }
-
-    const phoneRegex = /^\d{7}$/;
-    if (!phoneRegex.test(form.mobileNumber)) {
-      toast.error("Please enter a valid 10-digit mobile number");
       return false;
     }
 

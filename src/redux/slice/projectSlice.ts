@@ -1,16 +1,7 @@
+import { Project, ProjectsState } from "@/types/projects";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
-  export interface Project {
-    id: string;
-    title: string;
-    description?: string;
-    status: string;
-    startDate: string;
-    endDate: string;
-    assignedEmployeeId: string;
-  }
 export const fetchProjects = createAsyncThunk<
   Project[],
   void,
@@ -54,7 +45,9 @@ export const fetchEmployeeProjects = createAsyncThunk<
   "employeeProjects/fetchEmployeeProjects",
   async (employeeId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/projects?employeeId=${employeeId}`);
+      const response = await axios.get(
+        `/api/projects?employeeId=${employeeId}`
+      );
       if (Array.isArray(response.data)) {
         return response.data;
       }
@@ -68,7 +61,6 @@ export const fetchEmployeeProjects = createAsyncThunk<
   }
 );
 
-
 export const completeProject = createAsyncThunk<
   Project,
   string, // project id
@@ -77,7 +69,9 @@ export const completeProject = createAsyncThunk<
   "employeeProjects/completeProject",
   async (projectId, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`/api/projects?id=${projectId}&action=complete`);
+      const response = await axios.patch(
+        `/api/projects?id=${projectId}&action=complete`
+      );
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -87,12 +81,6 @@ export const completeProject = createAsyncThunk<
     }
   }
 );
-
-interface ProjectsState {
-  projects: Project[];
-  loading: boolean;
-  error: string | null;
-}
 
 const initialState: ProjectsState = {
   projects: [],

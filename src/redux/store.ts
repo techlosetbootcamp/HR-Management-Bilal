@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slice/authSlice";
 import themeReducer from "./slice/themeSlice";
 import employeeReducer from "./slice/employeeSlice";
-import leaveReducer from './slice/leaveSlice';
+import leaveReducer from "./slice/leaveSlice";
 import attendanceReducer from "./slice/attandanceSlice";
 import projectReducer from "./slice/projectSlice";
 import notificationReducer from "./slice/notificationSlice";
@@ -15,7 +15,7 @@ export const store = configureStore({
     attandance: attendanceReducer,
     leave: leaveReducer,
     projects: projectReducer,
-    notifications: notificationReducer
+    notifications: notificationReducer,
   },
 });
 

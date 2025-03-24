@@ -1,3 +1,24 @@
+export interface AttendanceData {
+  day: string;
+  onTime: number;
+  late: number;
+  absent: number;
+}
+export interface AttendancePayload {
+  employeeId: string;
+  date: string;
+  checkIn: string | null;
+  checkOut: string | null;
+  breakTime: string | null;
+  workingHours: string;
+  status: string;
+}
+
+export interface AttendanceOverviewProps {
+  showViewAll?: boolean;
+  showPagination?: boolean;
+  searchTerm?: string;
+}
 export interface Employee {
   id: string;
   firstName: string;
@@ -32,7 +53,7 @@ export interface Attendance {
   breakTime: string;
   workingHours: string;
   employeeId: string;
-  employee:{
+  employee: {
     firstName: string;
     lastName: string;
     employeeId: string;
@@ -42,7 +63,7 @@ export interface Attendance {
     officeLocation: string;
     city?: string;
     photoURL?: string;
-  }
+  };
 }
 
 export interface AttendanceState {
@@ -54,16 +75,16 @@ export interface AttendanceState {
 }
 
 export interface AttendanceModalFormProps {
-    selectedEmployee: Employee | null;
-    showModal: boolean;
-    onClose: () => void;
-    onSubmit: (e: React.FormEvent) => void;
-    updateAttendanceState: <K extends keyof AttendanceFormState>(
-      field: K,
-      value: AttendanceFormState[K]
-    ) => void;
-    attendanceState: AttendanceFormState;
-  }
+  selectedEmployee: Employee | null;
+  showModal: boolean;
+  onClose: () => void;
+  onSubmit: (e: React.FormEvent) => void;
+  updateAttendanceState: <K extends keyof AttendanceFormState>(
+    field: K,
+    value: AttendanceFormState[K]
+  ) => void;
+  attendanceState: AttendanceFormState;
+}
 export interface Attendance {
   id: string;
   date: string;

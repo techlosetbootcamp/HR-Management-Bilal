@@ -5,7 +5,6 @@ import { ChevronRight } from "lucide-react";
 import { useFilterDepartment } from "@/components/filterdepartment/useFilterDepartment";
 import { Employee } from "@/types/empoyee";
 
-
 interface Props {
   employees: Employee[];
 }
@@ -13,8 +12,6 @@ interface Props {
 export default function FilterDepatment({ employees }: Props) {
   const { handleEmployeeClick } = useFilterDepartment();
   const router = useRouter();
-
-  
 
   const employeesByDepartment = employees.reduce((acc, emp) => {
     if (!acc[emp.department]) {

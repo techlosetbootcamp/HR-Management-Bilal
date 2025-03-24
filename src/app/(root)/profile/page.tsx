@@ -2,10 +2,10 @@
 import Image from "next/image";
 import { Edit } from "lucide-react";
 import EmployeeInput from "@/components/employeeInput/EmployeeInput";
-import { useProfile } from "@/hooks/useProfile";
+import { useProfile } from "@/app/(root)/profile/useProfile";
 import LottieAnimation from "@/components/lottieAnimation/LottieAnimation";
 
-export default function ProfilePage() {
+export default function Page() {
   const {
     name,
     setName,

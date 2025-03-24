@@ -1,5 +1,4 @@
-
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { Profile } from "@/constants/images";
 import { useRouter } from "next/navigation";
@@ -12,12 +11,12 @@ export const useDropDown = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const { user, loading } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     if (!session?.user?.email) return;
-    
+
     dispatch(getProfileByEmail(session.user.email));
   }, [session, dispatch]);
 
@@ -38,7 +37,9 @@ export const useDropDown = () => {
     }
 
     try {
-      const resultAction = await dispatch(getEmployeeByEmail(session.user.email));
+      const resultAction = await dispatch(
+        getEmployeeByEmail(session.user.email)
+      );
       if (getEmployeeByEmail.fulfilled.match(resultAction)) {
         const employee = resultAction.payload;
         router.push(`/employees/${employee.id}`);
@@ -50,21 +51,23 @@ export const useDropDown = () => {
       toast.error("Your Are Not The Part of this organization");
     }
   };
-const handleChangePasswordClick = () => {
+  const handleChangePasswordClick = () => {
     router.push("/changePassword");
-}
-  const userData = user ? {
-    name: user.name,
-    role: user.role,
-    profilePicture: user.profilePicture || Profile,
-    id: user.id
-  } : { name: "Guest", role: "Employee", profilePicture: Profile };
+  };
+  const userData = user
+    ? {
+        name: user.name,
+        role: user.role,
+        profilePicture: user.profilePicture || Profile,
+        id: user.id,
+      }
+    : { name: "Guest", role: "Employee", profilePicture: Profile };
 
   return {
     user: userData,
     loading,
     handleProfileClick,
-     handleChangePasswordClick,
+    handleChangePasswordClick,
     handleAboutClick,
     signOut,
   };

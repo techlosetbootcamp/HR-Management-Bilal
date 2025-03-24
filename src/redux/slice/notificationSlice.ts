@@ -1,78 +1,64 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { NotificationsState } from "@/types/types";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export interface Notification {
-  id: string;
-  message: string;
-  createdAt: string;
-  isRead: boolean;
-}
 
-interface NotificationState {
-  notifications: Notification[];
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: NotificationState = {
+const initialState: NotificationsState = {
   notifications: [],
   loading: false,
-  error: null,
 };
 
 // Fetch notifications
 export const fetchNotifications = createAsyncThunk(
-  "notifications/fetch",
+  "notifications/fetchNotifications",
   async (_, { rejectWithValue }) => {
     try {
       const res = await fetch("/api/notifications");
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to fetch");
       return data.notifications;
-    } catch  {
-      return rejectWithValue("Failed to fetch notifications");
+    } catch (error) {
+      return rejectWithValue(error);
     }
   }
 );
 
 // Handle notification actions (read/delete)
 export const handleNotificationAction = createAsyncThunk(
-  "notifications/action",
-  async ({ id, action }: { id: string; action: "read" | "delete" }, { rejectWithValue }) => {
+  "notifications/handleNotificationAction",
+  async (
+    { id, action }: { id: string; action: "read" | "delete" },
+    { rejectWithValue }
+  ) => {
     try {
       const res = await fetch("/api/notifications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, action }),
       });
-
       if (!res.ok) throw new Error("Action failed");
-
       return { id, action };
-    } catch  {
-      return rejectWithValue(`Failed to ${action} notification`);
+    } catch (error) {
+      return rejectWithValue(error);
     }
   }
 );
 
-const notificationSlice = createSlice({
+const notificationsSlice = createSlice({
   name: "notifications",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch Notifications
       .addCase(fetchNotifications.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-      .addCase(fetchNotifications.fulfilled, (state, action: PayloadAction<Notification[]>) => {
+      .addCase(fetchNotifications.fulfilled, (state, action) => {
+        state.loading = false;
         state.notifications = action.payload;
+      })
+      .addCase(fetchNotifications.rejected, (state) => {
         state.loading = false;
       })
-      .addCase(fetchNotifications.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      // Handle Notification Actions
       .addCase(handleNotificationAction.fulfilled, (state, action) => {
         const { id, action: notificationAction } = action.payload;
         if (notificationAction === "read") {
@@ -82,11 +68,8 @@ const notificationSlice = createSlice({
         } else if (notificationAction === "delete") {
           state.notifications = state.notifications.filter((n) => n.id !== id);
         }
-      })
-      .addCase(handleNotificationAction.rejected, (state, action) => {
-        state.error = action.payload as string;
       });
   },
 });
 
-export default notificationSlice.reducer;
+export default notificationsSlice.reducer;

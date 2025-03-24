@@ -1,10 +1,43 @@
-
 export interface InputProps {
   type: string;
   label: string;
   name: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: "ADMIN" | "EMPLOYEE";
+  profilePicture?: string;
+}
+
+export interface AuthState {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  successMessage: string | null;
+}
+
+export interface Notification {
+  id: string;
+  message: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+export interface NotificationsState {
+  notifications: Notification[];
+  loading: boolean;
+}
+
+export interface StatCardProps {
+  icon: React.ReactNode;
+  title: string;
+  count: number;
+  updateDate: string;
+  percentage: number;
 }
 export interface PaginationProps {
   totalItems: number;
@@ -25,7 +58,6 @@ export interface Notification {
   createdAt: string;
   isRead: boolean;
 }
-
 
 export interface SidebarProps {
   activePath: string | null;
@@ -49,7 +81,7 @@ export interface TabBarProps {
 }
 
 export interface InputFieldProps {
-  label?: string; 
+  label?: string;
   type?: "text" | "email" | "password" | "date" | "number" | "select" | "time";
   name: string;
   value?: string;
@@ -57,7 +89,9 @@ export interface InputFieldProps {
   required?: boolean;
   options?: string[];
   isEditMode?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
   showLabel?: boolean;
   className?: string;
   disabled?: boolean;
@@ -73,39 +107,38 @@ export interface ButtonProps {
   className?: string;
 }
 export interface Employee {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    mobileNumber: string;
-    designation: string;
-    department: string;
-    joiningDate: string;
-    employmentType: string;
-    salarySlip?: string;
-    gender: string;
-    dateOfBirth: string;
-    address: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    nationality: string;
-    officeLocation: string;
-    employeeId: string;
-    slackId?: string;
-    maritalStatus?: string;
-    userName?: string;
-    githubId?: string;
-    workingDays?: string;
-    skypeId?: string;
-    appointmentLetter?: string;
-    experienceLetter?: string;
-    relivingLetter?: string;
-    photoURL?: string;
-    leaves?: string;
-    attendance?: string;
-    status?: string;
-    checkOut?: string;
-    photoPublicId?: string;
-  }
-  
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobileNumber: string;
+  designation: string;
+  department: string;
+  joiningDate: string;
+  employmentType: string;
+  salarySlip?: string;
+  gender: string;
+  dateOfBirth: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  nationality: string;
+  officeLocation: string;
+  employeeId: string;
+  slackId?: string;
+  maritalStatus?: string;
+  userName?: string;
+  githubId?: string;
+  workingDays?: string;
+  skypeId?: string;
+  appointmentLetter?: string;
+  experienceLetter?: string;
+  relivingLetter?: string;
+  photoURL?: string;
+  leaves?: string;
+  attendance?: string;
+  status?: string;
+  checkOut?: string;
+  photoPublicId?: string;
+}

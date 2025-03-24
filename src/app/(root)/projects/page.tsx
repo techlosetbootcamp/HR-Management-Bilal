@@ -6,7 +6,7 @@ import { useProjects } from "./useProjects";
 import { useProjectModal } from "@/components/projectModal/useProjectModal";
 import ProjectList from "@/components/projectList/ProjectList";
 
-export default function AdminProjects() {
+export default function Page() {
   const {
     projects,
     projectLoading,

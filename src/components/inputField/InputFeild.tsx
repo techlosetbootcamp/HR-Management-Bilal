@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { InputProps } from "@/types/types";
 
-
-const InputField: React.FC<InputProps> = ({ type, label, value, onChange, name }) => {
+const InputField: React.FC<InputProps> = ({
+  type,
+  label,
+  value,
+  onChange,
+  name,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -17,7 +22,7 @@ const InputField: React.FC<InputProps> = ({ type, label, value, onChange, name }
         value={value}
         name={name}
         onChange={onChange}
-        placeholder=" " 
+        placeholder=" "
         className="peer w-full py-5 px-[24px] text-white bg-[#131313] border border-customOrange rounded-lg focus:outline-none focus:border-orange-700 transition-all duration-300"
       />
 

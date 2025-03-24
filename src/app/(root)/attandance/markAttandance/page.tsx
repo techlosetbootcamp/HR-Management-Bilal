@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import AllEmployee from "@/components/allEmployee/AllEmployee";
 import AttendanceModalForm from "@/components/attandanceModal/AttandanceModal";
 import SearchBar from "@/components/searchbar/Searchbar";
@@ -34,10 +34,9 @@ export default function AttendanceForm() {
   return (
     <div className="border p-4 dark:border-gray-700 dark:bg-[#131313] dark:text-white rounded-[15px]">
       <h2 className="text-2xl font-semibold mb-4">Employee Attendance</h2>
-      
+
       <div className="w-[300px]">
-      <SearchBar value={searchTerm} onChange={handleSearchChange} />
-      
+        <SearchBar value={searchTerm} onChange={handleSearchChange} />
       </div>
       <AllEmployee
         employees={employees}

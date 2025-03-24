@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
     "/leaves",
     "/projects",
     "/attandance",
-  ]; 
+  ];
 
   const url = req.nextUrl.clone();
   const { pathname } = req.nextUrl;

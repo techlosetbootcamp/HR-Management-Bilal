@@ -22,7 +22,6 @@ export const useAnalyticsData = () => {
     (state: RootState) => state.employees.employees.length
   );
 
-
   const [updateDates, setUpdateDates] = useState({
     employees: "",
     leaves: "",

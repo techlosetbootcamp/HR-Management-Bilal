@@ -31,14 +31,17 @@ export async function POST(req: NextRequest) {
     const uploadResult: UploadResult = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         { folder: "employee_images", resource_type: "image" },
-        (error, result) => (error ? reject(error) : resolve(result as UploadResult))
+        (error, result) =>
+          error ? reject(error) : resolve(result as UploadResult)
       );
       stream.pipe(uploadStream);
     });
 
     console.log("✅ Cloudinary upload successful:", uploadResult);
-    return NextResponse.json({ imageUrl: uploadResult.secure_url }, { status: 200 });
-
+    return NextResponse.json(
+      { imageUrl: uploadResult.secure_url },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("❌ Upload Error:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });

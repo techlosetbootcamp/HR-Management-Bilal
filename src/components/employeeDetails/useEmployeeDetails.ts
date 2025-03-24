@@ -10,7 +10,10 @@ import { RootState, AppDispatch } from "../../redux/store";
 import { Employee } from "@/types/types";
 import toast from "react-hot-toast";
 import { fetchAttendanceById } from "@/redux/slice/attandanceSlice";
-import { completeProject, fetchEmployeeProjects } from "@/redux/slice/projectSlice";
+import {
+  completeProject,
+  fetchEmployeeProjects,
+} from "@/redux/slice/projectSlice";
 
 export function useEmployeeDetails(id: string) {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,9 +23,7 @@ export function useEmployeeDetails(id: string) {
     (state: RootState) => state.employees
   );
 
-  const { projects} = useSelector(
-    (state: RootState) => state.projects
-  );
+  const { projects } = useSelector((state: RootState) => state.projects);
   const employeeData: Employee | null = employee;
 
   const [updatedFields, setUpdatedFields] = useState<Partial<Employee>>({});
@@ -60,13 +61,13 @@ export function useEmployeeDetails(id: string) {
             fieldName: employeeData.photoPublicId || "", // Use employeeData
           })
         ).unwrap();
-        
+
         console.log("Image uploaded successfully:", uploadResult);
-        
+
         updatePayload = {
           ...updatePayload,
           photoURL: uploadResult.secure_url,
-          photoPublicId: uploadResult.fieldName
+          photoPublicId: uploadResult.fieldName,
         };
 
         setUpdatedImage(uploadResult.secure_url);
@@ -78,7 +79,7 @@ export function useEmployeeDetails(id: string) {
         const updateResponse = await dispatch(
           updateEmployeeDetails({
             id: employeeData.id, // Use employeeData
-            updates: updatePayload
+            updates: updatePayload,
           })
         ).unwrap();
 
@@ -91,7 +92,7 @@ export function useEmployeeDetails(id: string) {
       setUpdatedFields({});
       setUpdatedImage(null);
       setSelectedFile(null);
-      
+
       router.push(`/employees/${id}`);
       toast.success("Changes saved successfully!");
     } catch (err) {
@@ -99,7 +100,7 @@ export function useEmployeeDetails(id: string) {
       toast.error("Failed to update profile image");
     }
   };
-const [pdfPreview, setPdfPreview] = useState<string | null>(null);
+  const [pdfPreview, setPdfPreview] = useState<string | null>(null);
 
   const openPdfPreview = (url: string) => {
     console.log("Opening PDF:", url);
@@ -115,10 +116,10 @@ const [pdfPreview, setPdfPreview] = useState<string | null>(null);
   const closePdfPreview = () => {
     setPdfPreview(null);
   };
-    const searchParams = useSearchParams();
-    const [isEditing, setIsEditing] = useState(
-      searchParams.get("edit") === "true"
-    );
+  const searchParams = useSearchParams();
+  const [isEditing, setIsEditing] = useState(
+    searchParams.get("edit") === "true"
+  );
   const handleEditSaveClick = async () => {
     if (isEditing) {
       await saveChanges();
@@ -148,21 +149,22 @@ const [pdfPreview, setPdfPreview] = useState<string | null>(null);
     });
   };
   // Replace the local state and useEffect with Redux selector
-  const { attendanceRecords } = useSelector((state: RootState) => state.attandance);
-  
+  const { attendanceRecords } = useSelector(
+    (state: RootState) => state.attandance
+  );
+
   useEffect(() => {
     if (id) {
       dispatch(fetchEmployeeById(id));
       dispatch(fetchAttendanceById(id));
-      dispatch(fetchEmployeeProjects(id))
+      dispatch(fetchEmployeeProjects(id));
     }
   }, [id, dispatch]);
-  
-  const handleComplete = (projectId: string) => {
-      dispatch(completeProject(projectId));
 
-    };
-  
+  const handleComplete = (projectId: string) => {
+    dispatch(completeProject(projectId));
+  };
+
   return {
     isEditing,
     formatDate,

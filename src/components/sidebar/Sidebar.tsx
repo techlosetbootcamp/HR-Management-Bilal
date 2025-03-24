@@ -46,14 +46,14 @@ export default function Sidebar({ onClose }: SidebarProps) {
           <X className="w-6 h-6" />
         </button>
       </div>
-  
+
       <nav className="mt-4">
         {filteredLinks.map(({ name, path, icon: Icon }) => {
           const isActive =
             (path === "/employees" && isEmployeeSection) ||
             (path === "/attandance" && isAttendanceSection) ||
             pathname === path;
-  
+
           return (
             <Link
               key={name}
@@ -79,13 +79,10 @@ export default function Sidebar({ onClose }: SidebarProps) {
           );
         })}
         {/* Place ModeChanger directly below the links */}
-       
       </nav>
       <div className="mt-auto">
-          <ModeChanger />
-        </div>
+        <ModeChanger />
+      </div>
     </div>
   );
-  
-  
 }

@@ -1,31 +1,7 @@
 "use client";
 import React from "react";
 import LottieAnimation from "../lottieAnimation/LottieAnimation";
-
-interface Project {
-  id: string;
-  title: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-  assignedEmployeeId: string;
-}
-
-interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-}
-
-interface ProjectListProps {
-  projects: Project[];
-  employees: Employee[];
-  loading?: boolean;
-  error?: string;
-  onCompleteProject?: (projectId: string) => void;
-  showEmployeeName?: boolean;
-  showActionButton?: boolean;
-}
+import { ProjectListProps } from "@/types/projects";
 
 const ProjectList: React.FC<ProjectListProps> = ({
   projects,
@@ -64,10 +40,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
               (emp) => emp.id === project.assignedEmployeeId
             );
             return (
-              <tr
-                key={project.id}
-                className=""
-              >
+              <tr key={project.id} className="">
                 <td className="p-4">{project.title}</td>
                 {showEmployeeName && (
                   <td className="p-4">

@@ -6,7 +6,7 @@ import AttandanceOverview from "@/components/attandanceOverview/AttandanceOvervi
 import Button from "@/components/button/Button";
 import SearchBar from "@/components/searchbar/Searchbar";
 
-export default function AttendancePage() {
+export default function Page() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
 

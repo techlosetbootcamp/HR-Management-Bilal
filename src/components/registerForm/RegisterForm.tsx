@@ -4,7 +4,8 @@ import InputField from "../inputField/InputFeild";
 import { useRegisterForm } from "./useRegisterForm";
 
 const RegisterForm = () => {
-  const { formData, handleChange, handleSubmit, error ,loading} = useRegisterForm();
+  const { formData, handleChange, handleSubmit, error, loading } =
+    useRegisterForm();
 
   return (
     <form
@@ -38,7 +39,9 @@ const RegisterForm = () => {
 
       <Button type="submit" disabled={loading}>
         {loading ? (
-          <span className="text-customOrange cursor-progress">Navigating...</span>
+          <span className="text-customOrange cursor-progress">
+            Navigating...
+          </span>
         ) : (
           "Register"
         )}

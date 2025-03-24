@@ -1,20 +1,20 @@
 "use client";
-import { useLeaveManagement } from "@/hooks/useLeaveManagement";
+import { useLeaveManagement } from "@/components/leaveRequestModal/useLeaveManagement";
 import EmployeeInput from "../employeeInput/EmployeeInput";
 import { motion, AnimatePresence } from "framer-motion";
 import LeaveRecord from "@/components/leaveRecord/LeaveRecord"; // Import LeaveRecord
 import Button from "../button/Button";
 
-export interface Leave {
-  id: string;
-  startDate: string;
-  endDate: string;
-  reason: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
-  employeeId: string;
-}
+// export interface LeaveRequestProps {
+//   id: string;
+//   startDate: string;
+//   endDate: string;
+//   reason: string;
+//   status: "PENDING" | "APPROVED" | "REJECTED";
+//   employeeId: string;
+// }
 
-export default function LeaveRequestWithModal({
+export default function LeaveRequestModal({
   employeeId,
 }: {
   employeeId: string;

@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const attendanceData  = {
+    const attendanceData = {
       employeeId,
       checkIn,
       checkOut,

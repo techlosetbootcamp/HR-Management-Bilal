@@ -23,6 +23,9 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ message: "Password reset successfully" });
   } catch (error) {
     console.error("Error resetting password:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

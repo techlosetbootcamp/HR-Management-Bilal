@@ -31,7 +31,8 @@ export const useAttendanceOverview = (
 
   // Filter records based on the search term.
   const filteredRecords = attendanceRecords.filter((record) => {
-    const fullName = `${record.employee.firstName} ${record.employee.lastName}`.toLowerCase();
+    const fullName =
+      `${record.employee.firstName} ${record.employee.lastName}`.toLowerCase();
     return fullName.includes(searchTerm.toLowerCase());
   });
 

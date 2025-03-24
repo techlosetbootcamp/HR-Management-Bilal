@@ -123,11 +123,14 @@ export async function DELETE(req: NextRequest) {
     const id = searchParams.get("id");
 
     if (!id) {
-      return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Employee ID is required" },
+        { status: 400 }
+      );
     }
 
     console.log("Deleting attendance records for employee:", id);
-    
+
     await prisma.attendance.deleteMany({
       where: { employeeId: id },
     });
@@ -141,8 +144,6 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ message: "Employee deleted successfully" });
   } catch (error) {
     console.error("Error deleting employee:", error);
-    return NextResponse.json(
-      { status: 500 }
-    );
+    return NextResponse.json({ status: 500 });
   }
 }

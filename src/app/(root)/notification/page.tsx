@@ -4,7 +4,7 @@ import { CheckCircle, Trash2, BellRing } from "lucide-react";
 import { useNotifications } from "./useNotification";
 import LottieAnimation from "@/components/lottieAnimation/LottieAnimation";
 
-export default function NotificationsPage() {
+export default function Page() {
   const { notifications, handleNotificationAction, loading } =
     useNotifications();
 

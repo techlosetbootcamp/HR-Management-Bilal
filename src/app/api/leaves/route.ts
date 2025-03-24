@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../..//lib/auth";
 import prisma from "../../../../lib/prisma";
 
-
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session)
@@ -82,7 +81,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session)
@@ -91,7 +89,7 @@ export async function GET() {
   try {
     if (session) {
       const leaves = await prisma.leave.findMany({
-        include:{employee:true}
+        include: { employee: true },
       });
 
       return NextResponse.json({ leaves }, { status: 200 });
@@ -99,7 +97,7 @@ export async function GET() {
 
     const leaves = await prisma.leave.findMany({
       where: { employeeId: session },
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json({ leaves }, { status: 200 });
@@ -133,7 +131,7 @@ export async function PATCH(req: NextRequest) {
       const employeeUser = await prisma.user.findUnique({
         where: { email: leave.employee.email },
       });
-    
+
       if (!employeeUser) {
         console.error("Employee user record not found!");
       } else {
@@ -153,7 +151,7 @@ export async function PATCH(req: NextRequest) {
       const employeeUser = await prisma.user.findUnique({
         where: { email: leave.employee.email },
       });
-    
+
       if (!employeeUser) {
         console.error("Employee user record not found!");
       } else {
@@ -167,10 +165,12 @@ export async function PATCH(req: NextRequest) {
             ).toDateString()} has been rejected.`,
           },
         });
-        console.log("Notification sent to employee for rejection:", employeeUser.id);
+        console.log(
+          "Notification sent to employee for rejection:",
+          employeeUser.id
+        );
       }
     }
-    
 
     return NextResponse.json(
       { leave, message: `Leave ${status.toLowerCase()}` },
@@ -184,4 +184,3 @@ export async function PATCH(req: NextRequest) {
     );
   }
 }
-

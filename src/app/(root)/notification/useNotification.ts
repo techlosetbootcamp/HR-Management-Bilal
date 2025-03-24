@@ -1,59 +1,24 @@
-import { useEffect, useState } from "react";
-
-export interface Notification {
-  id: string;
-  message: string;
-  createdAt: string;
-  isRead: boolean;
-}
+import {
+  fetchNotifications,
+  handleNotificationAction,
+} from "@/redux/slice/notificationSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useEffect } from "react";
 
 export function useNotifications() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Add loading state
+  const dispatch = useAppDispatch();
+  const { notifications, loading } = useAppSelector(
+    (state) => state.notifications
+  );
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const res = await fetch("/api/notifications");
-        const data = await res.json();
-        console.log("📨 Fetched Notifications:", data);
-        if (data.notifications) {
-          setNotifications(data.notifications);
-        }
-      } catch (error) {
-        console.error("Failed to fetch notifications:", error);
-      } finally {
-        setLoading(false); // Set loading to false after fetching
-      }
-    };
+    dispatch(fetchNotifications());
+  }, [dispatch]);
 
-    fetchNotifications();
-  }, []);
-
-  // A generic function to handle notification actions
-  const handleNotificationAction = async (
-    id: string,
-    action: "read" | "delete"
-  ) => {
-    try {
-      const res = await fetch("/api/notifications", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, action }),
-      });
-      if (!res.ok) throw new Error("Action failed");
-
-      if (action === "read") {
-        setNotifications((prev) =>
-          prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-        );
-      } else if (action === "delete") {
-        setNotifications((prev) => prev.filter((n) => n.id !== id));
-      }
-    } catch (error) {
-      console.error(`Failed to ${action} notification:`, error);
-    }
+  return {
+    notifications,
+    handleNotificationAction: (id: string, action: "read" | "delete") =>
+      dispatch(handleNotificationAction({ id, action })),
+    loading,
   };
-
-  return { notifications, handleNotificationAction, loading }; // Return loading state
 }

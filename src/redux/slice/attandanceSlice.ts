@@ -1,4 +1,8 @@
-import { AttendanceFormState, AttendanceState } from "@/types/attandance";
+import {
+  AttendanceFormState,
+  AttendancePayload,
+  AttendanceState,
+} from "@/types/attandance";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -28,16 +32,6 @@ export const fetchEmployees = createAsyncThunk(
   }
 );
 
-interface AttendancePayload {
-  employeeId: string;
-  date: string;
-  checkIn: string | null;
-  checkOut: string | null;
-  breakTime: string | null;
-  workingHours: string;
-  status: string;
-}
-
 export const submitAttendance = createAsyncThunk(
   "attendance/submitAttendance",
   async (payload: AttendancePayload) => {
@@ -56,10 +50,10 @@ export const fetchAttendanceById = createAsyncThunk(
   "attendance/fetchAttendanceById",
   async (employeeId: string) => {
     const response = await axios.get(`/api/attendance`, {
-      params: { employeeId }
+      params: { employeeId },
     });
-    return response.data.filter((record: { employeeId: string }) => 
-      record.employeeId === employeeId
+    return response.data.filter(
+      (record: { employeeId: string }) => record.employeeId === employeeId
     );
   }
 );
@@ -77,8 +71,7 @@ const attendanceSlice = createSlice({
       state.attendanceState = initialState.attendanceState;
     },
   },
-  
-  
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchEmployees.pending, (state) => {
@@ -93,8 +86,6 @@ const attendanceSlice = createSlice({
         state.error = action.error.message ?? "Something went wrong";
       })
 
-      
-
       .addCase(submitAttendance.pending, (state) => {
         state.attendanceState.loading = true;
       })
@@ -107,7 +98,6 @@ const attendanceSlice = createSlice({
         state.error = action.error.message ?? "Failed to submit attendance";
       })
 
-      
       .addCase(fetchAttendance.pending, (state) => {
         state.loading = true;
       })
@@ -117,9 +107,10 @@ const attendanceSlice = createSlice({
       })
       .addCase(fetchAttendance.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Failed to fetch attendance records";
+        state.error =
+          action.error.message ?? "Failed to fetch attendance records";
       })
-      
+
       .addCase(fetchAttendanceById.pending, (state) => {
         state.loading = true;
       })
@@ -129,8 +120,9 @@ const attendanceSlice = createSlice({
       })
       .addCase(fetchAttendanceById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Failed to fetch attendance records";
-      })
+        state.error =
+          action.error.message ?? "Failed to fetch attendance records";
+      });
   },
 });
 

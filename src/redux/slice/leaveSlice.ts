@@ -1,29 +1,6 @@
+import { LeaveState } from "@/types/leaves";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
-interface Employee {
-  id: string;  
-  firstName: string;
-  lastName: string;
-  photoURL: string;
-  email: string;
-}
-
-interface Leave {
-  id: string;
-  startDate: string;
-  endDate: string;
-  reason: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
-  employee: Employee;
-  employeeId: string;
-}
-
-interface LeaveState {
-  leaves: Leave[];
-  loading: boolean;
-  error: string | null;
-}
 
 const initialState: LeaveState = {
   leaves: [],
@@ -31,19 +8,21 @@ const initialState: LeaveState = {
   error: null,
 };
 
-export const fetchLeaves = createAsyncThunk(
-  "leave/fetchLeaves",
-  async () => {
-    const response = await axios.get("/api/leaves");
-    return response.data.leaves;
-  }
-);
+export const fetchLeaves = createAsyncThunk("leave/fetchLeaves", async () => {
+  const response = await axios.get("/api/leaves");
+  return response.data.leaves;
+});
 
 export const submitLeave = createAsyncThunk(
   "leave/submitLeave",
-  async ({ startDate, endDate, reason, employeeId }: { 
-    startDate: string; 
-    endDate: string; 
+  async ({
+    startDate,
+    endDate,
+    reason,
+    employeeId,
+  }: {
+    startDate: string;
+    endDate: string;
     reason: string;
     employeeId: string;
   }) => {
@@ -51,7 +30,7 @@ export const submitLeave = createAsyncThunk(
       startDate,
       endDate,
       reason,
-      employeeId
+      employeeId,
     });
     return response.data;
   }
@@ -59,10 +38,16 @@ export const submitLeave = createAsyncThunk(
 
 export const updateLeaveStatus = createAsyncThunk(
   "leave/updateStatus",
-  async ({ leaveId, status }: { leaveId: string; status: "APPROVED" | "REJECTED" }) => {
-   await axios.patch("/api/leaves", {
+  async ({
+    leaveId,
+    status,
+  }: {
+    leaveId: string;
+    status: "APPROVED" | "REJECTED";
+  }) => {
+    await axios.patch("/api/leaves", {
       leaveId,
-      status
+      status,
     });
     return { leaveId, status };
   }
@@ -102,8 +87,8 @@ const leaveSlice = createSlice({
       })
       .addCase(updateLeaveStatus.fulfilled, (state, action) => {
         state.loading = false;
-        state.leaves = state.leaves.map(leave => 
-          leave.id === action.payload.leaveId 
+        state.leaves = state.leaves.map((leave) =>
+          leave.id === action.payload.leaveId
             ? { ...leave, status: action.payload.status }
             : leave
         );

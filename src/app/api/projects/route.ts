@@ -79,7 +79,6 @@ export async function POST(request: Request) {
   }
 }
 
-
 export async function PATCH(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session)

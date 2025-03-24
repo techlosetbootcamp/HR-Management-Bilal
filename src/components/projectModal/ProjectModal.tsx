@@ -3,23 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import EmployeeInput from "@/components/employeeInput/EmployeeInput";
-
-interface ProjectModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  setTitle: (val: string) => void;
-  description: string;
-  setDescription: (val: string) => void;
-  startDate: string;
-  setStartDate: (val: string) => void;
-  endDate: string;
-  setEndDate: (val: string) => void;
-  employeeId: string;
-  setEmployeeId: (val: string) => void;
-  employees: { id: string; firstName: string; lastName: string }[];
-  handleSubmit: (e: React.FormEvent) => void;
-}
+import { ProjectModalProps } from "@/types/projects";
 
 export default function ProjectModal({
   isOpen,
@@ -101,7 +85,9 @@ export default function ProjectModal({
 
           {/* Employee Select Dropdown */}
           <div className="flex flex-col">
-            <label className="text-sm text-gray-400 mb-1">Select Employee</label>
+            <label className="text-sm text-gray-400 mb-1">
+              Select Employee
+            </label>
             <select
               value={employeeId}
               onChange={(e) => setEmployeeId(e.target.value)}

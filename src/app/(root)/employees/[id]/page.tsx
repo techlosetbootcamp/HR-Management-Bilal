@@ -3,7 +3,7 @@
 import EmployeeDetails from "@/components/employeeDetails/EmployeeDetails";
 import { useSearchParams, useParams } from "next/navigation";
 
-export default function EmployeeDetailsPage() {
+export default function Page() {
   const { id } = useParams();
   const searchParams = useSearchParams();
   const isEditMode = searchParams.get("edit") === "true";

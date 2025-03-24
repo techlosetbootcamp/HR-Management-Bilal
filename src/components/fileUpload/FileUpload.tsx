@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { UploadCloud } from "lucide-react";
 import { FileUploadProps } from "@/types/empoyee";
 
-
-const FileUpload: React.FC<FileUploadProps> = ({  accept = "image/*, .pdf", onFileSelect }) => {
+const FileUpload: React.FC<FileUploadProps> = ({
+  accept = "image/*, .pdf",
+  onFileSelect,
+}) => {
   const [fileName, setFileName] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,10 +26,17 @@ const FileUpload: React.FC<FileUploadProps> = ({  accept = "image/*, .pdf", onFi
           <p className="mt-2 text-gray-700 text-sm">{fileName}</p>
         ) : (
           <p className="text-gray-400 text-sm mt-2">
-            Drag & Drop or <span className="text-orange-500 font-semibold">choose file</span> to upload
+            Drag & Drop or{" "}
+            <span className="text-orange-500 font-semibold">choose file</span>{" "}
+            to upload
           </p>
         )}
-        <input type="file" className="hidden" onChange={handleFileChange} accept={accept} />
+        <input
+          type="file"
+          className="hidden"
+          onChange={handleFileChange}
+          accept={accept}
+        />
       </label>
       <p className="text-gray-500 text-xs">Supported formats: {accept}</p>
     </div>

@@ -2,8 +2,6 @@ import React from "react";
 import FileUpload from "@/components/fileUpload/FileUpload";
 import { DocumentsProps } from "@/types/empoyee";
 
-
-
 const Documents: React.FC<DocumentsProps> = ({ handleFileUpload }) => {
   return (
     <div className="space-y-6 py-8 px-3">

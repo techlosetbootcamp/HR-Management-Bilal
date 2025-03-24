@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { useLeave } from "@/hooks/useLeave";
+import { useLeave } from "@/app/(root)/leaves/useLeave";
 import LeaveRecord from "@/components/leaveRecord/LeaveRecord";
 
-export default function AdminLeavePanel() {
+export default function Page() {
   const { leaves, loading, updateLeaveStatus, isAdmin } = useLeave();
 
   return (

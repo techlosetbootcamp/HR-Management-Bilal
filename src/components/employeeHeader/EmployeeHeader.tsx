@@ -4,8 +4,6 @@ import Link from "next/link";
 import SearchBar from "@/components/searchbar/Searchbar";
 import { EmployeeHeaderProps } from "@/types/empoyee";
 
-
-
 export default function EmployeeHeader({
   searchTerm,
   onSearchChange,

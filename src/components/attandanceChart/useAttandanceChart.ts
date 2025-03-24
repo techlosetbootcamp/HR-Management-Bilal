@@ -3,13 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { fetchAttendance } from "../../redux/slice/attandanceSlice";
-
-export interface AttendanceData {
-  day: string;
-  onTime: number;
-  late: number;
-  absent: number;
-}
+import { AttendanceData } from "@/types/attandance";
 
 export const useAttandanceChart = () => {
   const dispatch = useDispatch<AppDispatch>();

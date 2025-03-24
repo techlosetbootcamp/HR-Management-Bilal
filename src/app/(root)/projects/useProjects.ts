@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchProjects, addProject } from "@/redux/slice/projectSlice";
 import { fetchEmployees } from "@/redux/slice/employeeSlice";
+import toast from "react-hot-toast";
 
 export function useProjects() {
   const dispatch = useDispatch<AppDispatch>();
@@ -39,6 +40,7 @@ export function useProjects() {
         endDate,
       })
     );
+    toast.success("Project added successfully!");
     setTitle("");
     setDescription("");
     setStartDate("");

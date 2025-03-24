@@ -28,14 +28,3 @@ body {
   background: #c74614; /* Darker shade when hovering */
 }
 
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 5px rgba(255, 165, 0, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 5px rgba(255, 165, 0, 0.4);
-  }
-}
