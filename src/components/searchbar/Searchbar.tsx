@@ -13,7 +13,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
         type="text"
         name="searchText"
         placeholder="Search"
-        value={value} // Controlled input
+        value={value}
         onChange={onChange}
         className="bg-transparent ml-[10px] focus:outline-none w-[229px]"
       />

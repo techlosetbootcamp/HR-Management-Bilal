@@ -25,14 +25,6 @@ export interface LeaveRecordProps {
   ) => Promise<void>;
 }
 
-//   interface Employee {
-//     id: string;
-//     firstName: string;
-//     lastName: string;
-//     photoURL: string;
-//     email: string;
-//   }
-
 export interface Leave {
   id: string;
   startDate: string;

@@ -1,4 +1,3 @@
-// components/projectModal/ProjectModal.tsx
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
@@ -30,7 +29,6 @@ export default function ProjectModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {/* Background Overlay */}
       <motion.div
         className="absolute inset-0 bg-black opacity-50"
         onClick={onClose}
@@ -39,7 +37,6 @@ export default function ProjectModal({
         exit={{ opacity: 0 }}
       ></motion.div>
 
-      {/* Modal Content */}
       <motion.div
         className="bg-white dark:bg-gray-800 p-6 rounded shadow-lg max-w-md w-full z-10"
         initial={{ y: 50, opacity: 0, scale: 0.9 }}
@@ -83,7 +80,6 @@ export default function ProjectModal({
             required
           />
 
-          {/* Employee Select Dropdown */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-400 mb-1">
               Select Employee
@@ -105,7 +101,6 @@ export default function ProjectModal({
             </select>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex justify-end space-x-2">
             <button
               type="button"

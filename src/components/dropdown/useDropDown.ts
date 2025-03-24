@@ -21,7 +21,7 @@ export const useDropDown = () => {
 
   const handleProfileClick = () => {
     if (!session?.user?.email) {
-      console.error("❌ No user email found in session!");
+      console.error(" No user email found in session!");
       alert("User email not found");
       return;
     }
@@ -30,7 +30,7 @@ export const useDropDown = () => {
 
   const handleAboutClick = async () => {
     if (!session?.user?.email) {
-      console.error("❌ No user email found in session!");
+      console.error(" No user email found in session!");
       alert("User email not found");
       return;
     }
@@ -46,7 +46,7 @@ export const useDropDown = () => {
         throw new Error("Employee not found");
       }
     } catch (error) {
-      console.error("❌ Error fetching employee details:", error);
+      console.error(" Error fetching employee details:", error);
       toast.error("Your Are Not The Part of this organization");
     }
   };

@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth";
 import prisma from "../../../../lib/prisma";
 
-// ✅ Get All Attendance Records
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
@@ -34,7 +33,6 @@ export async function GET() {
   }
 }
 
-// ✅ Add Attendance Record
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -42,7 +40,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    // Add null check for request body
     const body = await req.json();
     if (!body) {
       return NextResponse.json(

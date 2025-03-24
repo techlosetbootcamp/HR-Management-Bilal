@@ -1,14 +1,5 @@
-// interface Project {
-//   id: string;
-//   title: string;
-//   startDate: string;
-//   endDate: string;
-//   status: string;
-//   assignedEmployeeId: string;
-
 import { Employee } from "./types";
 
-// }
 export interface Project {
   id: string;
   title: string;
@@ -23,12 +14,6 @@ export interface ProjectsState {
   loading: boolean;
   error: string | null;
 }
-// interface Employee {
-//   id: string;
-//   firstName: string;
-//   lastName: string;
-// }
-
 export interface ProjectListProps {
   projects: Project[];
   employees: Employee[];

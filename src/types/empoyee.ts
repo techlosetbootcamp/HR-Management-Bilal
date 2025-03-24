@@ -60,7 +60,7 @@ export interface EmployeeHeaderProps {
 
 export interface FileUploadProps {
   label: string;
-  accept?: string; // Allow custom file types
+  accept?: string;
   onFileSelect: (file: File) => void;
 }
 export interface PersonalInfoProps {

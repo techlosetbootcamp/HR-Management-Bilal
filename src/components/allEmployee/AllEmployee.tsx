@@ -1,4 +1,3 @@
-// components/AllEmployee.tsx
 "use client";
 import React from "react";
 import { Trash, Eye, PencilLine, CheckCircle } from "lucide-react";

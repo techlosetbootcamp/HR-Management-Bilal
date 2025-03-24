@@ -38,7 +38,7 @@ export default function ProfessionalInfo({
         type="select"
         value={form.department || ""}
         options={["Design", "Development", "HR", "Sales"]}
-        onChange={handleChange} // Fix applied
+        onChange={handleChange}
       />
 
       <EmployeeInput
@@ -66,14 +66,14 @@ export default function ProfessionalInfo({
         type="select"
         value={form.workingDays || ""}
         options={["Monday-Friday", "Sunday-Thursday", "Flexible"]}
-        onChange={handleChange} // Fix applied
+        onChange={handleChange}
       />
       <EmployeeInput
         name="status"
         type="select"
         value={form.status || ""}
         options={["Permanent", "Contract"]}
-        onChange={handleChange} // Fix applied
+        onChange={handleChange}
       />
       <EmployeeInput
         type="date"
@@ -94,7 +94,7 @@ export default function ProfessionalInfo({
           "Rawalpindi",
           "Multan",
         ]}
-        onChange={handleChange} // Fix applied
+        onChange={handleChange}
       />
     </div>
   );

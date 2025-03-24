@@ -48,7 +48,7 @@ export function useEmployeeDetails(id: string) {
 
   const saveChanges = async () => {
     try {
-      if (!employeeData) return; // Use employeeData
+      if (!employeeData) return;
 
       let updatePayload: Partial<Employee> = { ...updatedFields };
 
@@ -57,7 +57,7 @@ export function useEmployeeDetails(id: string) {
         const uploadResult = await dispatch(
           uploadImage({
             file: selectedFile,
-            fieldName: employeeData.photoPublicId || "", // Use employeeData
+            fieldName: employeeData.photoPublicId || "",
           })
         ).unwrap();
 
@@ -77,7 +77,7 @@ export function useEmployeeDetails(id: string) {
         console.log("Sending update request:", updatePayload);
         const updateResponse = await dispatch(
           updateEmployeeDetails({
-            id: employeeData.id, // Use employeeData
+            id: employeeData.id,
             updates: updatePayload,
           })
         ).unwrap();
@@ -144,10 +144,9 @@ export function useEmployeeDetails(id: string) {
     return date.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
-      hour12: true, // Optional: Use 12-hour format
+      hour12: true,
     });
   };
-  // Replace the local state and useEffect with Redux selector
   const { attendanceRecords } = useAppSelector(
     (state: RootState) => state.attandance
   );
@@ -174,7 +173,7 @@ export function useEmployeeDetails(id: string) {
     openPdfPreview,
     closePdfPreview,
     getPdfUrl,
-    employee: employeeData, // Return employeeData
+    employee: employeeData,
     loading,
     handleComplete,
     projects,

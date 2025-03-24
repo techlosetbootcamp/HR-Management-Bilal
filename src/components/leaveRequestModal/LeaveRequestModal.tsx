@@ -2,17 +2,8 @@
 import { useLeaveManagement } from "@/components/leaveRequestModal/useLeaveManagement";
 import EmployeeInput from "../employeeInput/EmployeeInput";
 import { motion, AnimatePresence } from "framer-motion";
-import LeaveRecord from "@/components/leaveRecord/LeaveRecord"; // Import LeaveRecord
+import LeaveRecord from "@/components/leaveRecord/LeaveRecord";
 import Button from "../button/Button";
-
-// export interface LeaveRequestProps {
-//   id: string;
-//   startDate: string;
-//   endDate: string;
-//   reason: string;
-//   status: "PENDING" | "APPROVED" | "REJECTED";
-//   employeeId: string;
-// }
 
 export default function LeaveRequestModal({
   employeeId,
@@ -120,7 +111,7 @@ export default function LeaveRequestModal({
           leaves={leaves}
           loading={loading}
           isAdmin={false}
-          showEmployeeDetails={false} // Hide employee details
+          showEmployeeDetails={false}
         />
       </div>
     </div>

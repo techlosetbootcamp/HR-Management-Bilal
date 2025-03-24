@@ -95,7 +95,6 @@ export async function PUT(req: NextRequest) {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       updateData.Password = hashedPassword;
 
-      // Send password reset notification
       await prisma.notification.create({
         data: {
           userId: user.id,

@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth";
 import prisma from "../../../../lib/prisma";
 
-// ✅ Fetch Employee by Email
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -14,7 +13,7 @@ export async function GET(req: NextRequest) {
       const employee = await prisma.employee.findUnique({ where: { email } });
 
       if (!employee) {
-        console.error("❌ Employee not found:", email);
+        console.error("Employee not found:", email);
         return new NextResponse(
           JSON.stringify({ error: "Employee not found" }),
           { status: 404 }
@@ -23,7 +22,6 @@ export async function GET(req: NextRequest) {
       return new NextResponse(JSON.stringify(employee), { status: 200 });
     }
 
-    // ✅ Fetch All Employees
     const employees = await prisma.employee.findMany();
     return NextResponse.json(employees);
   } catch (error) {
@@ -35,7 +33,6 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// ✅ Add New Employee
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -75,7 +72,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// ✅ Update Employee
 export async function PATCH(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -116,7 +112,6 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-// ✅ Delete Employee
 export async function DELETE(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);

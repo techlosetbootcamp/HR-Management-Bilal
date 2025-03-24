@@ -1,4 +1,3 @@
-// components/layout/DefaultLayout.tsx
 "use client";
 import { usePathname } from "next/navigation";
 import Sidebar from "../sidebar/Sidebar";

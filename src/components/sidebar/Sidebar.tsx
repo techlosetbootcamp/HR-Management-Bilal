@@ -13,7 +13,7 @@ import { useSession } from "next-auth/react";
 export default function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const userRole = session?.user?.role; // Assuming role is stored in session
+  const userRole = session?.user?.role;
 
   const isAdmin = userRole === "ADMIN";
 

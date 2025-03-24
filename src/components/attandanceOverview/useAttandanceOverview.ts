@@ -19,7 +19,6 @@ export const useAttendanceOverview = (
     dispatch(fetchAttendance());
   }, [dispatch]);
 
-  // Format date helper.
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -29,14 +28,12 @@ export const useAttendanceOverview = (
     });
   };
 
-  // Filter records based on the search term.
   const filteredRecords = attendanceRecords.filter((record) => {
     const fullName =
       `${record.employee.firstName} ${record.employee.lastName}`.toLowerCase();
     return fullName.includes(searchTerm.toLowerCase());
   });
 
-  // Pagination state and logic.
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const totalItems = filteredRecords.length;
@@ -47,7 +44,6 @@ export const useAttendanceOverview = (
       )
     : filteredRecords;
 
-  // Reset pagination to first page when search term changes.
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);

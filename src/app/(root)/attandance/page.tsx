@@ -1,4 +1,3 @@
-// pages/attandance/index.tsx (or similar)
 "use client";
 import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";

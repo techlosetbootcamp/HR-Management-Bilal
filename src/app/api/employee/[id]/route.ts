@@ -59,7 +59,7 @@ export async function PATCH(
 
     return NextResponse.json(updatedEmployee, { status: 200 });
   } catch (error) {
-    console.error("❌ Error updating employee:", error);
+    console.error("Error updating employee:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
     const newEmployee = await prisma.employee.create({ data: body });
     return NextResponse.json(newEmployee, { status: 201 });
   } catch (error) {
-    console.error("❌ Error creating employee:", error);
+    console.error(" Error creating employee:", error);
     return NextResponse.json(
       { error: "Failed to create employee" },
       { status: 500 }
@@ -114,7 +114,7 @@ export async function DELETE(
     await prisma.employee.delete({ where: { id } });
     return NextResponse.json({ message: "Employee deleted successfully" });
   } catch (error) {
-    console.error("❌ Error deleting employee:", error);
+    console.error("Error deleting employee:", error);
     return NextResponse.json(
       { error: "Failed to delete employee" },
       { status: 500 }

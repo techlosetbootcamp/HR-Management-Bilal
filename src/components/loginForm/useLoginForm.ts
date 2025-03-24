@@ -3,7 +3,7 @@ import { signIn } from "next-auth/react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react"; // Import useSession
+import { useSession } from "next-auth/react"; 
 
 export const useLoginForm = () => {
   useAuth(true);
@@ -12,7 +12,7 @@ export const useLoginForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { data: session } = useSession(); // Get user session
+  const { data: session } = useSession();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,7 +46,7 @@ export const useLoginForm = () => {
     toast.success("Successfully logged in!");
 
     setTimeout(() => {
-      const userRole = session?.user?.role || "EMPLOYEE"; // Default to EMPLOYEE
+      const userRole = session?.user?.role || "EMPLOYEE"; 
 
       if (userRole === "ADMIN") {
         router.push("/admin-dashboard");

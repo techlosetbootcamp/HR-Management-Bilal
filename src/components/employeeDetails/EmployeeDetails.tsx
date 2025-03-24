@@ -21,9 +21,8 @@ import { mainTabs, subTabs } from "@/utils/tabConfigs";
 import EmployeeInput from "../employeeInput/EmployeeInput";
 import AttendanceRecords from "../attendanceRecords/AttendanceRecords";
 import { EmployeeDetailsProps, InputFieldType } from "@/types/empoyee";
-import ProjectList from "../projectList/ProjectList"; // Import ProjectList
+import ProjectList from "../projectList/ProjectList";
 import LeaveRequestWithModal from "../leaveRequestModal/LeaveRequestModal";
-// import { useProjectsRecord } from "../projects/useProjectsRecord"; // Import useProjectsRecord
 
 const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   id,

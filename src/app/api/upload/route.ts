@@ -37,13 +37,13 @@ export async function POST(req: NextRequest) {
       stream.pipe(uploadStream);
     });
 
-    console.log("✅ Cloudinary upload successful:", uploadResult);
+    console.log(" Cloudinary upload successful:", uploadResult);
     return NextResponse.json(
       { imageUrl: uploadResult.secure_url },
       { status: 200 }
     );
   } catch (error) {
-    console.error("❌ Upload Error:", error);
+    console.error(" Upload Error:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

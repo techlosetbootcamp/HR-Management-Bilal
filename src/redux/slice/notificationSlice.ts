@@ -1,13 +1,11 @@
 import { NotificationsState } from "@/types/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-
 const initialState: NotificationsState = {
   notifications: [],
   loading: false,
 };
 
-// Fetch notifications
 export const fetchNotifications = createAsyncThunk(
   "notifications/fetchNotifications",
   async (_, { rejectWithValue }) => {
@@ -22,7 +20,6 @@ export const fetchNotifications = createAsyncThunk(
   }
 );
 
-// Handle notification actions (read/delete)
 export const handleNotificationAction = createAsyncThunk(
   "notifications/handleNotificationAction",
   async (

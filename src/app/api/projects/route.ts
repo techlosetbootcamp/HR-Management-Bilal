@@ -14,11 +14,9 @@ export async function GET(request: Request) {
         })
       : await prisma.project.findMany();
 
-    // console.log("Projects fetched:", projects);
     return NextResponse.json(projects);
   } catch (error: unknown) {
     const err = error as Error;
-    // console.error("Error in GET /api/projects:", err.message);
     return NextResponse.json(
       { message: "Error fetching projects", error: err.message },
       { status: 500 }

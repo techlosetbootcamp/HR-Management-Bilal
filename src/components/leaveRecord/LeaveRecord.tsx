@@ -3,31 +3,6 @@ import React from "react";
 import Image from "next/image";
 import { LeaveRecordProps } from "@/types/leaves";
 
-// interface Leave {
-//   id: string;
-//   employee: {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     photoURL?: string;
-//   };
-//   reason: string;
-//   startDate: string;
-//   endDate: string;
-//   status: string;
-// }
-
-// interface LeaveRecordProps {
-//   leaves: Leave[];
-//   loading?: boolean;
-//   isAdmin?: boolean;
-//   showEmployeeDetails?: boolean;
-//   updateLeaveStatus?: (
-//     leaveId: string,
-//     status: "APPROVED" | "REJECTED"
-//   ) => Promise<void>;
-// }
-
 const LeaveRecord: React.FC<LeaveRecordProps> = ({
   leaves,
   loading,

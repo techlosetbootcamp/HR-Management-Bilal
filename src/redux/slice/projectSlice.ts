@@ -39,7 +39,7 @@ export const addProject = createAsyncThunk<
 
 export const fetchEmployeeProjects = createAsyncThunk<
   Project[],
-  string, // employee id
+  string,
   { rejectValue: string }
 >(
   "employeeProjects/fetchEmployeeProjects",
@@ -63,7 +63,7 @@ export const fetchEmployeeProjects = createAsyncThunk<
 
 export const completeProject = createAsyncThunk<
   Project,
-  string, // project id
+  string,
   { rejectValue: string }
 >(
   "employeeProjects/completeProject",
@@ -94,7 +94,6 @@ const projectSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch Projects
       .addCase(fetchProjects.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -107,7 +106,6 @@ const projectSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Failed to fetch projects";
       })
-      // Add Project
       .addCase(addProject.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -133,7 +131,6 @@ const projectSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Failed to fetch projects";
       })
-      // Handle completing a project
       .addCase(completeProject.pending, (state) => {
         state.loading = true;
         state.error = null;

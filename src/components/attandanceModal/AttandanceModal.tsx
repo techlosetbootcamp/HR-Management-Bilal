@@ -3,7 +3,7 @@
 import { AttendanceModalFormProps } from "@/types/attandance";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import EmployeeInput from "../employeeInput/EmployeeInput"; // Import EmployeeInput
+import EmployeeInput from "../employeeInput/EmployeeInput";
 
 export default function AttendanceModalForm({
   selectedEmployee,
