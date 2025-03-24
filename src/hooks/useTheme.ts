@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { setTheme, toggleTheme } from "@/redux/slice/themeSlice";
 
 export function useTheme() {
-  const dispatch = useDispatch();
-  const theme = useSelector((state: RootState) => state.theme.theme);
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector((state: RootState) => state.theme.theme);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

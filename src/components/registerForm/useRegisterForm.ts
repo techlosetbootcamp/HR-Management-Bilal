@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "@/redux/store";
+import { useAppDispatch } from "@/redux/store";
 import { registerUser } from "@/redux/slice/authSlice";
 
 export const useRegisterForm = () => {
@@ -14,7 +13,7 @@ export const useRegisterForm = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
+import {  useSelector } from "react-redux";
+import {  RootState, useAppDispatch } from "../../redux/store";
 import { fetchAttendance } from "../../redux/slice/attandanceSlice";
 import { AttendanceData } from "@/types/attandance";
 
 export const useAttandanceChart = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const attendanceRecords = useSelector(
     (state: RootState) => state.attandance.attendanceRecords
   );

@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import {  RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { fetchEmployees, deleteEmployee } from "@/redux/slice/employeeSlice";
 import { useSession } from "next-auth/react";
 
 const useEmployees = (departmentName: string) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "ADMIN";
 
   const router = useRouter();
-  const { employees, error, loading } = useSelector(
+  const { employees, error, loading } = useAppSelector(
     (state: RootState) => state.employees
   );
   const [searchTerm, setSearchTerm] = useState("");

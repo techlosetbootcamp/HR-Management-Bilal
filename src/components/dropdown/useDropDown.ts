@@ -2,17 +2,16 @@ import { useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { Profile } from "@/constants/images";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
 import { getProfileByEmail, getEmployeeByEmail } from "@/redux/slice/authSlice";
-import { AppDispatch, RootState } from "@/redux/store";
+import {  RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import toast from "react-hot-toast";
 
 export const useDropDown = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { user, loading } = useSelector((state: RootState) => state.auth);
+  const { user, loading } = useAppSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     if (!session?.user?.email) return;

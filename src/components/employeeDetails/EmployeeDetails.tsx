@@ -126,7 +126,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   {employee?.firstName} {employee?.lastName}
                 </h2>
                 <p className="text-orange-400 flex my-2 text-sm md:text-base">
-                  <BriefcaseBusiness className="text-white mr-2" />{" "}
+                  <BriefcaseBusiness className="dark:text-white mr-2" />{" "}
                   {employee?.designation}
                 </p>
                 <p className="flex text-sm md:text-base">

@@ -1,14 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import {  useSelector } from "react-redux";
+import {  RootState, useAppDispatch } from "@/redux/store";
 import { fetchAttendance } from "@/redux/slice/attandanceSlice";
 
 export const useAttendanceOverview = (
   searchTerm: string = "",
   showPagination: boolean = false
 ) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const attendanceRecords = useSelector(
     (state: RootState) => state.attandance.attendanceRecords
   );

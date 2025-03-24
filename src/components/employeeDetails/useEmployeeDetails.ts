@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
 import {
   fetchEmployeeById,
   updateEmployeeDetails,
   uploadImage,
 } from "@/redux/slice/employeeSlice";
-import { RootState, AppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "../../redux/store";
 import { Employee } from "@/types/types";
 import toast from "react-hot-toast";
 import { fetchAttendanceById } from "@/redux/slice/attandanceSlice";
@@ -16,14 +15,14 @@ import {
 } from "@/redux/slice/projectSlice";
 
 export function useEmployeeDetails(id: string) {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const { employee, loading, error } = useSelector(
+  const { employee, loading, error } = useAppSelector(
     (state: RootState) => state.employees
   );
 
-  const { projects } = useSelector((state: RootState) => state.projects);
+  const { projects } = useAppSelector((state: RootState) => state.projects);
   const employeeData: Employee | null = employee;
 
   const [updatedFields, setUpdatedFields] = useState<Partial<Employee>>({});
@@ -149,7 +148,7 @@ export function useEmployeeDetails(id: string) {
     });
   };
   // Replace the local state and useEffect with Redux selector
-  const { attendanceRecords } = useSelector(
+  const { attendanceRecords } = useAppSelector(
     (state: RootState) => state.attandance
   );
 

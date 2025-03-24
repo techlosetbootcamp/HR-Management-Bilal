@@ -39,6 +39,14 @@ const ProjectList: React.FC<ProjectListProps> = ({
             const employee = employees.find(
               (emp) => emp.id === project.assignedEmployeeId
             );
+
+            const statusColor =
+              project.status === "COMPLETED"
+                ? "text-green-500"
+                : project.status === "IN_PROGRESS"
+                ? "customOrange"
+                : "";
+
             return (
               <tr key={project.id} className="">
                 <td className="p-4">{project.title}</td>
@@ -55,7 +63,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
                 <td className="p-4">
                   {new Date(project.endDate).toLocaleDateString()}
                 </td>
-                <td className="p-4">{project.status}</td>
+                <td className={`p-4 ${statusColor}`}>{project.status}</td>
                 {showActionButton && project.status !== "COMPLETED" && (
                   <td className="p-4">
                     <button

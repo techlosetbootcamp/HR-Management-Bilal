@@ -1,20 +1,19 @@
 "use client";
 import { useState, useEffect, FormEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import {  RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { fetchProjects, addProject } from "@/redux/slice/projectSlice";
 import { fetchEmployees } from "@/redux/slice/employeeSlice";
 import toast from "react-hot-toast";
 
 export function useProjects() {
-  const dispatch = useDispatch<AppDispatch>();
-  const projects = useSelector((state: RootState) => state.projects.projects);
-  const projectLoading = useSelector(
+  const dispatch = useAppDispatch();
+  const projects = useAppSelector((state: RootState) => state.projects.projects);
+  const projectLoading = useAppSelector(
     (state: RootState) => state.projects.loading
   );
-  const projectError = useSelector((state: RootState) => state.projects.error);
+  const projectError = useAppSelector((state: RootState) => state.projects.error);
 
-  const employees = useSelector(
+  const employees = useAppSelector(
     (state: RootState) => state.employees.employees
   );
 

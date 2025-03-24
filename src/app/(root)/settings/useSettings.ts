@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "@/redux/slice/themeSlice";
-import { RootState } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 
 export function useSettings() {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
@@ -11,8 +10,8 @@ export function useSettings() {
   const [emailNotificationEnabled, setEmailNotificationEnabled] =
     useState(true);
 
-  const dispatch = useDispatch();
-  const theme = useSelector((state: RootState) => state.theme.theme);
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector((state: RootState) => state.theme.theme);
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTheme = event.target.value;

@@ -1,20 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   fetchEmployees,
   submitAttendance,
 } from "@/redux/slice/attandanceSlice";
-import { RootState, AppDispatch } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import { Employee } from "@/types/attandance";
 
 export function useMarkAttandance() {
-  const dispatch = useDispatch<AppDispatch>();
-  const employees = useSelector(
+  const dispatch = useAppDispatch();
+  const employees = useAppSelector(
     (state: RootState) => state.attandance.employees
   );
-  const loading = useSelector((state: RootState) => state.attandance.loading);
+  const loading = useAppSelector((state: RootState) => state.attandance.loading);
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "ADMIN";
 

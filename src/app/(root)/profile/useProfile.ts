@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   getProfileByEmail,
   updateProfile,
   uploadProfileImage,
 } from "@/redux/slice/authSlice";
-import { RootState, AppDispatch } from "@/redux/store";
+import { RootState,  useAppDispatch, useAppSelector } from "@/redux/store";
 import toast from "react-hot-toast";
 
 export function useProfile() {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { data: session, status, update } = useSession();
 
-  const { user, loading, error, successMessage } = useSelector(
+  const { user, loading, error, successMessage } = useAppSelector(
     (state: RootState) => state.auth
   );
 

@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchLeaves, submitLeave } from "@/redux/slice/leaveSlice";
-import { RootState, AppDispatch } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 
 export const useLeaveManagement = (employeeId: string) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { leaves, loading } = useSelector((state: RootState) => ({
+  const dispatch = useAppDispatch();
+  const { leaves, loading } = useAppSelector((state: RootState) => ({
     ...state.leave,
     leaves: state.leave.leaves.filter(
       (leave) => leave.employeeId === employeeId

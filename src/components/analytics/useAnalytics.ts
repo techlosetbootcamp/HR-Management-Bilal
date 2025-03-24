@@ -1,24 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "../../redux/store";
 import { fetchProjects } from "../../redux/slice/projectSlice";
 import { fetchAttendance } from "../../redux/slice/attandanceSlice";
 import { fetchLeaves } from "../../redux/slice/leaveSlice";
 import { fetchEmployees } from "../../redux/slice/employeeSlice";
 
 export const useAnalyticsData = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const projectCount = useSelector(
+  const dispatch = useAppDispatch();
+  const projectCount = useAppSelector(
     (state: RootState) => state.projects.projects.length
   );
-  const attendanceCount = useSelector(
+  const attendanceCount = useAppSelector(
     (state: RootState) => state.attandance.attendanceRecords.length
   );
-  const leaveCount = useSelector(
+  const leaveCount = useAppSelector(
     (state: RootState) => state.leave.leaves.length
   );
-  const employeeCount = useSelector(
+  const employeeCount = useAppSelector(
     (state: RootState) => state.employees.employees.length
   );
 

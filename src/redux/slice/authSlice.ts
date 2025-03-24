@@ -16,7 +16,7 @@ export const changePassword = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const res = await axios.put("/api/changePassword", {
+      const res = await axios.put("/api/auth/register", {
         email,
         newPassword,
       });

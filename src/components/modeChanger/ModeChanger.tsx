@@ -1,13 +1,12 @@
 "use client";
 
-import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "@/redux/slice/themeSlice";
-import { RootState } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { Sun, Moon } from "lucide-react";
 
 export default function ModeChanger() {
-  const dispatch = useDispatch();
-  const theme = useSelector((state: RootState) => state.theme.theme);
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector((state: RootState) => state.theme.theme);
 
   return (
     <button
