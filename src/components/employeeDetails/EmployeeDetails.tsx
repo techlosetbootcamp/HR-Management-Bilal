@@ -164,7 +164,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   Personal Information
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {PersonalInfo.map(
+                  {PersonalInfo?.map(
                     ({
                       name,
                       label,
@@ -202,7 +202,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   Professional Information
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {ProfessionalInfo.map(
+                  {ProfessionalInfo?.map(
                     ({ name, label, type, options, valueKey }) => (
                       <EmployeeInput
                         key={name}
@@ -229,7 +229,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <h3 className="text-lg font-semibold mb-2">Documents</h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {fields.map((field) => (
+                  {fields?.map((field) => (
                     <div
                       key={field}
                       className="flex items-center gap-2 dark:bg-[#131313] p-3 rounded-md border border-gray-700"
@@ -289,7 +289,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               <div className="mb-6 mt-5">
                 <h3 className="text-lg font-semibold mb-2">Account Access</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {AccountAccess.map(({ name, label, valueKey }) => (
+                  {AccountAccess?.map(({ name, label, valueKey }) => (
                     <EmployeeInput
                       key={name}
                       name={name}

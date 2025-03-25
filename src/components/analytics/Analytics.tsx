@@ -28,7 +28,7 @@ const Analytics = () => {
         icon={<Users size={25} className="text-orange-500" />}
         title="Total Employees"
         count={employeeCount}
-        updateDate={updateDates.employees}
+        updateDate={updateDates?.employees}
         percentage={12}
       />
 
@@ -36,7 +36,7 @@ const Analytics = () => {
         icon={<Briefcase size={25} className="text-orange-500" />}
         title="Total Leaves"
         count={leaveCount}
-        updateDate={updateDates.leaves}
+        updateDate={updateDates?.leaves}
         percentage={5}
       />
 
@@ -44,7 +44,7 @@ const Analytics = () => {
         icon={<CalendarCheck size={25} className="text-orange-500" />}
         title="Today Attendance"
         count={attendanceCount}
-        updateDate={updateDates.attendance}
+        updateDate={updateDates?.attendance}
         percentage={-8}
       />
 
@@ -52,7 +52,7 @@ const Analytics = () => {
         icon={<FileText size={25} className="text-orange-500" />}
         title="Total Projects"
         count={projectCount}
-        updateDate={updateDates.projects}
+        updateDate={updateDates?.projects}
         percentage={12}
       />
     </div>

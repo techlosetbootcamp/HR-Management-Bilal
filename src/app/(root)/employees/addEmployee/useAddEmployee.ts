@@ -1,13 +1,12 @@
 import { useState } from "react";
-import {  AppDispatch, RootState } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { addEmployee, fetchEmployees, uploadImage } from "@/redux/slice/employeeSlice";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function useAddEmployee() {
-  const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: RootState) => state.employees);
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state: RootState) => state.employees);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -57,7 +56,7 @@ export default function useAddEmployee() {
       const result = await dispatch(uploadImage({ file, fieldName })).unwrap();
       setForm((prev) => ({
         ...prev,
-        [fieldName]: result.secure_url,
+        [fieldName]: result?.secure_url,
       }));
     } catch (error) {
       console.error(` File upload failed for ${fieldName}:`, error);
@@ -99,7 +98,7 @@ export default function useAddEmployee() {
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email)) {
+    if (!emailRegex.test(form?.email)) {
       toast.error("Please enter a valid email address");
       return false;
     }

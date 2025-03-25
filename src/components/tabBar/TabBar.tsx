@@ -18,7 +18,7 @@ const TabBar: React.FC<TabBarProps> = ({
         isVertical ? "flex-col" : "border-b border-gray-700"
       } ${className}`}
     >
-      {tabs.map((tab) => (
+      {tabs?.map((tab) => (
         <button
           key={tab.key}
           className={`

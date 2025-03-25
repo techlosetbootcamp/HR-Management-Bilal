@@ -35,9 +35,9 @@ export function useMarkAttandance() {
 
   const filteredEmployees = employees.filter(
     (emp) =>
-      emp.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase())
+      emp?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp?.employeeId.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

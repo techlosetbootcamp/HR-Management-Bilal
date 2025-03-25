@@ -59,7 +59,7 @@ const notificationsSlice = createSlice({
       .addCase(handleNotificationAction.fulfilled, (state, action) => {
         const { id, action: notificationAction } = action.payload;
         if (notificationAction === "read") {
-          state.notifications = state.notifications.map((n) =>
+          state.notifications = state.notifications?.map((n) =>
             n.id === id ? { ...n, isRead: true } : n
           );
         } else if (notificationAction === "delete") {

@@ -55,7 +55,7 @@ export default function Page() {
             className="w-full p-2 bg-gray-700 text-white rounded-md"
           >
             <option value="">All Cities</option>
-            {uniqueCities.map((city) => (
+            {uniqueCities?.map((city) => (
               <option key={city} value={city}>
                 {city}
               </option>

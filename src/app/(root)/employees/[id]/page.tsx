@@ -6,9 +6,9 @@ import { useSearchParams, useParams } from "next/navigation";
 export default function Page() {
   const { id } = useParams();
   const searchParams = useSearchParams();
-  const isEditMode = searchParams.get("edit") === "true";
+  const isEditMode = searchParams?.get("edit") === "true";
 
-  const employeeEmail = searchParams.get("email") || "";
+  const employeeEmail = searchParams?.get("email") || "";
   return (
     <EmployeeDetails
       id={id as string}

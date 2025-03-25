@@ -1,14 +1,12 @@
-"use client";
 import { useEffect, useState } from "react";
-import {  AppDispatch, RootState } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { fetchEmployees } from "@/redux/slice/employeeSlice";
 import { useSession } from "next-auth/react";
-import { useDispatch, useSelector } from "react-redux";
 
 export const useEmployee = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { employees, loading, error, filters } = useSelector(
+  const { employees, loading, error, filters } = useAppSelector(
     (state: RootState) => state.employees
   );
   const { data: session } = useSession();
@@ -21,15 +19,17 @@ export const useEmployee = () => {
     dispatch(fetchEmployees());
   }, [dispatch]);
 
-  const filteredEmployees = employees.filter((emp) => {
+  const sortedEmployees = employees.slice().reverse();
+
+  const filteredEmployees = sortedEmployees?.filter((emp) => {
     return (
-      (!filters.department || emp.department === filters.department) &&
-      (!filters.designation || emp.designation === filters.designation) &&
-      (!filters.city || emp.city === filters.city) &&
+      (!filters?.department || emp?.department === filters?.department) &&
+      (!filters?.designation || emp?.designation === filters?.designation) &&
+      (!filters?.city || emp?.city === filters?.city) &&
       (searchTerm === "" ||
-        emp.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        emp.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase()))
+        emp?.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        emp?.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        emp?.employeeId?.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   });
 

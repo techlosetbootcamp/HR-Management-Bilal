@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       where: { role: "ADMIN" },
     });
 
-    const adminNotifications = admins.map((admin) => ({
+    const adminNotifications = admins?.map((admin) => ({
       userId: admin.id,
       message: `New leave request from ${session.user.name}`,
     }));

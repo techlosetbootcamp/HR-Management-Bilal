@@ -17,7 +17,7 @@ const AttendanceRecords: React.FC<AttendanceRecordsProps> = ({
         <span>Status</span>
       </div>
 
-      {attendanceRecords.map((record) => (
+      {attendanceRecords?.map((record) => (
         <div
           key={record.id}
           className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center text-sm py-3 border-b dark:border-gray-800"

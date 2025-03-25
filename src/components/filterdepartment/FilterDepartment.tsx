@@ -24,7 +24,7 @@ export default function FilterDepatment({ employees }: Props) {
   return (
     <div className="dark:bg-[#131313] dark:text-white mt-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {Object.entries(employeesByDepartment).map(([department, empList]) => (
+        {Object.entries(employeesByDepartment)?.map(([department, empList]) => (
           <div
             key={department}
             className="dark:bg-[#1E1E1E] p-5 rounded-lg shadow-md border border-gray-700"
@@ -47,7 +47,7 @@ export default function FilterDepatment({ employees }: Props) {
             </p>
             <hr className="border-gray-700" />
             <div className="space-y-2">
-              {empList.slice(0, 5).map((emp) => (
+              {empList.slice(0, 5)?.map((emp) => (
                 <div
                   key={emp.id}
                   className="flex items-center justify-between p-2 rounded-lg dark:hover:bg-gray-800 cursor-pointer transition"

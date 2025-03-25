@@ -87,7 +87,7 @@ const leaveSlice = createSlice({
       })
       .addCase(updateLeaveStatus.fulfilled, (state, action) => {
         state.loading = false;
-        state.leaves = state.leaves.map((leave) =>
+        state.leaves = state.leaves?.map((leave) =>
           leave.id === action.payload.leaveId
             ? { ...leave, status: action.payload.status }
             : leave

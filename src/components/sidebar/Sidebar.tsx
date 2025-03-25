@@ -48,7 +48,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
       </div>
 
       <nav className="mt-4">
-        {filteredLinks.map(({ name, path, icon: Icon }) => {
+        {filteredLinks?.map(({ name, path, icon: Icon }) => {
           const isActive =
             (path === "/employees" && isEmployeeSection) ||
             (path === "/attandance" && isAttendanceSection) ||

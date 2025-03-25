@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  RootState, useAppDispatch, useAppSelector } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { fetchEmployees, deleteEmployee } from "@/redux/slice/employeeSlice";
 import { useSession } from "next-auth/react";
@@ -42,19 +42,19 @@ const useEmployees = (departmentName: string) => {
   const handleEditEmployee = (id: string) => {
     router.replace(`/employees/${id}?edit=true`);
   };
-  const departmentEmployees = employees.filter(
-    (emp) => emp.department === departmentName
+  const departmentEmployees = employees?.filter(
+    (emp) => emp?.department === departmentName
   );
-  const filteredEmployees = departmentEmployees.filter(
+  const filteredEmployees = departmentEmployees?.filter(
     (emp) =>
-      (`${emp.firstName} ${emp.lastName}`
+      (`${emp?.firstName} ${emp?.lastName}`
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-        emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (selectedCity === "" || emp.city === selectedCity)
+        emp?.employeeId?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      (selectedCity === "" || emp?.city === selectedCity)
   );
   const uniqueCities = departmentEmployees.length
-    ? [...new Set(departmentEmployees.map((emp) => emp.city).filter(Boolean))]
+    ? [...new Set(departmentEmployees?.map((emp) => emp.city).filter(Boolean))]
     : [];
 
   return {

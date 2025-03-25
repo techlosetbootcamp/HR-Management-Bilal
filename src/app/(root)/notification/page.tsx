@@ -28,7 +28,7 @@ export default function Page() {
         </div>
       ) : (
         <ul className="space-y-8">
-          {notifications.map((notification) => (
+          {notifications?.map((notification) => (
             <li
               key={notification.id}
               onClick={() =>

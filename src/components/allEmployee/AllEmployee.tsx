@@ -15,8 +15,8 @@ export default function AllEmployee({
 }: AllEmployeeProps) {
   const { searchTerm } = useSearch();
 
-  const filteredEmployees = employees.filter((emp) =>
-    `${emp.firstName} ${emp.lastName}`
+  const filteredEmployees = employees?.filter((emp) =>
+    `${emp?.firstName} ${emp?.lastName}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
@@ -45,7 +45,7 @@ export default function AllEmployee({
       </div>
 
       {currentEmployees.length > 0 ? (
-        currentEmployees.map((emp) => (
+        currentEmployees?.map((emp) => (
           <div
             key={emp.id}
             className="grid grid-cols-7 gap-4 border-b border-gray-700 p-3"
@@ -54,27 +54,27 @@ export default function AllEmployee({
               <Image
                 width={30}
                 height={30}
-                src={emp.photoURL || "/default-avatar.png"}
-                alt={emp.firstName}
+                src={emp?.photoURL || "/default-avatar.png"}
+                alt={emp?.firstName}
                 className="w-8 h-8 rounded-full"
               />
               <span>
-                {emp.firstName} {emp.lastName}
+                {emp?.firstName} {emp?.lastName}
               </span>
             </div>
-            <div>{emp.employeeId}</div>
-            <div>{emp.department}</div>
-            <div>{emp.designation}</div>
-            <div>{emp.employmentType}</div>
+            <div>{emp?.employeeId}</div>
+            <div>{emp?.department}</div>
+            <div>{emp?.designation}</div>
+            <div>{emp?.employmentType}</div>
             <div>
               <span
                 className={`text-xs ${
-                  emp.status === "Permanent"
+                  emp?.status === "Permanent"
                     ? "text-customOrange"
                     : "text-blue-600"
                 }`}
               >
-                {emp.status}
+                {emp?.status}
               </span>
             </div>
             <div className="flex justify-center gap-2">
@@ -87,7 +87,7 @@ export default function AllEmployee({
                     <CheckCircle size={24} /> Mark
                   </button>
                 ) : (
-                  <div>{emp.city || "N/A"}</div>
+                  <div>{emp?.city || "N/A"}</div>
                 )
               ) : isAdmin ? (
                 <>

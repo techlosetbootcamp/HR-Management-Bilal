@@ -97,7 +97,7 @@ export async function PATCH(request: NextRequest) {
         where: { role: "ADMIN" },
       });
 
-      const adminNotifications = admins.map((admin) => ({
+      const adminNotifications = admins?.map((admin) => ({
         userId: admin.id,
         message: `Project "${updatedProject.title}" has been marked as completed by ${session.user.name}.`,
       }));

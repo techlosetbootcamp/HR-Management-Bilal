@@ -38,8 +38,8 @@ export default function AttendanceModalForm({
             </button>
 
             <h2 className="text-lg font-semibold mb-4">
-              Mark Attendance for {selectedEmployee.firstName}{" "}
-              {selectedEmployee.lastName}
+              Mark Attendance for {selectedEmployee?.firstName}{" "}
+              {selectedEmployee?.lastName}
             </h2>
             <form onSubmit={onSubmit} className="space-y-3">
               <EmployeeInput

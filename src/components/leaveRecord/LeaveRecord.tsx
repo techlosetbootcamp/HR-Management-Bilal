@@ -29,7 +29,7 @@ const LeaveRecord: React.FC<LeaveRecordProps> = ({
           </tr>
         </thead>
         <tbody className="px-4 py-3">
-          {leaves.map((leave) => (
+          {leaves?.map((leave) => (
             <tr
               key={leave.id}
               className="border-b border-gray-300 dark:border-gray-700"

@@ -35,7 +35,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
           </tr>
         </thead>
         <tbody className="">
-          {projects.map((project) => {
+          {projects?.map((project) => {
             const employee = employees.find(
               (emp) => emp.id === project.assignedEmployeeId
             );

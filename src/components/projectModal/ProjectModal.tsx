@@ -93,7 +93,7 @@ export default function ProjectModal({
               <option value="" disabled>
                 Select an Employee
               </option>
-              {employees.map((emp) => (
+              {employees?.map((emp) => (
                 <option key={emp.id} value={emp.id}>
                   {emp.firstName} {emp.lastName}
                 </option>
