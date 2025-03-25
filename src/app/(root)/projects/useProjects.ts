@@ -1,18 +1,20 @@
-"use client";
 import { useState, useEffect, FormEvent } from "react";
-import {  RootState, useAppDispatch, useAppSelector } from "@/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/redux/store";
 import { fetchProjects, addProject } from "@/redux/slice/projectSlice";
 import { fetchEmployees } from "@/redux/slice/employeeSlice";
 import toast from "react-hot-toast";
 
 export function useProjects() {
   const dispatch = useAppDispatch();
-  const projects = useAppSelector((state: RootState) => state.projects.projects);
+  const projects = useAppSelector(
+    (state: RootState) => state.projects.projects
+  );
   const projectLoading = useAppSelector(
     (state: RootState) => state.projects.loading
   );
-  const projectError = useAppSelector((state: RootState) => state.projects.error);
-
+  const projectError = useAppSelector(
+    (state: RootState) => state.projects.error
+  );
   const employees = useAppSelector(
     (state: RootState) => state.employees.employees
   );
@@ -28,23 +30,29 @@ export function useProjects() {
     dispatch(fetchEmployees());
   }, [dispatch]);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent): Promise<boolean> => {
     e.preventDefault();
-    dispatch(
-      addProject({
-        title,
-        description,
-        assignedEmployeeId: employeeId,
-        startDate,
-        endDate,
-      })
-    );
-    toast.success("Project added successfully!");
-    setTitle("");
-    setDescription("");
-    setStartDate("");
-    setEndDate("");
-    setEmployeeId("");
+    try {
+      await dispatch(
+        addProject({
+          title,
+          description,
+          assignedEmployeeId: employeeId,
+          startDate,
+          endDate,
+        })
+      ).unwrap();
+      toast.success("Project added successfully!");
+      setTitle("");
+      setDescription("");
+      setStartDate("");
+      setEndDate("");
+      setEmployeeId("");
+      return true;
+    } catch {
+      toast.error("Failed to add project. Please try again.");
+      return false;
+    }
   };
 
   const sortedProjects = [...projects].sort((a, b) => {

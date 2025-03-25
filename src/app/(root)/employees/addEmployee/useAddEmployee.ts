@@ -114,11 +114,11 @@ export default function useAddEmployee() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!validateForm()) {
       return;
     }
-
+  
     try {
       await dispatch(addEmployee(form)).unwrap();
       dispatch(fetchEmployees());
@@ -126,10 +126,28 @@ export default function useAddEmployee() {
       router.push("/employees");
     } catch (error) {
       console.error("Error adding employee:", error);
-      toast.error("Failed to add employee. Please try again.");
+  
+      interface ApiError {
+        response?: {
+          data?: {
+            error?: string;
+          };
+        };
+        message?: string;
+      };
+
+      const apiError = error as ApiError;
+      if (
+        apiError?.response?.data?.error === "Email already exists" ||
+        apiError?.message?.includes("Email already exists")
+      ) {
+        toast.error("Email already exists. Please use a different email.");
+      } else {
+        toast.error("Failed to add employee. Please try again.");
+      }
     }
   };
-
+  
   return {
     form,
     setForm,

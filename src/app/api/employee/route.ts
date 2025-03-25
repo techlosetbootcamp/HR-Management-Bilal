@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth";
 import prisma from "../../../../lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
   try {
@@ -41,8 +42,6 @@ export async function POST(req: NextRequest) {
     }
 
     const rawBody = await req.text();
-    console.log("Raw Request Body:", rawBody);
-
     let data;
     try {
       data = JSON.parse(rawBody);
@@ -54,9 +53,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!data.firstName || !data.email) {
+    if (!data.userName || !data.email) {
       return NextResponse.json(
         { error: "Missing required fields: firstName and email" },
+        { status: 400 }
+      );
+    }
+
+    const existingEmployee = await prisma.employee.findUnique({
+      where: { email: data.email },
+    });
+    if (existingEmployee) {
+      return NextResponse.json(
+        { error: "Email already exists" },
         { status: 400 }
       );
     }
@@ -65,6 +74,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(employee, { status: 201 });
   } catch (error) {
     console.error("Error adding employee:", error);
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return NextResponse.json(
+          { error: "Email already exists" },
+          { status: 400 }
+        );
+      }
+    }
+
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

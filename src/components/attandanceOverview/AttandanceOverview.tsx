@@ -37,6 +37,11 @@ const AttendanceOverview: React.FC<AttendanceOverviewProps> = ({
     return <div className="text-center text-red-500">Error: {error}</div>;
   }
 
+  // Conditionally slice records: if showPagination is false, only show 6 records
+  const recordsToDisplay = showPagination
+    ? attendanceRecords
+    : attendanceRecords?.slice(0, 6);
+
   return (
     <div className="dark:bg-[#131313] rounded-lg shadow-lg dark:text-white p-6">
       <div className="flex justify-between items-end mb-4">
@@ -44,7 +49,7 @@ const AttendanceOverview: React.FC<AttendanceOverviewProps> = ({
         {showViewAll && (
           <button
             className="px-4 py-2 text-sm text-customOrange underline rounded-lg"
-            onClick={() => router.push("/attendance")}
+            onClick={() => router.push("/attandance")}
           >
             View All
           </button>
@@ -62,8 +67,8 @@ const AttendanceOverview: React.FC<AttendanceOverviewProps> = ({
           </tr>
         </thead>
         <tbody>
-          {attendanceRecords?.length > 0 ? (
-            attendanceRecords?.slice(0, 6)?.map((record) => (
+          {recordsToDisplay && recordsToDisplay.length > 0 ? (
+            recordsToDisplay.map((record) => (
               <tr key={record?.id} className="border-b dark:border-gray-800">
                 <td className="py-2 flex items-center gap-2">
                   <Image

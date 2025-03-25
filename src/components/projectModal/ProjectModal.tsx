@@ -111,7 +111,7 @@ export default function ProjectModal({
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+              className="px-4 py-2 bg-customOrange rounded hover:bg-[#131313] transition-all duration-300 border-customOrange border hover:text-customOrange"
             >
               Save Project
             </button>

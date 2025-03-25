@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { FormEvent } from "react";
 import Button from "@/components/button/Button";
 import ProjectModal from "@/components/projectModal/ProjectModal";
 import { useProjects } from "./useProjects";
@@ -26,6 +26,13 @@ export default function Page() {
 
   const { isModalOpen, openModal, closeModal } = useProjectModal();
 
+  const handleProjectSubmit = async (e: FormEvent) => {
+    const success = await handleSubmit(e);
+    if (success) {
+      closeModal();
+    }
+  };
+
   return (
     <div className="p-6 border dark:border-gray-700 rounded-xl">
       <div className="flex justify-between">
@@ -51,7 +58,7 @@ export default function Page() {
         employeeId={employeeId}
         setEmployeeId={setEmployeeId}
         employees={employees}
-        handleSubmit={handleSubmit}
+        handleSubmit={handleProjectSubmit}
       />
 
       <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
