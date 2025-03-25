@@ -46,7 +46,7 @@ export default function AttendanceModalForm({
                 label="Date"
                 type="date"
                 name="date"
-                value={attendanceState.date}
+                value={attendanceState?.date}
                 onChange={(e) => updateAttendanceState("date", e.target.value)}
               />
 
@@ -54,7 +54,7 @@ export default function AttendanceModalForm({
                 label="Check In"
                 type="time"
                 name="checkIn"
-                value={attendanceState.checkIn}
+                value={attendanceState?.checkIn}
                 onChange={(e) =>
                   updateAttendanceState("checkIn", e.target.value)
                 }
@@ -64,7 +64,7 @@ export default function AttendanceModalForm({
                 label="Check Out"
                 type="time"
                 name="checkOut"
-                value={attendanceState.checkOut}
+                value={attendanceState?.checkOut}
                 onChange={(e) =>
                   updateAttendanceState("checkOut", e.target.value)
                 }
@@ -74,7 +74,7 @@ export default function AttendanceModalForm({
                 label="Break Time (HH:MM)"
                 type="text"
                 name="breakTime"
-                value={attendanceState.breakTime}
+                value={attendanceState?.breakTime}
                 onChange={(e) =>
                   updateAttendanceState("breakTime", e.target.value)
                 }
@@ -85,7 +85,7 @@ export default function AttendanceModalForm({
                 label="Working Hours (HH:MM)"
                 type="text"
                 name="manualWorkingHours"
-                value={attendanceState.manualWorkingHours}
+                value={attendanceState?.manualWorkingHours}
                 onChange={(e) =>
                   updateAttendanceState("manualWorkingHours", e.target.value)
                 }
@@ -96,7 +96,7 @@ export default function AttendanceModalForm({
                 label="Status"
                 type="select"
                 name="status"
-                value={attendanceState.status}
+                value={attendanceState?.status}
                 onChange={(e) =>
                   updateAttendanceState("status", e.target.value)
                 }
@@ -106,9 +106,9 @@ export default function AttendanceModalForm({
               <button
                 type="submit"
                 className="bg-green-500 text-white w-full py-2 rounded hover:bg-green-600"
-                disabled={attendanceState.loading}
+                disabled={attendanceState?.loading}
               >
-                {attendanceState.loading ? "Submitting..." : "Submit"}
+                {attendanceState?.loading ? "Submitting..." : "Submit"}
               </button>
             </form>
           </motion.div>

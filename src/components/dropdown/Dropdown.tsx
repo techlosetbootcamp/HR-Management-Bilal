@@ -2,21 +2,18 @@
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { useDropDown } from "./useDropDown";
-import { useState } from "react";
 
 const DropDown = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const {
     user,
     handleProfileClick,
     handleAboutClick,
     signOut,
     handleChangePasswordClick,
+    handleAction,
+    isOpen,
+    toggleDropdown,
   } = useDropDown();
-
-  const toggleDropdown = () => {
-    setIsOpen((prev) => !prev);
-  };
 
   const userName = user?.name?.trim().slice(0, 8) || "Guest";
   const userRole = user?.role || "Employee";
@@ -28,7 +25,7 @@ const DropDown = () => {
         onClick={toggleDropdown}
         aria-expanded={isOpen}
       >
-        <div className="flex justtify-center items-center w-[156px]">
+        <div className="flex justify-center items-center w-[156px]">
           <Image
             src={user.profilePicture}
             alt="Profile pic"
@@ -50,29 +47,29 @@ const DropDown = () => {
 
       {isOpen && (
         <div className="absolute right-[0px] mt-2 w-[184px] border dark:border-gray-700 border-gray-200 rounded shadow-lg dark:bg-[#131313] bg-white">
-          <ul className="">
+          <ul>
             <li
               className="px-4 py-2 hover:bg-customOrange cursor-pointer"
-              onClick={handleProfileClick}
+              onClick={() => handleAction(handleProfileClick)}
             >
               Profile
             </li>
             <li
               className="px-4 py-2 hover:bg-customOrange cursor-pointer"
-              onClick={handleAboutClick}
+              onClick={() => handleAction(handleAboutClick)}
             >
               Employee Info
             </li>
             <li
               className="px-4 py-2 hover:bg-customOrange cursor-pointer"
-              onClick={handleChangePasswordClick}
+              onClick={() => handleAction(handleChangePasswordClick)}
             >
               Change Password
             </li>
             <div className="border-t border-gray-700"></div>
             <li
               className="px-4 py-3 hover:bg-customOrange cursor-pointer"
-              onClick={() => signOut()}
+              onClick={() => handleAction(signOut)}
             >
               Logout
             </li>

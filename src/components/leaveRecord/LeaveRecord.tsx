@@ -37,43 +37,43 @@ const LeaveRecord: React.FC<LeaveRecordProps> = ({
               {showEmployeeDetails && (
                 <>
                   <td className="p-4 flex items-center gap-2">
-                    {leave.employee.photoURL && (
+                    {leave?.employee?.photoURL && (
                       <Image
-                        src={leave.employee.photoURL}
-                        alt={`${leave.employee.firstName}'s profile`}
+                        src={leave?.employee?.photoURL}
+                        alt={`${leave?.employee?.firstName}'s profile`}
                         width={40}
                         height={40}
                         className="rounded-full object-cover w-[40] h-[40]"
                       />
                     )}
                     <span>
-                      {leave.employee.firstName} {leave.employee.lastName}
+                      {leave?.employee?.firstName} {leave?.employee?.lastName}
                     </span>
                   </td>
-                  <td className="p-4">{leave.employee.email}</td>
+                  <td className="p-4">{leave?.employee?.email}</td>
                 </>
               )}
-              <td className="p-4">{leave.reason}</td>
+              <td className="p-4">{leave?.reason}</td>
               <td className="p-4">
-                {new Date(leave.startDate).toLocaleDateString()}
+                {new Date(leave?.startDate).toLocaleDateString()}
               </td>
               <td className="p-4">
-                {new Date(leave.endDate).toLocaleDateString()}
+                {new Date(leave?.endDate).toLocaleDateString()}
               </td>
               <td className="px-4 py-3">
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    leave.status === "PENDING"
+                    leave?.status === "PENDING"
                       ? "bg-yellow-500 text-yellow-100"
                       : leave.status === "APPROVED"
                       ? "bg-green-500 text-green-100"
                       : "bg-red-500 text-red-100"
                   }`}
                 >
-                  {leave.status}
+                  {leave?.status}
                 </span>
               </td>
-              {isAdmin && leave.status === "PENDING" && (
+              {isAdmin && leave?.status === "PENDING" && (
                 <td className="px-4 py-3 text-center">
                   <div className="flex justify-center gap-2">
                     <button

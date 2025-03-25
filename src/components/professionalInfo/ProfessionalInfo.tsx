@@ -10,33 +10,33 @@ export default function ProfessionalInfo({
       <EmployeeInput
         name="employeeId"
         placeholder="Employee ID"
-        value={form.employeeId}
+        value={form?.employeeId}
         onChange={handleChange}
       />
 
       <EmployeeInput
         name="userName"
         placeholder="User Name"
-        value={form.userName}
+        value={form?.userName}
         onChange={handleChange}
       />
       <EmployeeInput
         name="employmentType"
         type="select"
-        value={form.employmentType || ""}
+        value={form?.employmentType || ""}
         options={["Office", "Remote"]}
         onChange={handleChange}
       />
       <EmployeeInput
         name="email"
         placeholder="Email Address"
-        value={form.email}
+        value={form?.email}
         onChange={handleChange}
       />
       <EmployeeInput
         name="department"
         type="select"
-        value={form.department || ""}
+        value={form?.department || ""}
         options={["Design", "Development", "HR", "Sales"]}
         onChange={handleChange}
       />
@@ -44,7 +44,7 @@ export default function ProfessionalInfo({
       <EmployeeInput
         name="designation"
         type="select"
-        value={form.designation || ""}
+        value={form?.designation || ""}
         options={[
           "UI/X Designer",
           "PHP Developer",
@@ -54,7 +54,7 @@ export default function ProfessionalInfo({
           "Sales Manager",
           "BDM",
           "Sales Engineer",
-          "Dirextor of Sales",
+          "Director of Sales",
           "Next JS Developer",
           "Node JS Developer",
           "Design Lead",
@@ -64,28 +64,28 @@ export default function ProfessionalInfo({
       <EmployeeInput
         name="workingDays"
         type="select"
-        value={form.workingDays || ""}
+        value={form?.workingDays || ""}
         options={["Monday-Friday", "Sunday-Thursday", "Flexible"]}
         onChange={handleChange}
       />
       <EmployeeInput
         name="status"
         type="select"
-        value={form.status || ""}
+        value={form?.status || ""}
         options={["Permanent", "Contract"]}
         onChange={handleChange}
       />
       <EmployeeInput
         type="date"
         name="joiningDate"
-        value={form.joiningDate}
+        value={form?.joiningDate}
         onChange={handleChange}
       />
 
       <EmployeeInput
         name="officeLocation"
         type="select"
-        value={form.officeLocation || ""}
+        value={form?.officeLocation || ""}
         options={[
           "Faisalabad",
           "Lahore",

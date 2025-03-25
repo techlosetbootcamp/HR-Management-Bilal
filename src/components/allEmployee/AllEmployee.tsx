@@ -47,7 +47,7 @@ export default function AllEmployee({
       {currentEmployees.length > 0 ? (
         currentEmployees?.map((emp) => (
           <div
-            key={emp.id}
+            key={emp?.id}
             className="grid grid-cols-7 gap-4 border-b border-gray-700 p-3"
           >
             <div className="flex items-center gap-2">
@@ -92,26 +92,26 @@ export default function AllEmployee({
               ) : isAdmin ? (
                 <>
                   <button
-                    onClick={() => handleViewEmployee?.(emp.id)}
+                    onClick={() => handleViewEmployee?.(emp?.id)}
                     className="dark:text-white p-2 rounded hover:text-blue-500"
                   >
                     <Eye size={24} />
                   </button>
                   <button
-                    onClick={() => handleEditEmployee?.(emp.id)}
+                    onClick={() => handleEditEmployee?.(emp?.id)}
                     className="dark:text-white p-2 rounded hover:text-green-600"
                   >
                     <PencilLine size={24} />
                   </button>
                   <button
-                    onClick={() => handleDeleteEmployee?.(emp.id)}
+                    onClick={() => handleDeleteEmployee?.(emp?.id)}
                     className="dark:text-white p-2 rounded hover:text-customOrange font-extrabold"
                   >
                     <Trash size={24} />
                   </button>
                 </>
               ) : (
-                <div>{emp.city || "N/A"}</div>
+                <div>{emp?.city || "N/A"}</div>
               )}
             </div>
           </div>

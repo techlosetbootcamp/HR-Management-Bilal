@@ -57,15 +57,15 @@ export default function FilterDepatment({ employees }: Props) {
                     <Image
                       width={40}
                       height={40}
-                      src={emp.photoURL || "/default-avatar.png"}
-                      alt={emp.firstName}
+                      src={emp?.photoURL || "/default-avatar.png"}
+                      alt={emp?.firstName}
                       className="w-10 h-10 rounded-full"
                     />
                     <div>
                       <p className="text-sm font-medium">
-                        {emp.firstName} {emp.lastName}
+                        {emp?.firstName} {emp.lastName}
                       </p>
-                      <p className="text-xs text-gray-400">{emp.designation}</p>
+                      <p className="text-xs text-gray-400">{emp?.designation}</p>
                     </div>
                   </div>
                   <ChevronRight size={20} className="dark:text-white" />

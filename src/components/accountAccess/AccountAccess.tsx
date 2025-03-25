@@ -12,28 +12,28 @@ export default function AccountAccess({
         type="email"
         name="email"
         placeholder="Enter Email Address"
-        value={form.email}
+        value={form?.email}
         onChange={handleChange}
       />
 
       <EmployeeInput
         name="slackId"
         placeholder="Enter Slack ID"
-        value={form.slackId}
+        value={form?.slackId}
         onChange={handleChange}
       />
 
       <EmployeeInput
         name="skypeId"
         placeholder="Enter Skype ID"
-        value={form.skypeId}
+        value={form?.skypeId}
         onChange={handleChange}
       />
 
       <EmployeeInput
         name="githubId"
         placeholder="Enter Github ID"
-        value={form.githubId}
+        value={form?.githubId}
         onChange={handleChange}
       />
     </div>

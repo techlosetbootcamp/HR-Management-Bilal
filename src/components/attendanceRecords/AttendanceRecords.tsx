@@ -19,39 +19,39 @@ const AttendanceRecords: React.FC<AttendanceRecordsProps> = ({
 
       {attendanceRecords?.map((record) => (
         <div
-          key={record.id}
+          key={record?.id}
           className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center text-sm py-3 border-b dark:border-gray-800"
         >
           <div className="flex justify-between md:block">
             <span className="md:hidden text-gray-400">Date: </span>
-            {formatDate(record.date)}
+            {formatDate(record?.date)}
           </div>
           <div className="flex justify-between md:block">
             <span className="md:hidden text-gray-400">Check In: </span>
-            {formatTime(record.checkIn)}
+            {formatTime(record?.checkIn)}
           </div>
           <div className="flex justify-between md:block">
             <span className="md:hidden text-gray-400">Check Out: </span>
-            {formatTime(record.checkOut)}
+            {formatTime(record?.checkOut)}
           </div>
           <div className="flex justify-between md:block">
             <span className="md:hidden text-gray-400">Break: </span>
-            {record.breakTime}
+            {record?.breakTime}
           </div>
           <div className="flex justify-between md:block">
             <span className="md:hidden text-gray-400">Working Hours: </span>
-            {record.workingHours}
+            {record?.workingHours}
           </div>
           <div className="flex justify-between md:block">
             <span className="md:hidden text-gray-400">Status: </span>
             <span
               className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                record.status === "ON_TIME"
+                record?.status === "ON_TIME"
                   ? "bg-green-900 text-green-400"
                   : "bg-red-900 text-red-400"
               }`}
             >
-              {record.status}
+              {record?.status}
             </span>
           </div>
         </div>

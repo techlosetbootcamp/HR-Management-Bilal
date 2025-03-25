@@ -49,22 +49,22 @@ const ProjectList: React.FC<ProjectListProps> = ({
 
             return (
               <tr key={project.id} className="">
-                <td className="p-4">{project.title}</td>
+                <td className="p-4">{project?.title}</td>
                 {showEmployeeName && (
                   <td className="p-4">
                     {employee
-                      ? `${employee.firstName} ${employee.lastName}`
+                      ? `${employee?.firstName} ${employee?.lastName}`
                       : "N/A"}
                   </td>
                 )}
                 <td className="p-4">
-                  {new Date(project.startDate).toLocaleDateString()}
+                  {new Date(project?.startDate).toLocaleDateString()}
                 </td>
                 <td className="p-4">
-                  {new Date(project.endDate).toLocaleDateString()}
+                  {new Date(project?.endDate).toLocaleDateString()}
                 </td>
-                <td className={`p-4 ${statusColor}`}>{project.status}</td>
-                {showActionButton && project.status !== "COMPLETED" && (
+                <td className={`p-4 ${statusColor}`}>{project?.status}</td>
+                {showActionButton && project?.status !== "COMPLETED" && (
                   <td className="p-4">
                     <button
                       onClick={() =>

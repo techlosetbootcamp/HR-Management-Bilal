@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { Profile } from "@/constants/images";
 import { useRouter } from "next/navigation";
@@ -8,9 +8,19 @@ import toast from "react-hot-toast";
 
 export const useDropDown = () => {
   const { data: session } = useSession();
+  
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleAction = (action: () => void) => {
+    action();
+    setIsOpen(false);
+  };
   const { user, loading } = useAppSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -68,6 +78,9 @@ export const useDropDown = () => {
     handleProfileClick,
     handleChangePasswordClick,
     handleAboutClick,
+    toggleDropdown,
+    handleAction,
+    isOpen,
     signOut,
   };
 };

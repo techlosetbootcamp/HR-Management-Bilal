@@ -13,11 +13,11 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
     <div className="bg-[#131313] p-4 md:p-6">
       <div className="flex mb-4">
         <label className="cursor-pointer border border-gray-700 rounded-xl flex flex-col items-center">
-          {form.photoURL ? (
+          {form?.photoURL ? (
             <Image
               width={20}
               height={20}
-              src={form.photoURL}
+              src={form?.photoURL}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover mb-2"
             />
@@ -42,42 +42,42 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <EmployeeInput
           type="text"
           name="firstName"
-          value={form.firstName}
+          value={form?.firstName}
           placeholder="First Name"
           onChange={handleChange}
         />
         <EmployeeInput
           type="text"
           name="lastName"
-          value={form.lastName}
+          value={form?.lastName}
           placeholder="Last Name"
           onChange={handleChange}
         />
         <EmployeeInput
           type="text"
           name="mobileNumber"
-          value={form.mobileNumber}
+          value={form?.mobileNumber}
           placeholder="Mobile Number"
           onChange={handleChange}
         />
         <EmployeeInput
           type="email"
           name="email"
-          value={form.email}
+          value={form?.email}
           placeholder="Email Address"
           onChange={handleChange}
         />
         <EmployeeInput
           type="date"
           name="dateOfBirth"
-          value={form.dateOfBirth}
+          value={form?.dateOfBirth}
           placeholder="Date of Birth"
           onChange={handleChange}
         />
         <EmployeeInput
           type="select"
           name="maritalStatus"
-          value={form.maritalStatus}
+          value={form?.maritalStatus}
           placeholder="Marital Status"
           onChange={handleChange}
           options={["Single", "Married", "Divorced"]}
@@ -85,7 +85,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <EmployeeInput
           type="select"
           name="gender"
-          value={form.gender}
+          value={form?.gender}
           placeholder="Gender"
           onChange={handleChange}
           options={["Male", "Female", "Other"]}
@@ -93,7 +93,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <EmployeeInput
           type="select"
           name="nationality"
-          value={form.nationality}
+          value={form?.nationality}
           placeholder="Nationality"
           onChange={handleChange}
           options={["Pakistan", "Foreign"]}
@@ -104,7 +104,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <EmployeeInput
           type="text"
           name="address"
-          value={form.address}
+          value={form?.address}
           placeholder="Address"
           onChange={handleChange}
         />
@@ -113,7 +113,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <EmployeeInput
           type="select"
           name="city"
-          value={form.city}
+          value={form?.city}
           placeholder="City"
           onChange={handleChange}
           options={[
@@ -128,7 +128,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <EmployeeInput
           type="select"
           name="state"
-          value={form.state}
+          value={form?.state}
           placeholder="State"
           onChange={handleChange}
           options={["Punjab", "Sindh", "Balochistan", "KPK"]}
@@ -136,7 +136,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <EmployeeInput
           type="text"
           name="zipCode"
-          value={form.zipCode}
+          value={form?.zipCode}
           placeholder="ZIP Code"
           onChange={handleChange}
         />
