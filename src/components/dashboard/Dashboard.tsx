@@ -3,18 +3,19 @@ import React from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { iconLoginLogo } from "@/constants/images";
+import { navebarLogo } from "@/constants/images";
 import AttandanceOverview from "@/components/attandanceOverview/AttandanceOverview";
 import Analytics from "../analytics/Analytics";
 import AttendanceChart from "../attandanceChart/AttandanceChart";
+import LottieAnimation from "../lottieAnimation/LottieAnimation";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
     return (
-      <div className="flex h-screen items-center justify-center text-white">
-        Loading...
+      <div className="flex justify-center items-center h-screen dark:bg-customBlack">
+        <LottieAnimation />
       </div>
     );
   }
@@ -37,19 +38,20 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#131313] animate-glow p-6">
-        <div className="rounded-full shadow-xl">
-          <Image src={iconLoginLogo} alt="Logo" width={250} height={250} />
+      <div className="min-h-screen flex flex-col items-center justify-center dark:bg-customBlack animate-glow p-6">
+        <div className="flex justify-center items-center">
+          <Image src={navebarLogo} alt="Logo" width={130} height={130} />
+          <h1 className="font-semibold text-2xl mt-16">HR SEARCH</h1>
         </div>
-        <h1 className="mt-6 text-4xl font-extrabold text-white">
+        <h1 className="mt-6 text-4xl font-extrabold dark:text-white">
           Welcome, {session?.user.name}!
         </h1>
-        <p className="mt-2 text-lg text-gray-300 text-center max-w-md">
+        <p className="mt-2 text-lg dark:text-gray-300 text-center max-w-md">
           Enjoy your personalized dashboard. Check your profile for the latest
           updates.
         </p>
         <Link href="/profile">
-          <p className="mt-6 px-6 py-3 bg-customOrange text-white font-semibold rounded-xl shadow-lg hover:bg-[#131313] hover:text-customOrange transition-all duration-300 border border-customOrange">
+          <p className="mt-6 px-6 py-3 bg-customOrange text-white font-semibold rounded-xl shadow-lg hover:bg-customBlack hover:text-customOrange transition-all duration-300 border border-customOrange">
             Go to Profile
           </p>
         </Link>
@@ -59,7 +61,6 @@ export default function Dashboard() {
           </p>
         </div>
       </div>
-      {/* Removed the keyframe animation style block */}
     </>
   );
 }

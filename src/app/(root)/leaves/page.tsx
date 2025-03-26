@@ -7,7 +7,7 @@ export default function Page() {
   const { leaves, loading, updateLeaveStatus, isAdmin } = useLeave();
 
   return (
-    <div className="dark:bg-[#131313] border dark:border-gray-700 p-6 rounded-xl">
+    <div className="dark:bg-customBlack border dark:border-gray-700 p-6 rounded-xl">
       <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">
         {isAdmin ? "Admin Leave Panel" : "My Leave Requests"}
       </h1>

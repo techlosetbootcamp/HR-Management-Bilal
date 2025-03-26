@@ -46,7 +46,7 @@ const DropDown = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-[0px] mt-2 w-[184px] border dark:border-gray-700 border-gray-200 rounded shadow-lg dark:bg-[#131313] bg-white">
+        <div className="absolute right-[0px] mt-2 w-[184px] border dark:border-gray-700 border-gray-200 rounded shadow-lg dark:bg-customBlack bg-white">
           <ul>
             <li
               className="px-4 py-2 hover:bg-customOrange cursor-pointer"

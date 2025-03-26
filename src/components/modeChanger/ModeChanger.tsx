@@ -15,7 +15,7 @@ export default function ModeChanger() {
     >
       <div
         className={`flex items-center justify-center w-1/2 p-2 rounded-xl transition-all duration-300 ${
-          theme === "light" ? "bg-orange-500 text-white" : "text-white"
+          theme === "light" ? "bg-customOrange text-white" : "text-white"
         }`}
       >
         <Sun className="w-5 h-5 text-white" />
@@ -24,7 +24,7 @@ export default function ModeChanger() {
 
       <div
         className={`flex items-center justify-center w-1/2 p-2 rounded-[10px] transition-all duration-300 ${
-          theme === "dark" ? "bg-orange-500 text-white" : "text-white"
+          theme === "dark" ? "bg-customOrange text-white" : "text-white"
         }`}
       >
         <Moon className="w-5 h-5" />

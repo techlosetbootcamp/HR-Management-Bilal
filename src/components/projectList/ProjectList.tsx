@@ -14,7 +14,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
 }) => {
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
+      <div className="flex justify-center items-center h-screen dark:bg-customBlack">
         <LottieAnimation />
       </div>
     );
@@ -23,7 +23,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full dark:bg-[#131313] border-collapse">
+      <table className="min-w-full dark:bg-customBlack border-collapse">
         <thead className="text-left text-xs uppercase tracking-wider">
           <tr>
             <th className="p-4">Project Title</th>

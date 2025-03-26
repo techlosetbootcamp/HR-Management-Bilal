@@ -60,17 +60,17 @@ export default function Sidebar({ onClose }: SidebarProps) {
               href={path}
               className={`relative flex items-center px-4 py-2 my-2 rounded-lg transition-colors ${
                 isActive
-                  ? "dark:bg-[#131313] dark:text-customOrange text-gray-700 font-semibold bg-customOrange"
-                  : "dark:hover:bg-[#131313] hover:bg-gray-200"
+                  ? "dark:bg-customBlack dark:text-customOrange text-gray-700 font-semibold bg-customOrange"
+                  : "dark:hover:bg-customBlack hover:bg-gray-200"
               }`}
             >
               {isActive && (
-                <span className="absolute left-0 top-0 h-full w-1 bg-orange-500 rounded-r-lg"></span>
+                <span className="absolute left-0 top-0 h-full w-1 bg-customOrange rounded-r-lg"></span>
               )}
               <Icon
                 className={`w-6 h-6 mr-3 ${
                   isActive
-                    ? "dark:text-customOrange text-[#131313]"
+                    ? "dark:text-customOrange text-customBlack"
                     : "dark:text-gray-200"
                 }`}
               />

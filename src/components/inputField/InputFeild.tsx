@@ -23,7 +23,7 @@ const InputField: React.FC<InputProps> = ({
         name={name}
         onChange={onChange}
         placeholder=" "
-        className="peer w-full py-5 px-[24px] text-white bg-[#131313] border border-customOrange rounded-lg focus:outline-none focus:border-orange-700 transition-all duration-300"
+        className="peer w-full py-5 px-[24px] text-white bg-customBlack border border-customOrange rounded-lg focus:outline-none focus:border-orange-700 transition-all duration-300"
       />
 
       {/* Password Visibility Toggle Button */}

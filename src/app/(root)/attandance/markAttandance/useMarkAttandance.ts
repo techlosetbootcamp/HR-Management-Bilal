@@ -13,7 +13,9 @@ export function useMarkAttandance() {
   const employees = useAppSelector(
     (state: RootState) => state.attandance.employees
   );
-  const loading = useAppSelector((state: RootState) => state.attandance.loading);
+  const loading = useAppSelector(
+    (state: RootState) => state.attandance.loading
+  );
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "ADMIN";
 
@@ -35,9 +37,9 @@ export function useMarkAttandance() {
 
   const filteredEmployees = employees.filter(
     (emp) =>
-      emp?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp?.employeeId.toLowerCase().includes(searchTerm.toLowerCase())
+      emp?.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp?.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp?.employeeId?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

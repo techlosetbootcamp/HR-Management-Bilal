@@ -16,7 +16,7 @@ export default function Settings() {
   } = useSettings();
 
   return (
-    <div className="dark:bg-[#131313] dark:text-white flex items-center justify-center">
+    <div className="dark:bg-customBlack dark:text-white flex items-center justify-center">
       <div className="w-full dark:bg-[#1A1A1A] rounded-lg p-6 dark:text-white border border-gray-300 dark:border-gray-700">
         <div className="mb-6">
           <h3 className="text-lg font-medium mb-1">Appearance</h3>

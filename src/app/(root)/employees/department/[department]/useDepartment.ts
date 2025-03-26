@@ -54,7 +54,7 @@ const useEmployees = (departmentName: string) => {
       (selectedCity === "" || emp?.city === selectedCity)
   );
   const uniqueCities = departmentEmployees.length
-    ? [...new Set(departmentEmployees?.map((emp) => emp.city).filter(Boolean))]
+    ? [...new Set(departmentEmployees?.map((emp) => emp?.city).filter(Boolean))]
     : [];
 
   return {

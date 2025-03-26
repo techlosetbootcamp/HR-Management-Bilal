@@ -16,7 +16,7 @@ const SuccessPage = () => {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center bg-[#131313]">
+    <div className="h-screen flex justify-center items-center bg-customBlack">
       <div className=" flex flex-col justify-center items-center text-white rounded-[10px] p-[30px]">
         <div className="text-[30px] font-[600] ">Password updated</div>
         <div className="text-[30px] font-[600]  ">Successfully</div>

@@ -14,7 +14,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   const { userName, currentPage, firstVisit } = useHeader();
 
   return (
-    <div className="h-[82px] pb-[10px] my-[15px] sticky top-0 z-[99] flex items-center justify-between px-4 lg:px-[50px] dark:bg-[#131313] bg-white">
+    <div className="h-[82px] pb-[10px] my-[15px] sticky top-0 z-[99] flex items-center justify-between px-4 lg:px-[50px] dark:bg-customBlack bg-white">
       <div className="flex items-center">
         <button
           onClick={onMenuClick}

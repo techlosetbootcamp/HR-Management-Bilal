@@ -27,7 +27,7 @@ const AttendanceOverview: React.FC<AttendanceOverviewProps> = ({
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
+      <div className="flex justify-center items-center h-screen dark:bg-customBlack">
         <LottieAnimation />
       </div>
     );
@@ -43,7 +43,7 @@ const AttendanceOverview: React.FC<AttendanceOverviewProps> = ({
     : attendanceRecords?.slice(0, 6);
 
   return (
-    <div className="dark:bg-[#131313] rounded-lg shadow-lg dark:text-white p-6">
+    <div className="dark:bg-customBlack rounded-lg shadow-lg dark:text-white p-6">
       <div className="flex justify-between items-end mb-4">
         <h1 className="text-lg">Attendance Overview</h1>
         {showViewAll && (

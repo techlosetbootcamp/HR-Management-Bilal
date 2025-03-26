@@ -38,7 +38,7 @@ export default function ProjectModal({
       ></motion.div>
 
       <motion.div
-        className="bg-white dark:bg-gray-800 p-6 rounded shadow-lg max-w-md w-full z-10"
+        className="bg-white dark:bg-customBlack p-6 rounded shadow-lg max-w-md w-full z-10"
         initial={{ y: 50, opacity: 0, scale: 0.9 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 50, opacity: 0, scale: 0.9 }}
@@ -59,13 +59,14 @@ export default function ProjectModal({
             placeholder="Project Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-3 py-2 border rounded dark:bg-gray-800 text-white"
+            className="w-full px-3 py-2 border rounded dark:bg-customBlack border-gray-700 text-white"
           />
 
           <EmployeeInput
             label="Start Date"
             type="date"
             name="startDate"
+            placeholder="Start Date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             required
@@ -73,6 +74,7 @@ export default function ProjectModal({
 
           <EmployeeInput
             label="End Date"
+            placeholder="End Date"
             type="date"
             name="endDate"
             value={endDate}
@@ -88,14 +90,14 @@ export default function ProjectModal({
               value={employeeId}
               onChange={(e) => setEmployeeId(e.target.value)}
               required
-              className="border p-2 rounded-xl w-full dark:bg-[#131313] text-white border-gray-700 h-[56px]"
+              className="border p-2 rounded-xl w-full dark:bg-customBlack text-gray-400 border-gray-700 h-[56px]"
             >
               <option value="" disabled>
                 Select an Employee
               </option>
               {employees?.map((emp) => (
-                <option key={emp.id} value={emp.id}>
-                  {emp.firstName} {emp.lastName}
+                <option key={emp?.id} value={emp?.id}>
+                  {emp?.firstName} {emp?.lastName}
                 </option>
               ))}
             </select>
@@ -105,13 +107,13 @@ export default function ProjectModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border rounded hover:bg-gray-200 transition"
+              className="px-4 py-2 border rounded hover:bg-gray-700 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-customOrange rounded hover:bg-[#131313] transition-all duration-300 border-customOrange border hover:text-customOrange"
+              className="px-4 py-2 bg-customOrange rounded hover:bg-customBlack transition-all duration-300 border-customOrange border hover:text-customOrange"
             >
               Save Project
             </button>

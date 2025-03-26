@@ -20,7 +20,7 @@ export default function Page() {
 
   if (isSessionLoading) {
     return (
-      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
+      <div className="flex justify-center items-center h-screen dark:bg-customBlack">
         <LottieAnimation />
       </div>
     );
@@ -81,7 +81,7 @@ export default function Page() {
 
         <button
           type="submit"
-          className="w-full h-[56px] rounded-xl bg-customOrange border border-customOrange dark:hover:bg-[#131313] hover:bg-gray-200 p-2 hover:text-customOrange transition-all ease-in-out duration-300"
+          className="w-full h-[56px] rounded-xl bg-customOrange border border-customOrange dark:hover:bg-customBlack hover:bg-gray-200 p-2 hover:text-customOrange transition-all ease-in-out duration-300"
           disabled={loading}
         >
           {loading ? "Updating..." : "Update Profile"}

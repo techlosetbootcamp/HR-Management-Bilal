@@ -22,6 +22,7 @@ export default function ProfessionalInfo({
       />
       <EmployeeInput
         name="employmentType"
+        placeholder="Select Employee Type"
         type="select"
         value={form?.employmentType || ""}
         options={["Office", "Remote"]}
@@ -35,6 +36,7 @@ export default function ProfessionalInfo({
       />
       <EmployeeInput
         name="department"
+        placeholder="Select Department"
         type="select"
         value={form?.department || ""}
         options={["Design", "Development", "HR", "Sales"]}
@@ -44,6 +46,7 @@ export default function ProfessionalInfo({
       <EmployeeInput
         name="designation"
         type="select"
+        placeholder="Select Designation"
         value={form?.designation || ""}
         options={[
           "UI/X Designer",
@@ -64,6 +67,7 @@ export default function ProfessionalInfo({
       <EmployeeInput
         name="workingDays"
         type="select"
+        placeholder="Working Days"
         value={form?.workingDays || ""}
         options={["Monday-Friday", "Sunday-Thursday", "Flexible"]}
         onChange={handleChange}
@@ -71,6 +75,7 @@ export default function ProfessionalInfo({
       <EmployeeInput
         name="status"
         type="select"
+        placeholder="Select Status"
         value={form?.status || ""}
         options={["Permanent", "Contract"]}
         onChange={handleChange}
@@ -78,12 +83,14 @@ export default function ProfessionalInfo({
       <EmployeeInput
         type="date"
         name="joiningDate"
+        placeholder="Joining Date"
         value={form?.joiningDate}
         onChange={handleChange}
       />
 
       <EmployeeInput
         name="officeLocation"
+        placeholder="Select Office Location"
         type="select"
         value={form?.officeLocation || ""}
         options={[

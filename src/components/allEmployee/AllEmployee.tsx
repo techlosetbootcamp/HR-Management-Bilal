@@ -33,7 +33,7 @@ export default function AllEmployee({
   } = useAllEmployee(filteredEmployees);
 
   return (
-    <div className="dark:bg-[#131313] dark:text-white rounded-b-lg">
+    <div className="dark:bg-customBlack dark:text-white rounded-b-lg">
       <div className="mt-5 grid grid-cols-7 gap-4 dark:text-white font-semibold p-3 rounded-t-lg">
         <div>Employee</div>
         <div>Employee ID</div>

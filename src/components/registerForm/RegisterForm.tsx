@@ -10,7 +10,7 @@ const RegisterForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="text-white bg-[#131313] rounded-lg shadow-lg"
+      className="text-white bg-customBlack rounded-lg shadow-lg"
     >
       {error && (
         <p className="text-red-500 text-sm text-center mb-3">{error}</p>

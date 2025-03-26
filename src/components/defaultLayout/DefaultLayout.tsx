@@ -15,7 +15,7 @@ export default function DefaultLayout({
 
   return (
     <SearchProvider>
-      <div className="flex h-screen dark:bg-[#131313] relative">
+      <div className="flex h-screen dark:bg-customBlack relative">
         <div
           className={`h-full fixed lg:static w-full md:w-[280px] dark:bg-[#A2A1A80D] bg-gray-300 overflow-hidden transition-transform duration-300 z-30 ${
             isSidebarOpen
@@ -30,7 +30,7 @@ export default function DefaultLayout({
         </div>
         <div className="flex flex-col flex-1 h-screen w-full overflow-y-auto">
           <Header onMenuClick={() => setSidebarOpen(true)} />
-          <main className="p-4 lg:p-6 dark:bg-[#131313] h-full relative">
+          <main className="p-4 lg:p-6 dark:bg-customBlack h-full relative">
             {children}
           </main>
         </div>

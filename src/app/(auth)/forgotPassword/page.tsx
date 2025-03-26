@@ -6,10 +6,10 @@ import React from "react";
 const Page = () => {
   return (
     <>
-      <div className=" flex items-center justify-center bg-[#131313] h-screen w-full">
+      <div className=" flex items-center justify-center bg-customBlack h-screen w-full">
         <div className="w-[445px]">
           <div className="py-5">
-            <Link className="text-white flex " href={"/login"}>
+            <Link className="text-white flex " href="/login">
               <ChevronLeft size={24} />
               <span className="text-[16px] ml-1">Back</span>
             </Link>

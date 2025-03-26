@@ -41,14 +41,14 @@ export default function LeaveRequestModal({
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white dark:bg-[#131313] p-8 rounded-lg shadow-lg max-w-md w-full"
+              className="bg-white dark:bg-customBlack p-8 rounded-lg shadow-lg max-w-md w-full"
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 50, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
               <button
-                className="absolute top-2 right-2 text-gray-600 hover:text-red-600 dark:bg-[#131313] w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 dark:border-gray-700 shadow-md"
+                className="absolute top-2 right-2 text-gray-600 hover:text-red-600 dark:bg-customBlack w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 dark:border-gray-700 shadow-md"
                 onClick={() => setShowModal(false)}
               >
                 X
@@ -87,7 +87,7 @@ export default function LeaveRequestModal({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-customOrange text-white px-4 py-2 rounded-lg dark:hover:bg-[#131313] hover:bg-white hover:text-customOrange border border-customOrange transition-all duration-300"
+                    className="bg-customOrange text-white px-4 py-2 rounded-lg dark:hover:bg-customBlack hover:bg-white hover:text-customOrange border border-customOrange transition-all duration-300"
                   >
                     {loading ? "Submitting..." : "Submit"}
                   </button>

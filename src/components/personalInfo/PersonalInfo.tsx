@@ -10,7 +10,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
   handleFileUpload,
 }) => {
   return (
-    <div className="bg-[#131313] p-4 md:p-6">
+    <div className="bg-customBlack p-4 md:p-6">
       <div className="flex mb-4">
         <label className="cursor-pointer border border-gray-700 rounded-xl flex flex-col items-center">
           {form?.photoURL ? (

@@ -18,7 +18,7 @@ export default function Page() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#131313] text-white shadow-md rounded-lg">
+    <div className="w-full min-h-screen bg-customBlack text-white shadow-md rounded-lg">
       <TabBar
         tabs={tabs}
         activeTab={activeTab.toString()}
@@ -31,11 +31,11 @@ export default function Page() {
 
       <div className="">{tabs[activeTab].component}</div>
 
-      <div className="flex float-end bg-[#131313]">
+      <div className="flex float-end bg-customBlack">
         {activeTab > 0 && (
           <button
             onClick={() => setActiveTab(activeTab - 1)}
-            className="bg-[#131313] px-4 py-3 text-white border-gray-700 border rounded-xl mr-3"
+            className="bg-customBlack px-4 py-3 text-white border-gray-700 border rounded-xl mr-3"
           >
             Previous
           </button>
@@ -43,7 +43,7 @@ export default function Page() {
         {activeTab < tabs.length - 1 ? (
           <button
             onClick={() => setActiveTab(activeTab + 1)}
-            className="mr-4 bg-customOrange hover:bg-[#131313] hover:text-customOrange border transition-all ease-in-out duration-300 border-customOrange px-4 py-3 rounded-xl text-white"
+            className="mr-4 bg-customOrange hover:bg-customBlack hover:text-customOrange border transition-all ease-in-out duration-300 border-customOrange px-4 py-3 rounded-xl text-white"
           >
             Next
           </button>
@@ -51,7 +51,7 @@ export default function Page() {
           <button
             type="submit"
             onClick={handleSubmit}
-            className="bg-customOrange hover:bg-[#131313] hover:text-customOrange border transition-all ease-in-out duration-300 border-customOrange px-5 py-3 rounded-xl text-white"
+            className="bg-customOrange hover:bg-customBlack hover:text-customOrange border transition-all ease-in-out duration-300 border-customOrange px-5 py-3 rounded-xl text-white"
             disabled={loading}
           >
             {loading ? "Adding..." : "Add"}

@@ -22,7 +22,7 @@ export default function FilterDepatment({ employees }: Props) {
   }, {} as Record<string, Employee[]>);
 
   return (
-    <div className="dark:bg-[#131313] dark:text-white mt-10">
+    <div className="dark:bg-customBlack dark:text-white mt-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {Object.entries(employeesByDepartment)?.map(([department, empList]) => (
           <div

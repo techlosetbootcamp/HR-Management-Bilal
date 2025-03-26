@@ -3,7 +3,7 @@ import { UploadCloud } from "lucide-react";
 import { FileUploadProps } from "@/types/empoyee";
 
 const FileUpload: React.FC<FileUploadProps> = ({
-  accept = "image/*, .pdf",
+  accept = "Supported .pdf",
   onFileSelect,
 }) => {
   const [fileName, setFileName] = useState<string | null>(null);
@@ -17,17 +17,17 @@ const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   return (
-    <div className="border-2 border-dashed border-orange-500 rounded-lg p-6 text-center space-y-3">
+    <div className="border-2 border-dashed border-customOrange rounded-lg p-6 text-center space-y-3">
       <label className="cursor-pointer flex flex-col items-center">
-        <div className="bg-orange-500 p-3 rounded-full">
-          <UploadCloud size={20} className="text-white" />
+        <div className="bg-customOrange p-3 rounded-full">
+          <UploadCloud size={20} className="dark:text-white" />
         </div>
         {fileName ? (
           <p className="mt-2 text-gray-700 text-sm">{fileName}</p>
         ) : (
-          <p className="text-gray-400 text-sm mt-2">
+          <p className="dark:text-whitetext-sm mt-2">
             Drag & Drop or{" "}
-            <span className="text-orange-500 font-semibold">choose file</span>{" "}
+            <span className="text-customOrange font-semibold">choose file</span>{" "}
             to upload
           </p>
         )}
@@ -38,7 +38,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           accept={accept}
         />
       </label>
-      <p className="text-gray-500 text-xs">Supported formats: {accept}</p>
+      <p className="dark:text-white text-xs">Supported formats: {accept}</p>
     </div>
   );
 };

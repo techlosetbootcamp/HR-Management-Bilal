@@ -32,7 +32,7 @@ export default function AttendanceForm() {
   } = useMarkAttandance();
 
   return (
-    <div className="border p-4 dark:border-gray-700 dark:bg-[#131313] dark:text-white rounded-[15px]">
+    <div className="border p-4 dark:border-gray-700 dark:bg-customBlack dark:text-white rounded-[15px]">
       <h2 className="text-2xl font-semibold mb-4">Employee Attendance</h2>
 
       <div className="w-[300px]">

@@ -7,7 +7,7 @@ const AttendanceRecords: React.FC<AttendanceRecordsProps> = ({
   formatTime,
 }) => {
   return (
-    <div className="dark:bg-[#131313] dark:text-white p-6 rounded-lg">
+    <div className="dark:bg-customBlack dark:text-white p-6 rounded-lg">
       <div className="hidden md:grid grid-cols-6 gap-4 font-extrabold text-sm dark:border-b border-gray-700 pb-3 text-[#A2A1A8]">
         <span>Date</span>
         <span>Check In</span>

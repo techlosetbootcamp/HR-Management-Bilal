@@ -4,7 +4,7 @@ import { iconLoginLogo } from "@/constants/images";
 import RegisterForm from "@/components/registerForm/RegisterForm";
 export default function page() {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#131313]">
+    <div className="min-h-screen w-full flex items-center justify-center bg-customBlack">
       <div className="w-[445px] h-[561px] gap-[40px]">
         <Image
           src={iconLoginLogo}

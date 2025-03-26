@@ -11,6 +11,7 @@ export default {
     extend: {
       colors: {
         customOrange: "#E25319",
+        customBlack:"#131313"
       },
       animation: {
         glow: "glow 3s ease-in-out infinite",

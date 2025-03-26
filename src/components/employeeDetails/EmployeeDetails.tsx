@@ -61,7 +61,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
+      <div className="flex justify-center items-center h-screen dark:bg-customBlack">
         <LottieAnimation />
       </div>
     );
@@ -69,7 +69,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="dark:bg-[#131313] dark:text-white rounded-lg shadow-lg flex flex-col md:flex-row border border-gray-700">
+    <div className="dark:bg-customBlack dark:text-white rounded-lg shadow-lg flex flex-col md:flex-row border border-gray-700">
       <div className="w-full md:w-1/4 h-auto md:h-[700px] dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4">
         <TabBar
           tabs={mainTabs}
@@ -124,7 +124,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <h2 className="text-xl md:text-2xl font-bold">
                   {employee?.firstName} {employee?.lastName}
                 </h2>
-                <p className="text-orange-400 flex my-2 text-sm md:text-base">
+                <p className="text-custoOrange flex my-2 text-sm md:text-base">
                   <BriefcaseBusiness className="dark:text-white mr-2" />{" "}
                   {employee?.designation}
                 </p>
@@ -135,7 +135,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
               <button
                 onClick={handleEditSaveClick}
-                className="mt-4 md:mt-0 ml-auto bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                className="mt-4 md:mt-0 ml-auto bg-customOrange text-white px-4 py-2 rounded-lg flex items-center gap-2"
               >
                 {isEditing ? (
                   <>
@@ -160,9 +160,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
             {subTab === "personal" && (
               <div className="mb-6 mt-5">
-                <h3 className="text-lg font-semibold mb-2">
-                  Personal Information
-                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {PersonalInfo?.map(
                     ({
@@ -198,9 +195,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
             {subTab === "professional" && (
               <div className="mb-6 mt-5">
-                <h3 className="text-lg font-semibold mb-2">
-                  Professional Information
-                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {ProfessionalInfo?.map(
                     ({ name, label, type, options, valueKey }) => (
@@ -226,13 +220,11 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
             {subTab === "documents" && (
               <div className="mb-6 mt-5">
-                <h3 className="text-lg font-semibold mb-2">Documents</h3>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {fields?.map((field) => (
                     <div
                       key={field}
-                      className="flex items-center gap-2 dark:bg-[#131313] p-3 rounded-md border border-gray-700"
+                      className="flex items-center gap-2 dark:bg-customBlack p-3 rounded-md border border-gray-700"
                     >
                       {employee && employee[field] ? (
                         <>
@@ -287,7 +279,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 
             {subTab === "account" && (
               <div className="mb-6 mt-5">
-                <h3 className="text-lg font-semibold mb-2">Account Access</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {AccountAccess?.map(({ name, label, valueKey }) => (
                     <EmployeeInput

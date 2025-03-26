@@ -28,7 +28,7 @@ export default function Pagination({
           onChange={(e) => {
             onItemsPerPageChange(Number(e.target.value));
           }}
-          className="dark:bg-[#131313] dark:text-white border border-gray-600 px-2 py-1 rounded-md"
+          className="dark:bg-customBlack dark:text-white border border-gray-600 px-2 py-1 rounded-md"
         >
           {[6, 10, 20, 50]?.map((num) => (
             <option key={num} value={num}>

@@ -26,14 +26,14 @@ export default function Page() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen dark:bg-[#131313]">
+      <div className="flex justify-center items-center h-screen dark:bg-customBlack">
         <LottieAnimation />
       </div>
     );
   }
 
   return (
-    <div className="dark:bg-[#131313] dark:text-white rounded-b-lg p-4 border dark:border-gray-700 rounded-[15px]">
+    <div className="dark:bg-customBlack dark:text-white rounded-b-lg p-4 border dark:border-gray-700 rounded-[15px]">
       <h1 className="text-2xl font-bold mb-4">{departmentName} Department</h1>
 
       <EmployeeHeader
@@ -64,7 +64,7 @@ export default function Page() {
 
           <button
             onClick={() => setIsFilterOpen(false)}
-            className="w-full mt-3 bg-customOrange text-white px-4 py-2 rounded-md hover:bg-orange-600 transition"
+            className="w-full mt-3 bg-customOrange text-white px-4 py-2 rounded-md hover:bg-customOrange transition"
           >
             Apply Filter
           </button>

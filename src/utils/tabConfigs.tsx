@@ -17,6 +17,6 @@ export const mainTabs: TabItem[] = [
 export const subTabs: TabItem[] = [
   { key: "personal", label: "Personal Info", icon: <User /> },
   { key: "professional", label: "Professional Info", icon: <Briefcase /> },
-  { key: "documents", label: "Documents Info", icon: <FileText /> },
-  { key: "account", label: "Account Info", icon: <Lock /> },
+  { key: "documents", label: "Documents Infor", icon: <FileText /> },
+  { key: "account", label: "Account Access", icon: <Lock /> },
 ];

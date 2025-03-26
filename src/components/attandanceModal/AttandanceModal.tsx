@@ -28,10 +28,10 @@ export default function AttendanceModalForm({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="dark:bg-[#131313] bg-white p-6 rounded-lg shadow-lg w-96 relative z-[1002]"
+            className="dark:bg-customBlack bg-white p-6 rounded-lg shadow-lg w-96 relative z-[1002]"
           >
             <button
-              className="absolute top-2 right-2 text-gray-600 hover:text-red-600 dark:bg-[#131313] w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 dark:border-gray-700 shadow-md z-[1003]"
+              className="absolute top-2 right-2 text-gray-600 hover:text-red-600 dark:bg-customBlack w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 dark:border-gray-700 shadow-md z-[1003]"
               onClick={onClose}
             >
               <X size={24} />

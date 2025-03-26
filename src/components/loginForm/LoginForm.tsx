@@ -12,7 +12,7 @@ const LoginForm = () => {
     <div className="flex flex-col max-w-[445px]">
       <form
         onSubmit={handleSubmit}
-        className={`bg-[#131313] rounded shadow-lg w-full`}
+        className={`bg-customBlack rounded shadow-lg w-full`}
       >
         <InputField
           label="Email Address"
