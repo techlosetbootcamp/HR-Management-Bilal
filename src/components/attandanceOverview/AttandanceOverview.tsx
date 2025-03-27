@@ -37,7 +37,6 @@ const AttendanceOverview: React.FC<AttendanceOverviewProps> = ({
     return <div className="text-center text-red-500">Error: {error}</div>;
   }
 
-  // Conditionally slice records: if showPagination is false, only show 6 records
   const recordsToDisplay = showPagination
     ? attendanceRecords
     : attendanceRecords?.slice(0, 6);
@@ -48,7 +47,7 @@ const AttendanceOverview: React.FC<AttendanceOverviewProps> = ({
         <h1 className="text-lg">Attendance Overview</h1>
         {showViewAll && (
           <button
-            className="px-4 py-2 text-sm text-customOrange underline rounded-lg"
+            className="px-4 py-2 text-sm border border-gray-700 rounded-lg"
             onClick={() => router.push("/attandance")}
           >
             View All

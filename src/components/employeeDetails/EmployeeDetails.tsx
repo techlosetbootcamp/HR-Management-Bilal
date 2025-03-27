@@ -48,7 +48,9 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     handleComplete,
     handleImageChange,
   } = useEmployeeDetails(id);
+
   const [activeTab, setActiveTab] = useState("profile");
+  const [subTab, setSubTab] = useState("personal");
 
   const fields: Extract<keyof Employee, string>[] = [
     "appointmentLetter",
@@ -57,8 +59,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     "relivingLetter",
   ];
 
-  const [subTab, setSubTab] = useState("personal");
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen dark:bg-customBlack">
@@ -66,10 +66,12 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
       </div>
     );
   }
+
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="dark:bg-customBlack dark:text-white rounded-lg shadow-lg flex flex-col md:flex-row border border-gray-700">
+      {/* Left vertical tab bar */}
       <div className="w-full md:w-1/4 h-auto md:h-[700px] dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4">
         <TabBar
           tabs={mainTabs}
@@ -81,9 +83,12 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
         />
       </div>
 
+      {/* Right main content */}
       <div className="w-full md:w-3/4 p-4">
+        {/* PROFILE TAB */}
         {activeTab === "profile" && (
           <>
+            {/* Profile header */}
             <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
               <label
                 htmlFor="profileImageUpload"
@@ -98,7 +103,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   alt="Profile"
                   className="w-[100px] h-[100px] object-cover rounded-lg border border-gray-500"
                 />
-
                 {isEditMode && (
                   <div className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-lg">
                     <Edit size={16} />
@@ -124,7 +128,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 <h2 className="text-xl md:text-2xl font-bold">
                   {employee?.firstName} {employee?.lastName}
                 </h2>
-                <p className="text-custoOrange flex my-2 text-sm md:text-base">
+                <p className="text-customOrange flex my-2 text-sm md:text-base">
                   <BriefcaseBusiness className="dark:text-white mr-2" />{" "}
                   {employee?.designation}
                 </p>
@@ -149,6 +153,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               </button>
             </div>
 
+            {/* Sub-tab bar (Personal / Professional / Documents / Account) */}
             <TabBar
               tabs={subTabs}
               activeTab={subTab}
@@ -158,6 +163,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               inactiveClassName="dark:text-white"
             />
 
+            {/* PERSONAL INFO */}
             {subTab === "personal" && (
               <div className="mb-6 mt-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -193,6 +199,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               </div>
             )}
 
+            {/* PROFESSIONAL INFO */}
             {subTab === "professional" && (
               <div className="mb-6 mt-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -218,6 +225,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               </div>
             )}
 
+            {/* DOCUMENTS */}
             {subTab === "documents" && (
               <div className="mb-6 mt-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -231,7 +239,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                           <span className="dark:text-white flex-grow">
                             {field.replace(/([A-Z])/g, " $1")}.pdf
                           </span>
-
                           <button
                             onClick={() =>
                               openPdfPreview(employee[field] as string)
@@ -240,7 +247,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                           >
                             <Eye />
                           </button>
-
                           <a
                             href={employee[field] as string}
                             download
@@ -277,6 +283,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               </div>
             )}
 
+            {/* ACCOUNT ACCESS */}
             {subTab === "account" && (
               <div className="mb-6 mt-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -300,6 +307,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           </>
         )}
 
+        {/* ATTENDANCE TAB */}
         {activeTab === "attendance" && (
           <AttendanceRecords
             attendanceRecords={attendanceRecords}
@@ -308,6 +316,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           />
         )}
 
+        {/* PROJECTS TAB */}
         {activeTab === "projects" && (
           <ProjectList
             projects={projects}
@@ -318,6 +327,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           />
         )}
 
+        {/* LEAVE TAB */}
         {activeTab === "leave" && (
           <div>
             <LeaveRequestWithModal employeeId={id} />

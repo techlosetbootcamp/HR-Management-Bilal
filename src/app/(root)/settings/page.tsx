@@ -39,8 +39,7 @@ export default function Settings() {
         <div className="mb-6">
           <h3 className="text-lg font-medium mb-1">Language</h3>
           <p className="text-sm dark:text-gray-400">Select your language</p>
-          <div className="flex justify-between items-center mt-3">
-            <span className="text-sm">English</span>
+          <div className="flex justify-end items-center">
             <button className="dark:bg-gray-800 rounded-lg px-3 py-1 text-sm flex items-center">
               English
               <svg

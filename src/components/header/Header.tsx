@@ -54,7 +54,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         </div>
         <Link
           href="/notification"
-          className="bg-lightGreyShade w-[40px] h-[40px] lg:w-[50px] lg:h-[50px] flex items-center justify-center rounded-[10px]"
+          className="bg-gray-900 w-[40px] h-[40px] lg:w-[50px] lg:h-[50px] flex items-center justify-center rounded-[10px]"
           aria-label="Notification"
         >
           <Bell className="h-5 w-5 lg:h-6 lg:w-6" />
