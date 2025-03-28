@@ -70,269 +70,263 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="dark:bg-customBlack dark:text-white rounded-lg shadow-lg flex flex-col md:flex-row border border-gray-700">
-      {/* Left vertical tab bar */}
-      <div className="w-full md:w-1/4 h-auto md:h-[700px] dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4">
-        <TabBar
-          tabs={mainTabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          orientation="vertical"
-          activeClassName="bg-customOrange text-white"
-          inactiveClassName="dark:text-white"
-        />
+    <div className="dark:bg-customBlack dark:text-white rounded-lg shadow-lg border border-gray-700">
+      <div className="p-4">
+        <div className="flex flex-col md:flex-row items-center gap-4 mb-4">
+          <label
+            htmlFor="profileImageUpload"
+            className="cursor-pointer relative"
+          >
+            <Image
+              width={100}
+              height={100}
+              src={updatedImage || employee?.photoURL || "/default-avatar.png"}
+              alt="Profile"
+              className="w-[100px] h-[100px] object-cover rounded-lg border border-gray-500"
+            />
+            {isEditMode && (
+              <div className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-lg">
+                <Edit size={16} />
+              </div>
+            )}
+          </label>
+
+          {isEditMode && (
+            <input
+              type="file"
+              id="profileImageUpload"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                if (e.target.files?.[0]) {
+                  handleImageChange(e.target.files[0]);
+                }
+              }}
+            />
+          )}
+
+          <div className="flex flex-col text-center md:text-left flex-1">
+            <h2 className="text-xl md:text-2xl font-bold">
+              {employee?.firstName} {employee?.lastName}
+            </h2>
+            <p className="text-customOrange flex my-2 text-sm md:text-base">
+              <BriefcaseBusiness className="dark:text-white mr-2" />
+              {employee?.designation}
+            </p>
+            <p className="flex text-sm md:text-base">
+              <Mail className="mr-2" /> {employee?.email}
+            </p>
+          </div>
+
+          <button
+            onClick={handleEditSaveClick}
+            className="bg-customOrange text-white px-5 py-4 w-[156px] h-[50px] rounded-lg flex items-center gap-2"
+          >
+            {isEditing ? (
+              <>
+                <Save size={16} /> Save
+              </>
+            ) : (
+              <>
+                <Edit size={16} /> Edit Profile
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Right main content */}
-      <div className="w-full md:w-3/4 p-4">
-        {/* PROFILE TAB */}
-        {activeTab === "profile" && (
-          <>
-            {/* Profile header */}
-            <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
-              <label
-                htmlFor="profileImageUpload"
-                className="cursor-pointer relative"
-              >
-                <Image
-                  width={100}
-                  height={100}
-                  src={
-                    updatedImage || employee?.photoURL || "/default-avatar.png"
-                  }
-                  alt="Profile"
-                  className="w-[100px] h-[100px] object-cover rounded-lg border border-gray-500"
-                />
-                {isEditMode && (
-                  <div className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-lg">
-                    <Edit size={16} />
-                  </div>
-                )}
-              </label>
+      <div className="flex flex-col md:flex-row border-t dark:border-gray-700">
+        <div className="w-full md:w-1/4 dark:bg-[#A2A1A80D] bg-gray-300 text-black p-4 h-screen">
+          <TabBar
+            tabs={mainTabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            orientation="vertical"
+            activeClassName="bg-customOrange text-white"
+            inactiveClassName="dark:text-white"
+          />
+        </div>
 
-              {isEditMode && (
-                <input
-                  type="file"
-                  id="profileImageUpload"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    if (e.target.files?.[0]) {
-                      handleImageChange(e.target.files[0]);
-                    }
-                  }}
-                />
+        <div className="w-full md:w-3/4 p-4">
+          {activeTab === "profile" && (
+            <>
+              <TabBar
+                tabs={subTabs}
+                activeTab={subTab}
+                onTabChange={setSubTab}
+                orientation="horizontal"
+                activeClassName="text-orange-500 border-b-2 border-orange-500"
+                inactiveClassName="dark:text-white"
+              />
+
+              {subTab === "personal" && (
+                <div className="mb-6 mt-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {PersonalInfo?.map(
+                      ({
+                        name,
+                        label,
+                        valueKey,
+                        type,
+                        options,
+                        disable,
+                        className,
+                      }) => (
+                        <EmployeeInput
+                          key={name}
+                          name={name}
+                          label={label}
+                          value={
+                            updatedFields[name as keyof Employee] ??
+                            ((employee?.[
+                              valueKey as keyof Employee
+                            ] as string) ||
+                              "")
+                          }
+                          isEditMode={isEditMode}
+                          type={type as InputFieldType}
+                          disabled={disable}
+                          options={options}
+                          className={className}
+                          onChange={(e) => handleUpdate(name, e.target.value)}
+                        />
+                      )
+                    )}
+                  </div>
+                </div>
               )}
 
-              <div className="flex flex-col text-center md:text-left">
-                <h2 className="text-xl md:text-2xl font-bold">
-                  {employee?.firstName} {employee?.lastName}
-                </h2>
-                <p className="text-customOrange flex my-2 text-sm md:text-base">
-                  <BriefcaseBusiness className="dark:text-white mr-2" />{" "}
-                  {employee?.designation}
-                </p>
-                <p className="flex text-sm md:text-base">
-                  <Mail className="mr-2" /> {employee?.email}
-                </p>
-              </div>
-
-              <button
-                onClick={handleEditSaveClick}
-                className="mt-4 md:mt-0 ml-auto bg-customOrange text-white px-4 py-2 rounded-lg flex items-center gap-2"
-              >
-                {isEditing ? (
-                  <>
-                    <Save size={16} /> Save
-                  </>
-                ) : (
-                  <>
-                    <Edit size={16} /> Edit Profile
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* Sub-tab bar (Personal / Professional / Documents / Account) */}
-            <TabBar
-              tabs={subTabs}
-              activeTab={subTab}
-              onTabChange={setSubTab}
-              orientation="horizontal"
-              activeClassName="text-orange-500 border-b-2 border-orange-500"
-              inactiveClassName="dark:text-white"
-            />
-
-            {/* PERSONAL INFO */}
-            {subTab === "personal" && (
-              <div className="mb-6 mt-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {PersonalInfo?.map(
-                    ({
-                      name,
-                      label,
-                      valueKey,
-                      type,
-                      options,
-                      disable,
-                      className,
-                    }) => (
-                      <EmployeeInput
-                        key={name}
-                        name={name}
-                        label={label}
-                        value={
-                          updatedFields[name as keyof Employee] ??
-                          ((employee?.[valueKey as keyof Employee] as string) ||
-                            "")
-                        }
-                        isEditMode={isEditMode}
-                        type={type as InputFieldType}
-                        disabled={disable}
-                        options={options}
-                        className={className}
-                        onChange={(e) => handleUpdate(name, e.target.value)}
-                      />
-                    )
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* PROFESSIONAL INFO */}
-            {subTab === "professional" && (
-              <div className="mb-6 mt-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {ProfessionalInfo?.map(
-                    ({ name, label, type, options, valueKey }) => (
-                      <EmployeeInput
-                        key={name}
-                        name={name}
-                        label={label}
-                        type={type as "text" | "select"}
-                        value={
-                          updatedFields[name as keyof Employee] ??
-                          ((employee?.[valueKey as keyof Employee] as string) ||
-                            "")
-                        }
-                        options={options}
-                        isEditMode={isEditMode}
-                        onChange={(e) => handleUpdate(name, e.target.value)}
-                      />
-                    )
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* DOCUMENTS */}
-            {subTab === "documents" && (
-              <div className="mb-6 mt-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {fields?.map((field) => (
-                    <div
-                      key={field}
-                      className="flex items-center gap-2 dark:bg-customBlack p-3 rounded-md border border-gray-700"
-                    >
-                      {employee && employee[field] ? (
-                        <>
-                          <span className="dark:text-white flex-grow">
-                            {field.replace(/([A-Z])/g, " $1")}.pdf
-                          </span>
-                          <button
-                            onClick={() =>
-                              openPdfPreview(employee[field] as string)
-                            }
-                            className="dark:text-white hover:underline"
-                          >
-                            <Eye />
-                          </button>
-                          <a
-                            href={employee[field] as string}
-                            download
-                            className="dark:text-white hover:underline"
-                          >
-                            <Download />
-                          </a>
-                        </>
-                      ) : (
-                        <p className="text-gray-500 text-sm">
-                          No {field} uploaded
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {pdfPreview && (
-                  <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center">
-                    <div className="bg-white p-4 rounded-lg max-w-3xl w-full">
-                      <iframe
-                        src={getPdfUrl(pdfPreview)}
-                        className="w-full h-[500px]"
-                      ></iframe>
-                      <button
-                        onClick={closePdfPreview}
-                        className="mt-2 text-red-500"
-                      >
-                        ✖ Close
-                      </button>
-                    </div>
+              {subTab === "professional" && (
+                <div className="mb-6 mt-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {ProfessionalInfo?.map(
+                      ({ name, label, type, options, valueKey }) => (
+                        <EmployeeInput
+                          key={name}
+                          name={name}
+                          label={label}
+                          type={type as "text" | "select"}
+                          value={
+                            updatedFields[name as keyof Employee] ??
+                            ((employee?.[
+                              valueKey as keyof Employee
+                            ] as string) ||
+                              "")
+                          }
+                          options={options}
+                          isEditMode={isEditMode}
+                          onChange={(e) => handleUpdate(name, e.target.value)}
+                        />
+                      )
+                    )}
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* ACCOUNT ACCESS */}
-            {subTab === "account" && (
-              <div className="mb-6 mt-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {AccountAccess?.map(({ name, label, valueKey }) => (
-                    <EmployeeInput
-                      key={name}
-                      name={name}
-                      label={label}
-                      value={
-                        updatedFields[name as keyof Employee] ??
-                        ((employee?.[valueKey as keyof Employee] as string) ||
-                          "")
-                      }
-                      isEditMode={isEditMode}
-                      onChange={(e) => handleUpdate(name, e.target.value)}
-                    />
-                  ))}
                 </div>
-              </div>
-            )}
-          </>
-        )}
+              )}
 
-        {/* ATTENDANCE TAB */}
-        {activeTab === "attendance" && (
-          <AttendanceRecords
-            attendanceRecords={attendanceRecords}
-            formatDate={formatDate}
-            formatTime={formatTime}
-          />
-        )}
+              {subTab === "documents" && (
+                <div className="mb-6 mt-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {fields?.map((field) => (
+                      <div
+                        key={field}
+                        className="flex items-center gap-2 dark:bg-customBlack p-3 rounded-md border border-gray-700"
+                      >
+                        {employee && employee[field] ? (
+                          <>
+                            <span className="dark:text-white flex-grow">
+                              {field.replace(/([A-Z])/g, " $1")}.pdf
+                            </span>
+                            <button
+                              onClick={() =>
+                                openPdfPreview(employee[field] as string)
+                              }
+                              className="dark:text-white hover:underline"
+                            >
+                              <Eye />
+                            </button>
+                            <a
+                              href={employee[field] as string}
+                              download
+                              className="dark:text-white hover:underline"
+                            >
+                              <Download />
+                            </a>
+                          </>
+                        ) : (
+                          <p className="text-gray-500 text-sm">
+                            No {field} uploaded
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
 
-        {/* PROJECTS TAB */}
-        {activeTab === "projects" && (
-          <ProjectList
-            projects={projects}
-            employees={employee ? [employee] : []}
-            onCompleteProject={handleComplete}
-            showEmployeeName={false}
-            showActionButton={true}
-          />
-        )}
+                  {pdfPreview && (
+                    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center">
+                      <div className="bg-white p-4 rounded-lg max-w-3xl w-full">
+                        <iframe
+                          src={getPdfUrl(pdfPreview)}
+                          className="w-full h-[500px]"
+                        />
+                        <button
+                          onClick={closePdfPreview}
+                          className="mt-2 text-red-500"
+                        >
+                          ✖ Close
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
 
-        {/* LEAVE TAB */}
-        {activeTab === "leave" && (
-          <div>
-            <LeaveRequestWithModal employeeId={id} />
-          </div>
-        )}
+              {subTab === "account" && (
+                <div className="mb-6 mt-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {AccountAccess?.map(({ name, label, valueKey }) => (
+                      <EmployeeInput
+                        key={name}
+                        name={name}
+                        label={label}
+                        value={
+                          updatedFields[name as keyof Employee] ??
+                          ((employee?.[valueKey as keyof Employee] as string) ||
+                            "")
+                        }
+                        isEditMode={isEditMode}
+                        onChange={(e) => handleUpdate(name, e.target.value)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
+          {activeTab === "attendance" && (
+            <AttendanceRecords
+              attendanceRecords={attendanceRecords}
+              formatDate={formatDate}
+              formatTime={formatTime}
+            />
+          )}
+
+          {activeTab === "projects" && (
+            <ProjectList
+              projects={projects}
+              employees={employee ? [employee] : []}
+              onCompleteProject={handleComplete}
+              showEmployeeName={false}
+              showActionButton={true}
+            />
+          )}
+
+          {activeTab === "leave" && (
+            <div>
+              <LeaveRequestWithModal employeeId={id} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
