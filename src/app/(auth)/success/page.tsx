@@ -18,11 +18,11 @@ const SuccessPage = () => {
   return (
     <div className="h-screen flex justify-center items-center bg-customBlack">
       <div className=" flex flex-col justify-center items-center text-white rounded-[10px] p-[30px]">
-        <div className="text-[30px] font-[600] ">Password updated</div>
-        <div className="text-[30px] font-[600]  ">Successfully</div>
-        <div className="font-light text-[16px] text-gray-400 mt-[5px]">
+        <h1 className="text-[30px] font-[600]">Password updated</h1>
+        <h2 className="text-[30px] font-[600]">Successfully</h2>
+        <p className="font-light text-[16px] text-gray-400 mt-[5px]">
           Your password has been update successfully
-        </div>
+        </p>
         <Button onClick={handleNavigation} className="mt-6">
           {session ? "Go to Dashboard" : "Login Now"}
         </Button>
